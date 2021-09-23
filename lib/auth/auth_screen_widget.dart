@@ -17,7 +17,6 @@ class _AuthWidgetState extends State<AuthWidget> {
   final _model = AuthModel();
   @override
   Widget build(BuildContext context) {
-    final providerModel = AuthScreenWidgetProvider.read(context)?.model;
     return Scaffold(
       body: AuthScreenWidgetProvider(
         model: _model,
@@ -43,7 +42,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                         borderRadius: BorderRadius.circular(15),
                       ))),
                   onPressed: () => Navigator.of(context)
-                      .pushNamed(MainNavigationRouteName.mainScreen),
+                      .pushReplacementNamed(MainNavigationRouteName.mainScreen),
                   child: Text(
                     'Войти',
                     style: TextStyle(fontSize: 23),
@@ -128,10 +127,6 @@ class _FormWidget extends StatelessWidget {
             prefixIcon: Icon(
               Icons.lock,
               color: Colors.green,
-            ),
-            suffixIcon: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.remove_red_eye_outlined, color: Colors.green),
             ),
             isCollapsed: true,
             contentPadding: EdgeInsets.all(15),

@@ -18,6 +18,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp (
+      theme: ThemeData(
+        splashFactory: InkRipple.splashFactory,
+      ),
       routes: MainNavigation().routes,
       initialRoute: MainNavigation().initialRoute,
     );

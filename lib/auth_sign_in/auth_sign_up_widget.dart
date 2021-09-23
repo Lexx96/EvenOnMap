@@ -21,8 +21,8 @@ class AuthSignUpWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
-                      Text('Нажимая на кнопку "Регистрация", я подтверждаю, '
-                      'что ознакомился(лась) с политикой обработки персональных данных.'),
+                    Text('Нажимая на кнопку "Регистрация", я подтверждаю, '
+                        'что ознакомился(лась) с политикой обработки персональных данных.'),
                   ],
                 ),
               ),
@@ -155,10 +155,6 @@ class _FormWidget extends StatelessWidget {
               Icons.lock,
               color: Colors.green,
             ),
-            suffixIcon: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.remove_red_eye_outlined, color: Colors.green),
-            ),
             isCollapsed: true,
             contentPadding: EdgeInsets.all(15),
             hintText: 'Пароль',
@@ -187,24 +183,3 @@ class _FormWidget extends StatelessWidget {
     );
   }
 }
-
-
-
-/*
-             Row(
-                children: [
-                  Text(
-                      'Нажимая на кнопку "Регистрация", я подтверждаю, '
-                          'что ознакомился(лась) с политикой обработки персональных данных',
-                      style: TextStyle(fontSize: 13, color: Colors.grey)),
-                  TextButton(
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed('auth/authSignUp'),
-                      child: Text('политикой обработки персональных данных',
-                          style: TextStyle(fontSize: 13, color: Colors.blue))),
-                  Text(
-                      'и даю согласие на обработку персональных данных',
-                      style: TextStyle(fontSize: 13, color: Colors.grey)),
-                ],
-              ),
- */
