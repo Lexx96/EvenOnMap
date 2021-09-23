@@ -6,25 +6,93 @@ class NewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: BouncingScrollPhysics(),
-      itemCount: 10,
-      itemExtent: 600,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border.all(color: Colors.black.withOpacity(0.9))),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              HeaderButtonWidget(),
-              TextBodyWidget(),
-              EndWidget(),
+    return Scaffold(
+      appBar: AppBar(),
+      drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              SizedBox(
+                height: 180,
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Stack(
+                    children: [
+                      Row(
+                        children: [
+                          Align(
+                            alignment:Alignment.centerLeft,
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey,
+                            ),
+                          ),
+                          SizedBox(width: 30,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Align(
+                                alignment:Alignment.centerRight,
+                                child:
+                                Text('Имя фамилия', style: TextStyle(color: Colors.white, fontSize: 19),),
+                              ),
+                              Align(
+                                alignment:Alignment.centerRight + Alignment(0, .3),
+                                child:
+                                Text('Почта@mail.ru',style: TextStyle(color: Colors.white, fontSize: 13)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('Профиль'),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/UserPanel');
+                },
+              ),
+              ListTile(
+                title: Text('Регистрация'),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/InPut');
+                },
+              ),
+              ListTile(
+                title: Text('О приложении'),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/InPut');
+                },
+              ),
             ],
-          ),
-        );
-      },
+          )
+      ),
+      body: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        itemCount: 10,
+        itemExtent: 600,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(color: Colors.black.withOpacity(0.9))),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                HeaderButtonWidget(),
+                TextBodyWidget(),
+                EndWidget(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

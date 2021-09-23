@@ -3,7 +3,6 @@ import 'package:event_on_map/newsWidget/news_widget.dart';
 import 'package:event_on_map/userProfile/user_profile_widget.dart';
 import 'package:flutter/material.dart';
 /*
-Сделать скрол по страницам
 
 Класс с:
 цветами
@@ -78,6 +77,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: IndexedStack(
         index: _selectedTab,
         children: [
