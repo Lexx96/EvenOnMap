@@ -15,6 +15,7 @@ class AuthWidget extends StatefulWidget {
 
 class _AuthWidgetState extends State<AuthWidget> {
   final _model = AuthModel();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,14 +26,13 @@ class _AuthWidgetState extends State<AuthWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ListView(
               children: [
-                AuthHeaderWidget(),
-                AuthMainImage(),
+                const AuthHeaderWidget(),
+                const AuthMainImage(),
                 _FormWidget(),
                 SizedBox(height: MediaQuery.of(context).size.height / 10 * 0.8),
-                AuthTextAuthorization(),
+                const AuthTextAuthorization(),
                 TextButton(
                   style: ButtonStyle(
-                    // splashFactory: Создать сплешь
                       foregroundColor: MaterialStateProperty.all(Colors.white),
                       backgroundColor: MaterialStateProperty.all(Colors.blue),
                       overlayColor: MaterialStateProperty.all(Colors.grey),
@@ -61,9 +61,11 @@ class _AuthWidgetState extends State<AuthWidget> {
                       ))),
                   onPressed: () => Navigator.of(context)
                       .pushNamed(MainNavigationRouteName.authSignUp),
-                  child: Text(
-                    'Регистрация',
-                    style: TextStyle(fontSize: 23),
+                  child: const Expanded(
+                    child: const Text(
+                      'Регистрация',
+                      style: const TextStyle(fontSize: 23),
+                    ),
                   ),
                 ),
               ],
@@ -74,7 +76,6 @@ class _AuthWidgetState extends State<AuthWidget> {
     );
   }
 }
-
 
 class _FormWidget extends StatelessWidget {
   const _FormWidget({Key? key}) : super(key: key);
@@ -91,25 +92,25 @@ class _FormWidget extends StatelessWidget {
         SizedBox(height: _height * 0.1),
         TextField(
           decoration: InputDecoration(
-            prefix: Text('+7'),
-            prefixStyle: TextStyle(color: Colors.black, fontSize: 16),
-            prefixIcon: Icon(
+            prefix: const Text('+7'),
+            prefixStyle: const TextStyle(color: Colors.black, fontSize: 16),
+            prefixIcon: const Icon(
               Icons.phone,
               color: Colors.green,
             ),
             isCollapsed: true,
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintText: 'Номер телефона',
-            hintStyle: TextStyle(color: Colors.green),
+            hintStyle: const TextStyle(color: Colors.green),
             filled: true,
             fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 1.0, color: Colors.white),
+              borderSide: const BorderSide(width: 1.0, color: Colors.white),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 width: 2.0,
                 color: Colors.green,
               ),
@@ -123,15 +124,15 @@ class _FormWidget extends StatelessWidget {
         SizedBox(height: _height * 0.1),
         TextField(
           decoration: InputDecoration(
-            prefixStyle: TextStyle(color: Colors.black, fontSize: 16),
-            prefixIcon: Icon(
+            prefixStyle: const TextStyle(color: Colors.black, fontSize: 16),
+            prefixIcon: const Icon(
               Icons.lock,
               color: Colors.green,
             ),
             isCollapsed: true,
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintText: 'Пароль',
-            hintStyle: TextStyle(color: Colors.green),
+            hintStyle: const TextStyle(color: Colors.green),
             filled: true,
             fillColor: Colors.white,
             border: OutlineInputBorder(
@@ -140,13 +141,14 @@ class _FormWidget extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 width: 2.0,
                 color: Colors.green,
               ),
             ),
           ),
-          obscureText: true,   // скрывать вводимые данные, как правело для паролей
+          obscureText: true,
+          // скрывать вводимые данные, как правело для паролей
           obscuringCharacter: '*',
           controller: _passwordTextFieldController,
         ),
@@ -154,5 +156,3 @@ class _FormWidget extends StatelessWidget {
     );
   }
 }
-
-

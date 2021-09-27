@@ -12,7 +12,7 @@ class AuthHeaderWidget extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height / 10 * 0.1,
           ),
-          Text(
+          const Text(
             'EventOnMap',
             style: TextStyle(fontSize: 45, color: Colors.green),
           ),
