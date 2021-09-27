@@ -8,12 +8,12 @@ class AuthTextAuthorization extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Войдите в свой аккаунт или',
-            style: TextStyle(fontSize: 13, color: Colors.grey)),
+        const Text('Войдите в свой аккаунт или',
+            style: const TextStyle(fontSize: 13, color: Colors.grey)),
         TextButton(
             onPressed: () => Navigator.of(context).pushNamed('auth/authSignIn'),
-            child: Text('зарегистритуйтесь',
-                style: TextStyle(fontSize: 13, color: Colors.blue))),
+            child: const Text('зарегистритуйтесь',
+                style: const TextStyle(fontSize: 13, color: Colors.blue))),
       ],
     );
   }

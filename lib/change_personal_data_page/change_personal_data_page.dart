@@ -1,3 +1,4 @@
+import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
 
 class ChangePersonalDataPage extends StatelessWidget {
@@ -15,11 +16,48 @@ class ChangePersonalDataPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Text('Имя'),
-                  SizedBox(
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  TextField(
+                    maxLength: 50,
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey[200],
+                      filled: true,
+                      hintText: 'Ведите имя',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      isCollapsed: true,
+                      contentPadding: const EdgeInsets.all(15),
+
+                      enabledBorder: OutlineInputBorder(
+                        // рабочее , но не активное состояние
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          width: 1.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+
+                      focusedBorder: OutlineInputBorder(
+                        // в фокусе
+                        borderRadius: BorderRadius.circular(10),
+                        // скругление каждого угла отдельно
+                        borderSide: BorderSide(
+                          width: 2.0,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  const Text('Фамилия'),
+                  const SizedBox(
                     height: 5,
                   ),
                   TextField(
@@ -80,75 +118,10 @@ class ChangePersonalDataPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text('Фамилия'),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  TextField(
-                    maxLength: 50,
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey[200],
-                      filled: true,
-                      hintText: 'Ведите имя',
-                      hintStyle: TextStyle(color: Colors.grey),
-                      isCollapsed: true,
-                      contentPadding: EdgeInsets.all(15),
-                      enabledBorder: OutlineInputBorder(
-                        // рабочее , но не активное состояние
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          width: 1.0,
-                          color: Colors.grey,
-                        ),
-                      ),
-
-                      focusedBorder: OutlineInputBorder(
-                        // в фокусе
-                        borderRadius: BorderRadius.circular(10),
-                        // скругление каждого угла отдельно
-                        borderSide: BorderSide(
-                          width: 2.0,
-                          color: Colors.blue,
-                        ),
-                      ),
-
-                      disabledBorder: OutlineInputBorder(
-                        //  в не актоивном состоянии
-                          borderRadius: BorderRadius.circular(10),
-                          // скругление рамки поля ввода
-                          borderSide: BorderSide(
-                            width: 1.0, // ширина рамки поля ввода
-                            color: Colors.grey, // цвет рамки поля ввода
-                          )),
-
-                      //errorText: 'Ошибка',     // текст ошибки под полем ввода
-                      errorBorder: OutlineInputBorder(
-                        // с ошибкой
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          width: 1.0, // ширина рамки поля ввода
-                          color: Colors.red, // цвет рамки поля ввода
-                        ),
-                      ),
-
-                      focusedErrorBorder: OutlineInputBorder(
-                        // с ошибкой и в фокусе
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          width: 2.0, // ширина рамки поля ввода
-                          color:
-                          Colors.red, // цвет рамки поля ввода
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text('Статус'),
+                  const Text('Статус'),
                   TextField(
                     maxLength: 50,
                     decoration: InputDecoration(
@@ -176,42 +149,14 @@ class ChangePersonalDataPage extends StatelessWidget {
                           color: Colors.blue,
                         ),
                       ),
-
-                      disabledBorder: OutlineInputBorder(
-                        //  в не актоивном состоянии
-                          borderRadius: BorderRadius.circular(10),
-                          // скругление рамки поля ввода
-                          borderSide: BorderSide(
-                            width: 1.0, // ширина рамки поля ввода
-                            color: Colors.grey, // цвет рамки поля ввода
-                          )),
-
-                      //errorText: 'Ошибка',     // текст ошибки под полем ввода
-                      errorBorder: OutlineInputBorder(
-                        // с ошибкой
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          width: 1.0, // ширина рамки поля ввода
-                          color: Colors.red, // цвет рамки поля ввода
-                        ),
-                      ),
-
-                      focusedErrorBorder: OutlineInputBorder(
-                        // с ошибкой и в фокусе
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          width: 2.0, // ширина рамки поля ввода
-                          color:
-                          Colors.red, // цвет рамки поля ввода
-                        ),
-                      ),
                     ),
                   ),
-                  SizedBox(
+
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text('Родной город'),
-                  SizedBox(
+                  const Text('Родной город'),
+                  const SizedBox(
                     height: 5,
                   ),
                   TextField(
@@ -272,11 +217,11 @@ class ChangePersonalDataPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text('О себе'),
-                  SizedBox(
+                  const Text('О себе'),
+                  const SizedBox(
                     height: 5,
                   ),
                   TextField(
@@ -339,7 +284,7 @@ class ChangePersonalDataPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                 ],
@@ -354,11 +299,11 @@ class ChangePersonalDataPage extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {},
-            child: Text('Сохранить', style: TextStyle(fontSize: 17),),
+            child: const Text('Сохранить', style: const TextStyle(fontSize: 17),),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Назад', style: TextStyle(fontSize: 17),),
+            child: const Text('Назад', style: const TextStyle(fontSize: 17),),
           ),
         ],
       ),

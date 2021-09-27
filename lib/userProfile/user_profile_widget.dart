@@ -80,313 +80,297 @@ class _UserProfileState extends State<UserProfile> {
             ],
           )
       ),
-      body: Stack(
-        children: [
-          ListView(
-            physics: BouncingScrollPhysics(),
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topRight,
-                        colors: [
-                      Color(0xffffffff),
-                      Color(0xffffffff),
-                    ])),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
+      body: Container(
+        color: Colors.white,
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: const AssetImage('assets/images/mapOne.png'),
+                        radius: 40,
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            backgroundImage: AssetImage('images/mapOne.png'),
-                            backgroundColor: Colors.red,
-                            radius: 40,
+                          const Text(
+                            'Имя Фамилия',
+                            style: const TextStyle(
+                                fontSize: 22,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
-                            width: 35,
+                          const Text(
+                            'Статус',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
                             children: [
-                              Text(
-                                'Имя Фамилия',
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Статус',
-                                style: TextStyle(
+                              const Text(
+                                'когда был в сети',
+                                style: const TextStyle(
                                     fontSize: 14,
-                                    color: Colors.blue,
+                                    color: Colors.grey,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'когда был в сети',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Icon(
-                                    Icons.phone_android,
-                                    size: 14,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
+                              const Icon(
+                                Icons.phone_android,
+                                size: 14,
+                                color: Colors.grey,
+                              )
                             ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.white),
+                        // цвет фона
+                        foregroundColor: MaterialStateProperty.all(Colors.blue),
+                        // цвет текста
+                        overlayColor: MaterialStateProperty.all(Colors.grey[300]),
+                        // цвет анимации при нажатии
+                        shadowColor: MaterialStateProperty.all(Colors.grey),
+                        // цвет тени
+                        elevation: MaterialStateProperty.all(3),
+                        // поднятие кнопки регулируется тенью
+                        padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        // отступ внутренний
+                        minimumSize: MaterialStateProperty.all(
+                            Size(MediaQuery.of(context).size.width, 35)),
+                        // минимальный размер кнопки
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          // скругление краев кнопки
+                          borderRadius: BorderRadius.circular(7),
+                        )),
+                      ),
+                      onPressed: () => Navigator.of(context).pushNamed(MainNavigationRouteName.changePersonalDataPage),
+                      child: const Text(
+                        'Редактировать',
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
+                          ),
+                          const Text(
+                            '   История',
+                            style: TextStyle(color: Colors.blue, fontSize: 16),
                           )
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
-                            // цвет фона
-                            foregroundColor: MaterialStateProperty.all(Colors.blue),
-                            // цвет текста
-                            overlayColor: MaterialStateProperty.all(Colors.grey[300]),
-                            // цвет анимации при нажатии
-                            shadowColor: MaterialStateProperty.all(Colors.grey),
-                            // цвет тени
-                            elevation: MaterialStateProperty.all(3),
-                            // поднятие кнопки регулируется тенью
-                            padding: MaterialStateProperty.all(EdgeInsets.zero),
-                            // отступ внутренний
-                            minimumSize: MaterialStateProperty.all(
-                                Size(MediaQuery.of(context).size.width, 35)),
-                            // минимальный размер кнопки
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                              // скругление краев кнопки
-                              borderRadius: BorderRadius.circular(7),
-                            )),
-                          ),
-                          onPressed: () => Navigator.of(context).pushNamed(MainNavigationRouteName.changePersonalDataPage),
-                          child: Text(
-                            'Редактировать',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      Column(
                         children: [
-                          Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
-                              ),
-                              Text(
-                                '   История',
-                                style: TextStyle(color: Colors.blue, fontSize: 16),
-                              )
-                            ],
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
                           ),
-                          Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
-                              ),
-                              Text(
-                                '   Запись',
-                                style: TextStyle(color: Colors.blue, fontSize: 16),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
-                              ),
-                              Text(
-                                '   Фото',
-                                style: TextStyle(color: Colors.blue, fontSize: 16),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
-                              ),
-                              Text(
-                                '   История',
-                                style: TextStyle(color: Colors.blue, fontSize: 16),
-                              )
-                            ],
-                          ),
+                          const Text(
+                            '   Запись',
+                            style: const TextStyle(color: Colors.blue, fontSize: 16),
+                          )
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(
-                      height: 1,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.home,
-                                color: Colors.black,
-                                size: 24,
-                              ),
-                              SizedBox(width: 15),
-                              Text(
-                                'Город: переменная с названием города',
-                                style: TextStyle(color: Colors.black54, fontSize: 14),
-                              )
-                            ],
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.airline_seat_recline_extra_rounded,
-                                color: Colors.black,
-                                size: 24,
-                              ),
-                              SizedBox(width: 15),
-                              Text(
-                                'Место учебы',
-                                style: TextStyle(color: Colors.black54, fontSize: 14),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.work_outline,
-                                color: Colors.black,
-                                size: 24,
-                              ),
-                              SizedBox(width: 15),
-                              Text(
-                                'Место работы',
-                                style: TextStyle(color: Colors.black54, fontSize: 14),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.more_horiz,
-                                color: Colors.blue,
-                                size: 24,
-                              ),
-                              SizedBox(width: 15),
-                              TextButton(
-                                  onPressed: () => Navigator.of(context).pushNamed('personalDataPage'),
-                                  child: Text(
-                                    'Подробная информация',
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ))
-                            ],
-                          ),
+                          const Text(
+                            '   Фото',
+                            style: const TextStyle(color: Colors.blue, fontSize: 16),
+                          )
                         ],
                       ),
-                    ),
-                    Divider(
-                      height: 1,
-                      color: Colors.black54,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
                         children: [
-                          TextButton(
-                              onPressed: () {},
-                              child: Text('Друзья 354',
-                                  style: TextStyle(
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.bold)))
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
+                          ),
+                          const Text(
+                            '   История',
+                            style: const TextStyle(color: Colors.blue, fontSize: 16),
+                          )
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 140,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 10,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Row(
-                              children: [
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 35,
-                                      backgroundColor: Colors.grey,
-                                    ),
-                                    Text('Имя'),
-                                    Text('Фамилия'),
-                                  ],
-                                ),
-                              ],
-                            );
-                          }),
-                    ),
-                    SizedBox(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border.all(color: Colors.black.withOpacity(0.9))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            HeaderButtonWidget(),
-                            TextBodyWidget(),
-                            EndWidget(),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-
-        ],
+                const SizedBox(
+                  height: 10,
+                ),
+                const Divider(
+                  height: 1,
+                  color: Colors.white,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.home,
+                            color: Colors.black,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 15),
+                          const Text(
+                            'Город: переменная с названием города',
+                            style: TextStyle(color: Colors.black54, fontSize: 14),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.airline_seat_recline_extra_rounded,
+                            color: Colors.black,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 15),
+                          const Text(
+                            'Место учебы',
+                            style: TextStyle(color: Colors.black54, fontSize: 14),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.work_outline,
+                            color: Colors.black,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 15),
+                          const Text(
+                            'Место работы',
+                            style: TextStyle(color: Colors.black54, fontSize: 14),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.more_horiz,
+                            color: Colors.blue,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 15),
+                          TextButton(
+                              onPressed: () => Navigator.of(context).pushNamed('personalDataPage'),
+                              child: const Text(
+                                'Подробная информация',
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ))
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  height: 1,
+                  color: Colors.black54,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextButton(
+                          onPressed: () {},
+                          child: const Text('Друзья 354',
+                              style: const TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.bold)))
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 140,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Row(
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              children: [
+                                const CircleAvatar(
+                                  radius: 35,
+                                  backgroundColor: Colors.grey,
+                                ),
+                                const Text('Имя'),
+                                const Text('Фамилия'),
+                              ],
+                            ),
+                          ],
+                        );
+                      }),
+                ),
+                SizedBox(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(color: Colors.black.withOpacity(0.9))),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const HeaderButtonWidget(),
+                        TextBodyWidget(),
+                        const EndWidget(),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

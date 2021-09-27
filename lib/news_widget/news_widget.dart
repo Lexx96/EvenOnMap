@@ -81,18 +81,18 @@ class NewsWidget extends StatelessWidget {
       )),
       body: ListView.builder(
         physics: BouncingScrollPhysics(),
-        itemCount: 10,
+        itemCount: 100,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                HeaderButtonWidget(),
-                TextBodyWidget(),
-                EndWidget(),
-              ],
-            ),
-          );
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  HeaderButtonWidget(),
+                  TextBodyWidget(),
+                  EndWidget(),
+                ],
+              ),
+            );
         },
       ),
     );
@@ -225,12 +225,10 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Expanded(
-              child: Text(
-                infoWidget,
-                maxLines: _resultLines,
-                overflow: TextOverflow.fade,
-              ),
+            child: Text(
+              infoWidget,
+              maxLines: _resultLines,
+              overflow: TextOverflow.fade,
             ),
           ),
           Padding(
