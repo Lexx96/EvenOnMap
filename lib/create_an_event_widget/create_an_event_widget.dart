@@ -11,9 +11,6 @@ class CreateAnEventWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 30,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
