@@ -3,8 +3,9 @@ import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../custom_icons.dart';
+
+
 
 class MapWidget extends StatefulWidget {
   const MapWidget({Key? key}) : super(key: key);

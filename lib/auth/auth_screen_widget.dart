@@ -27,9 +27,10 @@ class _AuthWidgetState extends State<AuthWidget> {
             child: ListView(
               children: [
                 const AuthHeaderWidget(),
+                SizedBox(height: 20,),
                 const AuthMainImage(),
-                _FormWidget(),
-                SizedBox(height: MediaQuery.of(context).size.height / 10 * 0.8),
+                const _FormWidget(),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.06),
                 const AuthTextAuthorization(),
                 TextButton(
                   style: ButtonStyle(
@@ -48,7 +49,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                     style: TextStyle(fontSize: 23),
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height / 10 * 0.1),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 TextButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.blue),
@@ -84,12 +85,13 @@ class _FormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _numberTextFieldController = TextEditingController();
     final _passwordTextFieldController = TextEditingController();
-    final _height = MediaQuery.of(context).size.height / 10;
+    final _height = MediaQuery.of(context).size.height;
     final _textStyle = TextStyle(fontSize: 16, color: Colors.white);
     return Column(
       children: [
+        SizedBox(height: _height * 0.01),
         Text('Введите номер телефона', style: _textStyle),
-        SizedBox(height: _height * 0.1),
+        SizedBox(height: _height * 0.01),
         TextField(
           decoration: InputDecoration(
             prefix: const Text('+7'),
@@ -119,9 +121,9 @@ class _FormWidget extends StatelessWidget {
           //controller: _numberTextFieldController,
           keyboardType: TextInputType.number,
         ),
-        SizedBox(height: _height * 0.2),
+        SizedBox(height: _height * 0.02),
         Text('Введите пароль', style: _textStyle),
-        SizedBox(height: _height * 0.1),
+        SizedBox(height: _height * 0.01),
         TextField(
           decoration: InputDecoration(
             prefixStyle: const TextStyle(color: Colors.black, fontSize: 16),

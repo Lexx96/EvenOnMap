@@ -81,7 +81,6 @@ class _UserProfileState extends State<UserProfile> {
           )
       ),
       body: Container(
-        color: Colors.white,
         child: ListView(
           physics: BouncingScrollPhysics(),
           children: [
@@ -91,9 +90,14 @@ class _UserProfileState extends State<UserProfile> {
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      CircleAvatar(
-                        backgroundImage: const AssetImage('assets/images/mapOne.png'),
-                        radius: 40,
+                      InkWell(
+                        onTap: () => print('cc'),
+                        splashColor: Colors.grey,
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('assets/images/mapOne.png'),
+                          radius: 40,
+                        ),
                       ),
                       const SizedBox(
                         width: 35,
