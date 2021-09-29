@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'generated/l10n.dart';
 import 'navigation/main_navigation.dart';
 
 /*
@@ -18,6 +20,18 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp (
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      localeResolutionCallback: (locale,supportedLocales) {
+        if(locale == null){
+          return supportedLocales.first;
+        }
+      },
       theme: ThemeData(
         splashFactory: InkRipple.splashFactory,
       ),

@@ -1,3 +1,4 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class ChangePersonalDataPage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  Text('Имя'),
+                  Text(S.of(context).name),
                   const SizedBox(
                     height: 5,
                   ),
@@ -56,7 +57,7 @@ class ChangePersonalDataPage extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text('Фамилия'),
+                  Text(S.of(context).surname),
                   const SizedBox(
                     height: 5,
                   ),
@@ -121,7 +122,7 @@ class ChangePersonalDataPage extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text('Статус'),
+                  Text(S.of(context).status),
                   TextField(
                     maxLength: 50,
                     decoration: InputDecoration(
@@ -155,7 +156,7 @@ class ChangePersonalDataPage extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text('Родной город'),
+                  Text(S.of(context).hometown),
                   const SizedBox(
                     height: 5,
                   ),
@@ -220,7 +221,7 @@ class ChangePersonalDataPage extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text('О себе'),
+                  Text(S.of(context).aboutMe),
                   const SizedBox(
                     height: 5,
                   ),
@@ -299,11 +300,11 @@ class ChangePersonalDataPage extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {},
-            child: const Text('Сохранить', style: const TextStyle(fontSize: 17),),
+            child: Text(S.of(context).save, style: const TextStyle(fontSize: 17),),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Назад', style: const TextStyle(fontSize: 17),),
+            child: Text(S.of(context).back, style: const TextStyle(fontSize: 17),),
           ),
         ],
       ),

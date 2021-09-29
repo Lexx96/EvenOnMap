@@ -1,4 +1,5 @@
 import 'package:event_on_map/custom_icons.dart';
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,74 +12,73 @@ class NewsWidget extends StatelessWidget {
       appBar: AppBar(),
       drawer: Drawer(
           child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          SizedBox(
-            height: 180,
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Stack(
-                children: [
-                  Row(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              SizedBox(
+                height: 180,
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Stack(
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Row(
                         children: [
                           Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              'Имя фамилия',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 19),
+                            alignment: Alignment.centerLeft,
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey,
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.centerRight + Alignment(0, .3),
-                            child: Text('Почта@mail.ru',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 13)),
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(S.of(context).name + ' ' + S.of(context).surname,
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 19),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight + Alignment(0, .3),
+                                child: Text(S.of(context).mail,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 13)),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-          ListTile(
-            title: Text('Профиль'),
-            onTap: () {
-              Navigator.of(context).pushNamed('/UserPanel');
-            },
-          ),
-          ListTile(
-            title: Text('Регистрация'),
-            onTap: () {
-              Navigator.of(context).pushNamed('/InPut');
-            },
-          ),
-          ListTile(
-            title: Text('О приложении'),
-            onTap: () {
-              Navigator.of(context).pushNamed('/InPut');
-            },
-          ),
-        ],
-      )),
+              ListTile(
+                title: Text(S.of(context).profile),
+                onTap: () {
+                  Navigator.of(context).pushNamed('');
+                },
+              ),
+              ListTile(
+                title: Text(S.of(context).registration),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/InPut');
+                },
+              ),
+              ListTile(
+                title: Text(S.of(context).aboutTheApp),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/InPut');
+                },
+              ),
+            ],
+          )),
       body: ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: 100,
@@ -124,8 +124,7 @@ class HeaderButtonWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Ник пользователя',
+                  Text(S.of(context).userNickname,
                     style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -134,7 +133,7 @@ class HeaderButtonWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    '48 минут назад',
+                    '48 ' + S.of(context).minutesAgo,
                     style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ],
@@ -187,7 +186,7 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
   Widget build(BuildContext context) {
     final maxFreeLines = 3;
     final maxLines = DefaultTextStyle.of(context).maxLines;
-    final String textInTextButton = _maxLinesBool ? 'Подробнее ...' : 'Свернуть';
+    final String textInTextButton = _maxLinesBool ? S.of(context).inMoreDetail : '';
     final String infoWidget =
         'Блок камер нового iPhone 13, цены на который в России начинаются '
         'от 80 тыс. рублей, вызвал немало споров ещё на этапе "разогрева" '

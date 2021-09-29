@@ -3,6 +3,7 @@ import 'package:event_on_map/auth/auth_main_image.dart';
 import 'package:event_on_map/auth/auth_screen_model.dart';
 import 'package:event_on_map/auth/auth_text_horizontion.dart';
 import 'package:event_on_map/auth_sign_in/main_screen_decoration.dart';
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -44,8 +45,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                       ))),
                   onPressed: () => Navigator.of(context)
                       .pushReplacementNamed(MainNavigationRouteName.mainScreen),
-                  child: Text(
-                    'Войти',
+                  child: Text(S.of(context).enter,
                     style: TextStyle(fontSize: 23),
                   ),
                 ),
@@ -62,9 +62,8 @@ class _AuthWidgetState extends State<AuthWidget> {
                       ))),
                   onPressed: () => Navigator.of(context)
                       .pushNamed(MainNavigationRouteName.authSignUp),
-                  child: const Expanded(
-                    child: const Text(
-                      'Регистрация',
+                  child: Expanded(
+                    child: Text(S.of(context).registration,
                       style: const TextStyle(fontSize: 23),
                     ),
                   ),
@@ -90,7 +89,7 @@ class _FormWidget extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: _height * 0.01),
-        Text('Введите номер телефона', style: _textStyle),
+        Text(S.of(context).enterYourPhoneNumber, style: _textStyle),
         SizedBox(height: _height * 0.01),
         TextField(
           decoration: InputDecoration(
@@ -102,7 +101,7 @@ class _FormWidget extends StatelessWidget {
             ),
             isCollapsed: true,
             contentPadding: const EdgeInsets.all(15),
-            hintText: 'Номер телефона',
+            hintText: S.of(context).phoneNumber,
             hintStyle: const TextStyle(color: Colors.green),
             filled: true,
             fillColor: Colors.white,
@@ -122,7 +121,7 @@ class _FormWidget extends StatelessWidget {
           keyboardType: TextInputType.number,
         ),
         SizedBox(height: _height * 0.02),
-        Text('Введите пароль', style: _textStyle),
+        Text(S.of(context).enterThePassword, style: _textStyle),
         SizedBox(height: _height * 0.01),
         TextField(
           decoration: InputDecoration(
@@ -133,7 +132,7 @@ class _FormWidget extends StatelessWidget {
             ),
             isCollapsed: true,
             contentPadding: const EdgeInsets.all(15),
-            hintText: 'Пароль',
+            hintText: '     ' + S.of(context).password,
             hintStyle: const TextStyle(color: Colors.green),
             filled: true,
             fillColor: Colors.white,

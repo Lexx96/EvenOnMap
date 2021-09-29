@@ -1,3 +1,4 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class HeaderPagesWidget extends StatelessWidget {
@@ -26,14 +27,14 @@ class HeaderPagesWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Имя Фамилия',
+                  S.of(context).name + ' ' + S.of(context).surname,
                   style: TextStyle(
                       fontSize: 22,
                       color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'Статус',
+                  S.of(context).status,
                   style: TextStyle(
                       fontSize: 14,
                       color: Colors.blue,
@@ -41,8 +42,7 @@ class HeaderPagesWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(
-                      'когда был в сети',
+                    Text(S.of(context).wasOnline,
                       style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey,

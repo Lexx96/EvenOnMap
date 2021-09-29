@@ -1,3 +1,4 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/news_widget/news_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,26 +31,31 @@ class _UserProfileState extends State<UserProfile> {
                       Row(
                         children: [
                           Align(
-                            alignment:Alignment.centerLeft,
+                            alignment: Alignment.centerLeft,
                             child: CircleAvatar(
                               radius: 50,
                               backgroundColor: Colors.grey,
                             ),
                           ),
-                          SizedBox(width: 30,),
+                          SizedBox(
+                            width: 30,
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Align(
-                                alignment:Alignment.centerRight,
-                                child:
-                                Text('Имя фамилия', style: TextStyle(color: Colors.white, fontSize: 19),),
+                                alignment: Alignment.centerRight,
+                                child: Text(S.of(context).name + ' ' + S.of(context).surname,
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 19),
+                                ),
                               ),
                               Align(
-                                alignment:Alignment.centerRight + Alignment(0, .3),
-                                child:
-                                Text('Почта@mail.ru',style: TextStyle(color: Colors.white, fontSize: 13)),
+                                alignment: Alignment.centerRight + Alignment(0, .3),
+                                child: Text(S.of(context).mail,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 13)),
                               ),
                             ],
                           ),
@@ -60,26 +66,25 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ),
               ListTile(
-                title: Text('Профиль'),
+                title: Text(S.of(context).profile),
                 onTap: () {
-                  Navigator.of(context).pushNamed('/UserPanel');
+                  Navigator.of(context).pushNamed('');
                 },
               ),
               ListTile(
-                title: Text('Регистрация'),
+                title: Text(S.of(context).registration),
                 onTap: () {
                   Navigator.of(context).pushNamed('/InPut');
                 },
               ),
               ListTile(
-                title: Text('О приложении'),
+                title: Text(S.of(context).aboutTheApp),
                 onTap: () {
                   Navigator.of(context).pushNamed('/InPut');
                 },
               ),
             ],
-          )
-      ),
+          )),
       body: Container(
         child: ListView(
           physics: BouncingScrollPhysics(),
@@ -105,15 +110,13 @@ class _UserProfileState extends State<UserProfile> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Имя Фамилия',
+                          Text(S.of(context).name + ' ' + S.of(context).surname,
                             style: const TextStyle(
                                 fontSize: 22,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
-                          const Text(
-                            'Статус',
+                          Text(S.of(context).status,
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.blue,
@@ -121,8 +124,7 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           Row(
                             children: [
-                              const Text(
-                                'когда был в сети',
+                              Text(S.of(context).wasOnline,
                                 style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -165,8 +167,7 @@ class _UserProfileState extends State<UserProfile> {
                         )),
                       ),
                       onPressed: () => Navigator.of(context).pushNamed(MainNavigationRouteName.changePersonalDataPage),
-                      child: const Text(
-                        'Редактировать',
+                      child: Text(S.of(context).edit,
                         style: const TextStyle(
                           color: Colors.blue,
                           fontSize: 16,
@@ -188,8 +189,7 @@ class _UserProfileState extends State<UserProfile> {
                             onPressed: () {},
                             icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
                           ),
-                          const Text(
-                            '   История',
+                          Text('   ' + S.of(context).history,
                             style: TextStyle(color: Colors.blue, fontSize: 16),
                           )
                         ],
@@ -200,8 +200,7 @@ class _UserProfileState extends State<UserProfile> {
                             onPressed: () {},
                             icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
                           ),
-                          const Text(
-                            '   Запись',
+                          Text('   ' + S.of(context).record,
                             style: const TextStyle(color: Colors.blue, fontSize: 16),
                           )
                         ],
@@ -212,8 +211,7 @@ class _UserProfileState extends State<UserProfile> {
                             onPressed: () {},
                             icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
                           ),
-                          const Text(
-                            '   Фото',
+                          Text('   ' + S.of(context).photo,
                             style: const TextStyle(color: Colors.blue, fontSize: 16),
                           )
                         ],
@@ -224,8 +222,7 @@ class _UserProfileState extends State<UserProfile> {
                             onPressed: () {},
                             icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
                           ),
-                          const Text(
-                            '   История',
+                          Text('   ' + S.of(context).history,
                             style: const TextStyle(color: Colors.blue, fontSize: 16),
                           )
                         ],
@@ -256,8 +253,7 @@ class _UserProfileState extends State<UserProfile> {
                             size: 24,
                           ),
                           const SizedBox(width: 15),
-                          const Text(
-                            'Город: переменная с названием города',
+                          Text(S.of(context).city + ': ' + S.of(context).novokuznetsk,
                             style: TextStyle(color: Colors.black54, fontSize: 14),
                           )
                         ],
@@ -270,8 +266,7 @@ class _UserProfileState extends State<UserProfile> {
                             size: 24,
                           ),
                           const SizedBox(width: 15),
-                          const Text(
-                            'Место учебы',
+                          Text(S.of(context).placeOfStudy,
                             style: TextStyle(color: Colors.black54, fontSize: 14),
                           )
                         ],
@@ -284,8 +279,7 @@ class _UserProfileState extends State<UserProfile> {
                             size: 24,
                           ),
                           const SizedBox(width: 15),
-                          const Text(
-                            'Место работы',
+                          Text(S.of(context).placeOfWork,
                             style: TextStyle(color: Colors.black54, fontSize: 14),
                           )
                         ],
@@ -300,8 +294,7 @@ class _UserProfileState extends State<UserProfile> {
                           const SizedBox(width: 15),
                           TextButton(
                               onPressed: () => Navigator.of(context).pushNamed('personalDataPage'),
-                              child: const Text(
-                                'Подробная информация',
+                              child: Text(S.of(context).detailedInformation,
                                 style: const TextStyle(
                                   color: Colors.blue,
                                   fontSize: 14,
@@ -324,7 +317,7 @@ class _UserProfileState extends State<UserProfile> {
                     children: [
                       TextButton(
                           onPressed: () {},
-                          child: const Text('Друзья 354',
+                          child: Text(S.of(context).friends + ' ' + '354',
                               style: const TextStyle(
                                   color: Colors.black54,
                                   fontWeight: FontWeight.bold)))
@@ -348,8 +341,8 @@ class _UserProfileState extends State<UserProfile> {
                                   radius: 35,
                                   backgroundColor: Colors.grey,
                                 ),
-                                const Text('Имя'),
-                                const Text('Фамилия'),
+                                Text(S.of(context).name),
+                                Text(S.of(context).surname),
                               ],
                             ),
                           ],

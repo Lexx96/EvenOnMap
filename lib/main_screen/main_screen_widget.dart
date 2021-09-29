@@ -1,7 +1,9 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/map_widget/map_widget.dart';
 import 'package:event_on_map/news_widget/news_widget.dart';
 import 'package:event_on_map/userProfile/user_profile_widget.dart';
 import 'package:flutter/material.dart';
+
 /*
 Сделать скрол по страницам
 
@@ -78,106 +80,42 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedTab,
-        children: [
-          NewsWidget(),
-          MapWidget(),
-          UserProfile(),
-        ],
-      ),
-      bottomNavigationBar: SizedBox(
-      height: 65,
-    child: BottomNavigationBar(
-    backgroundColor: Colors.grey[200],
-    selectedIconTheme: IconThemeData(
-    size: 30,
-    color: Colors.blue,
-    ),
-    unselectedIconTheme: IconThemeData(color: Colors.grey),
-    selectedLabelStyle: TextStyle(fontSize: 12),
-    unselectedLabelStyle: TextStyle(fontSize: 12),
-        currentIndex: _selectedTab,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.event_sharp,
+        body: IndexedStack(
+          index: _selectedTab,
+          children: [
+            NewsWidget(),
+            MapWidget(),
+            UserProfile(),
+          ],
+        ),
+        bottomNavigationBar: SizedBox(
+          height: 65,
+          child: BottomNavigationBar(
+            backgroundColor: Colors.grey[200],
+            selectedIconTheme: IconThemeData(
+              size: 30,
+              color: Colors.blue,
+            ),
+            unselectedIconTheme: IconThemeData(color: Colors.grey),
+            selectedLabelStyle: TextStyle(fontSize: 12),
+            unselectedLabelStyle: TextStyle(fontSize: 12),
+            currentIndex: _selectedTab,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.event_sharp,
+                  ),
+                  label: S.of(context).news),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.location_on_outlined),
+                label: S.of(context).map,
               ),
-              label: 'Новости'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.location_on_outlined), label: 'Карта'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.supervised_user_circle_rounded),
-              label: 'Профиль'),
-        ],
-        onTap: onSelectTab,
-      ),
-    ));
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.supervised_user_circle_rounded),
+                  label: S.of(context).profile),
+            ],
+            onTap: onSelectTab,
+          ),
+        ));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-SizedBox(
-        height: 65,
-        child: BottomNavigationBar(
-          backgroundColor: Colors.grey[200],
-          selectedIconTheme: IconThemeData(
-            size: 30,
-            color: Colors.blue,
-          ),
-          unselectedIconTheme: IconThemeData(color: Colors.grey),
-          selectedLabelStyle: TextStyle(fontSize: 12),
-          unselectedLabelStyle: TextStyle(fontSize: 12),
-          currentIndex: _selectedTab,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                CustomIcons.home_outline,
-                size: 20,
-              ),
-              label: 'Главная',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CustomIcons.map_2, size: 20),
-              label: 'Карта',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CustomIcons.user, size: 20),
-              label: 'Профиль',
-            ),
-          ],
-            onTap: (index) {
-              if (index == 0) {
-                Navigator.of(context).pushNamed(MainNavigationRouteName.newsWidget);
-              }
-              else if (index == 1) {
-                Navigator.of(context).pushNamed(MainNavigationRouteName.mapWidget);
-              }
-              else if (index == 2) {
-                Navigator.of(context).pushNamed(MainNavigationRouteName.userProfile);
-              }
-            },
-        ),
-      ),
- */

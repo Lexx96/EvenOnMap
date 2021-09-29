@@ -1,3 +1,4 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class AuthTextAuthorization extends StatelessWidget {
@@ -8,11 +9,11 @@ class AuthTextAuthorization extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Войдите в свой аккаунт или',
+        Text(S.of(context).logInToYourAccountOr,
             style: const TextStyle(fontSize: 13, color: Colors.grey)),
         TextButton(
             onPressed: () => Navigator.of(context).pushNamed('auth/authSignIn'),
-            child: const Text('зарегистритуйтесь',
+            child: Text(S.of(context).register,
                 style: const TextStyle(fontSize: 13, color: Colors.blue))),
       ],
     );

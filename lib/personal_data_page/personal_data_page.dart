@@ -1,3 +1,4 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/personal_data_page/switch_private_additional_information_widget.dart';
 import 'package:event_on_map/personal_data_page/switch_private_information_widget.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +46,7 @@ class _PersonalDataPageWidgetState extends State<PersonalDataPageWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Основная информация:',
+                      Text(S.of(context).basicInformation + ':',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -62,8 +62,7 @@ class _PersonalDataPageWidgetState extends State<PersonalDataPageWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        'Подробная информация:',
+                      Text(S.of(context).detailedInformation + ':',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -110,7 +109,7 @@ class LikesRowWidget extends StatelessWidget {
                   )),
                   alignment: Alignment.topCenter),
               onPressed: () {},
-              child: Text('Мои лайки'),
+              child: Text(S.of(context).myLikes),
             ),
             SizedBox(
               width: 20,
@@ -128,7 +127,7 @@ class LikesRowWidget extends StatelessWidget {
                   )),
                   alignment: Alignment.topCenter),
               onPressed: () {},
-              child: Text('Коментарии'),
+              child: Text(S.of(context).comments),
             ),
             SizedBox(
               width: 20,
@@ -146,7 +145,7 @@ class LikesRowWidget extends StatelessWidget {
                   )),
                   alignment: Alignment.topCenter),
               onPressed: () {},
-              child: Text('Мои ответы'),
+              child: Text(S.of(context).myAnswers),
             ),
           ],
         ),
@@ -184,14 +183,12 @@ class ContactInformationWidget extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 SizedBox(height: 15),
-                Text(
-                  'Родной город',
+                Text(S.of(context).hometown,
                   style: TextStyle(color: Colors.black54, fontSize: 14),
                 ),
                 TextButton(
                     onPressed: () {},
-                    child: Text(
-                      'Переменная с названием города',
+                    child: Text(S.of(context).novokuznetsk,
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     )),
                 Divider(
@@ -206,8 +203,7 @@ class ContactInformationWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Номер телефона',
+                Text(S.of(context).phoneNumber,
                   style: TextStyle(color: Colors.black54, fontSize: 14),
                 ),
                 SizedBox(height: 5),
@@ -271,8 +267,7 @@ class DetailedInformationWidget extends StatelessWidget {
             ),
             Row(
               children: [
-                Text(
-                  'Город прибывания:',
+                Text(S.of(context).cityOfStay,
                   style: TextStyle(color: Colors.black54, fontSize: 14),
                 ),
                 SizedBox(width: 15),
@@ -288,8 +283,7 @@ class DetailedInformationWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () {},
                   child: Expanded(
-                    child: Text(
-                      'Город прибывания: название города',
+                    child: Text(S.of(context).cityOfStay + " : " + S.of(context).novokuznetsk,
                       style: TextStyle(color: Colors.black54, fontSize: 14),
                     ),
                   ),
@@ -308,8 +302,7 @@ class DetailedInformationWidget extends StatelessWidget {
                 SizedBox(
                   height: 15,
                 ),
-                Text(
-                  'Образование:',
+                Text(S.of(context).education,
                   style: TextStyle(color: Colors.black54, fontSize: 14),
                 ),
                 SizedBox(width: 15),
@@ -325,8 +318,7 @@ class DetailedInformationWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () {},
                   child: Expanded(
-                    child: Text(
-                      'Название учебного заведения',
+                    child: Text(S.of(context).nameOfTheEducationalInstitution,
                       style: TextStyle(color: Colors.black54, fontSize: 14),
                     ),
                   ),
@@ -345,8 +337,7 @@ class DetailedInformationWidget extends StatelessWidget {
                 SizedBox(
                   height: 15,
                 ),
-                Text(
-                  'О себе:',
+                Text(S.of(context).aboutMe,
                   style: TextStyle(color: Colors.black54, fontSize: 14),
                 ),
                 SizedBox(width: 15),
@@ -362,8 +353,7 @@ class DetailedInformationWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () {},
                   child: Expanded(
-                    child: Text(
-                      'Информация о себе в свободной форме',
+                    child: Text(S.of(context).informationAboutYourselfInAFreeForm,
                       style: TextStyle(color: Colors.black54, fontSize: 14),
                     ),
                   ),

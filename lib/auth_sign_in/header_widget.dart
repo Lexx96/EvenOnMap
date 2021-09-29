@@ -1,3 +1,4 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class HeaderWidget extends StatelessWidget {
@@ -12,8 +13,7 @@ class HeaderWidget extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height / 10 * 1,
           ),
-          Text(
-            'Введите номер \nи пароль:',
+          Text(S.of(context).enterTheNumber,
             style: TextStyle(fontSize: 45, color: Colors.green),
           ),
           SizedBox(

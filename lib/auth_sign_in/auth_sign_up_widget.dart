@@ -1,4 +1,5 @@
 import 'package:event_on_map/auth_sign_in/header_widget.dart';
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/auth_sign_in/main_screen_decoration.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,7 @@ class AuthSignUpWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
-                    Text('Нажимая на кнопку "Регистрация", я подтверждаю, '
-                        'что ознакомился(лась) с политикой обработки персональных данных.'),
+                    Text(S.of(context).license),
                   ],
                 ),
               ),
@@ -40,7 +40,7 @@ class AuthSignUpWidget extends StatelessWidget {
                 onPressed: () => Navigator.of(context)
                     .pushNamed(MainNavigationRouteName.mainScreen),
                 child: Text(
-                  'Регистрация',
+                  S.of(context).registration,
                   style: TextStyle(fontSize: 23),
                 ),
               ),
@@ -57,8 +57,7 @@ class AuthSignUpWidget extends StatelessWidget {
                     ))),
                 onPressed: () => Navigator.of(context)
                     .pushNamed(MainNavigationRouteName.auth),
-                child: Text(
-                  'Отправить проверочный код',
+                child: Text(S.of(context).sendVerificationCode,
                   style: TextStyle(fontSize: 23),
                 ),
               ),
@@ -83,7 +82,7 @@ class _FormWidget extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: _height * 0.1),
-        Text('Введите номер телефона', style: _textStyle),
+        Text(S.of(context).enterYourPhoneNumber, style: _textStyle),
         SizedBox(height: _height * 0.1),
         TextField(
           decoration: InputDecoration(
@@ -95,7 +94,7 @@ class _FormWidget extends StatelessWidget {
             ),
             isCollapsed: true,
             contentPadding: EdgeInsets.all(15),
-            hintText: 'Номер телефона',
+            hintText: S.of(context).phoneNumber,
             hintStyle: TextStyle(color: Colors.green),
             filled: true,
             fillColor: Colors.white,
@@ -115,7 +114,7 @@ class _FormWidget extends StatelessWidget {
           keyboardType: TextInputType.number,
         ),
         SizedBox(height: _height * 0.2),
-        Text('Код подтверждения', style: _textStyle),
+        Text(S.of(context).confirmationCode, style: _textStyle),
         SizedBox(height: _height * 0.1),
         TextField(
           //enabled: false, активно ли поле ввода
@@ -127,7 +126,7 @@ class _FormWidget extends StatelessWidget {
             ),
             isCollapsed: true,
             contentPadding: EdgeInsets.all(15),
-            hintText: 'Код',
+            hintText: '     ' + S.of(context).code,
             hintStyle: TextStyle(color: Colors.green),
             filled: true,
             fillColor: Colors.white,
@@ -146,7 +145,7 @@ class _FormWidget extends StatelessWidget {
           keyboardType: TextInputType.number,
         ),
         SizedBox(height: _height * 0.2),
-        Text('Введите пароль', style: _textStyle),
+        Text(S.of(context).enterThePassword, style: _textStyle),
         SizedBox(height: _height * 0.1),
         TextField(
           decoration: InputDecoration(
@@ -157,7 +156,7 @@ class _FormWidget extends StatelessWidget {
             ),
             isCollapsed: true,
             contentPadding: EdgeInsets.all(15),
-            hintText: 'Пароль',
+            hintText: '     ' + S.of(context).password,
             hintStyle: TextStyle(color: Colors.green),
             filled: true,
             fillColor: Colors.white,

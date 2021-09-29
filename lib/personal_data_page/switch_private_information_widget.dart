@@ -1,3 +1,4 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class SwitchPrivateInformationWidget extends StatefulWidget {
@@ -15,9 +16,9 @@ class _SwitchPrivateInformationWidgetState
 
   String _switchPrivateInformation(bool newValue) {
     if (newValue) {
-      return _showPrivateInformation = 'Доступна всем';
+      return _showPrivateInformation = 'dd'; //S.of(context).availableToEveryone
     } else {
-      return _showPrivateInformation = 'Приватна';
+      return _showPrivateInformation = 'cc'; //S.of(context).private
     }
   }
 
