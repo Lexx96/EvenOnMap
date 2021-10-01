@@ -1,6 +1,9 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/news_widget/news_widget.dart';
+import 'package:event_on_map/news_widget/widgets/end_widget.dart';
+import 'package:event_on_map/news_widget/widgets/header_button_widget.dart';
+import 'package:event_on_map/news_widget/widgets/text_body_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
