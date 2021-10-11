@@ -99,7 +99,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                                   borderRadius: BorderRadius.circular(15),
                                 ))),
                             onPressed: () {
-                              _bloc.loadingRegistration('79134322199', '12345');
+                              _bloc.loadingRegistration('79134322205', '12345');
                             },
                             child: Expanded(
                               child: Text(
