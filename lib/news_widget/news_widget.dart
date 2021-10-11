@@ -3,6 +3,7 @@ import 'package:event_on_map/news_widget/bloc/news_bloc.dart';
 import 'package:event_on_map/news_widget/services/news_repository.dart';
 import 'package:event_on_map/news_widget/widgets/end_widget.dart';
 import 'package:event_on_map/news_widget/widgets/header_button_widget.dart';
+import 'package:event_on_map/news_widget/widgets/sceleton.dart';
 import 'package:event_on_map/news_widget/widgets/text_body_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,8 +52,15 @@ class _NewsWidgetState extends State<NewsWidget> {
     super.initState();
     _bloc = ServiceNewsBloc(_newsRepository);
     _bloc.emptyState();
-    _maxLinesBool = true;
+    _maxLinesBool = false;
     _resultLines = 3;
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 
   @override
@@ -63,8 +71,6 @@ class _NewsWidgetState extends State<NewsWidget> {
         _maxLinesBool ? S.of(context).inMoreDetail : '';
     _resultLines = _maxLinesBool ? maxThreeLines : maxLines;
 
-    final newsRepository =
-        NewsRepository(); // передаем инстанс репозитория т.к. его парпосили в конструкторе NewsBloc. только зачем хз
     return Scaffold(
       appBar: AppBar(),
       drawer: Drawer(
@@ -137,7 +143,7 @@ class _NewsWidgetState extends State<NewsWidget> {
           ),
         ],
       )),
-      body: ListView.builder(
+      body: _maxLinesBool ? SkeletonWidget() : ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: 100,
         itemBuilder: (BuildContext context, int index) {

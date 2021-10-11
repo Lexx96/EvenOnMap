@@ -7,7 +7,7 @@ import 'package:event_on_map/news_widget/services/news_api_provider.dart';
  */
 class NewsRepository{
   NewsProvider _newsProvider = NewsProvider();  // создали инстанс класса провайдера
-  Future<List<News>> getAllNews() => _newsProvider.getNews();
+  Future<String> getAllNews() => _newsProvider.getNews();
   // создали метод, который будет возвращать метод getNews класса NewsProvider
   // Future<List<News>> т.к Future т.к. getNews async, List т.к. это лист
   // данных(см.модель) и модель по типу класса News(это и есть модель)

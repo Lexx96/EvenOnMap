@@ -5,11 +5,13 @@ import 'package:http/http.dart' as http;
 
 class NewsProvider {
 
-  Future<List<News>> getNews() async {
+  Future<String> getNews() async {
     final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1/comments'));
     if(response.statusCode == 200) {
-      final List<dynamic> newsJson = json.decode(response.body);
-      return newsJson.map((json) => News.fromJson(json)).toList();
+      //final List<dynamic> newsJson = json.decode(response.body);
+      //newsJson.map((json) => News.fromJson(json)).toList();
+      return response.body;
+
     }else {
       throw Exception('Error');
     }
