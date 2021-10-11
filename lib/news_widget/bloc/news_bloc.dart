@@ -1,27 +1,33 @@
-import 'package:event_on_map/news_widget/bloc/news_event.dart';
-import 'package:event_on_map/news_widget/bloc/news_state.dart';
-import 'package:event_on_map/news_widget/models/news.dart';
+
+
+import 'dart:async';
+
 import 'package:event_on_map/news_widget/services/news_repository.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'news_state.dart';
+
+class ServiceNewsBloc {
+
+  final NewsRepository _newsRepository;
+  ServiceNewsBloc(this._newsRepository);
 
 
 
-class NewsBloc extends Bloc <NewsEvent,NewsState> {
-  final NewsRepository newsRepository;  // в конструктор класса принимаеи инстанс репозитория с его помощью будем получать пользователей
-  NewsBloc({required this.newsRepository}) : super(NewsEmptyState()); // и говорим, что первоначальное состояние при загрузке страницы NewsLoadingState
 
-  Stream<NewsState> mapEventToState(NewsEvent event) async* {
-    if(event is NewsLoadEvent){   // если падает событие загрузить
-      yield NewsLoadingState();    // загружаем новости ?? как ?
-      try{                          // в try catch будем ловить момент когда новости будут загруженны
-        final List<News> _loadedNewsList = await newsRepository.getAllNews();  // нужен репозиторий, что бы загрузить новости
-        yield NewsLoadedState(loadedNews: _loadedNewsList);
-      }catch(_){
-        NewsErrorState();
-      }
-    }
-    else if(event is NewsClearEvent) {
-      yield NewsEmptyState();
-    }
+  final _newsStreamController = StreamController<NewsBlocState>();
+
+  Stream<NewsBlocState> get newsStreamController => _newsStreamController.stream;
+
+  void emptyState () {
+    _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
   }
+
+
+
+
+
+  void dispose() {
+    _newsStreamController.close();
+  }
+
 }

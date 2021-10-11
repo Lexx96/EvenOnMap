@@ -1,14 +1,17 @@
 
-abstract class NewsState {}
 
-class NewsEmptyState extends NewsState {}
+class NewsBlocState {
+  NewsBlocState();
 
-class NewsLoadingState extends NewsState {}
+  factory NewsBlocState.newsEmptyState() = NewsEmptyState;
+  factory NewsBlocState.newsLoadingState() = NewsLoadingState;
+  factory NewsBlocState.newsLoadedState() = NewsLoadedState;
 
-class NewsLoadedState extends NewsState {
-  List <dynamic> loadedNews;
-  NewsLoadedState({required this.loadedNews});
 }
-class NewsClearState extends NewsState {}
 
-class NewsErrorState extends NewsState {}
+
+class NewsEmptyState extends NewsBlocState {}
+
+class NewsLoadingState extends NewsBlocState {}
+
+class NewsLoadedState extends NewsBlocState {}

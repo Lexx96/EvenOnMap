@@ -27,18 +27,26 @@ class ServiceAuthBloc {
   void loadingRegistration(String phone, String password,) {
     _streamController.sink.add(AuthBlocState.loadingRegistration());
 
-    /// метод регистрации и получения данных
-    JsonDataCoder().userRegistrationPost(phone, password, _authRegistrationRepository,);
-
+    try{
+      /// метод регистрации и получения данных
+      JsonDataCoder().userRegistrationPost(phone, password, _authRegistrationRepository,).then((value) {});
+    }
+    catch(_){
+      print('Ошибка выполнения запроса регистрации');
+    }
     _streamController.sink.add(AuthBlocState.loadedRegistration());
   }
 
   void loadingLogIn(String phone, String password) {
     _streamController.sink.add(AuthBlocState.loadingLogIn());
 
-    /// метод авторизации и получения данных
-    JsonDataCoder().userLogInPost(phone, password, _authLogInRepository);
+    try {
+      /// метод авторизации и получения данных
+      JsonDataCoder().userLogInPost(phone, password, _authLogInRepository).then((value) {});
 
+    } catch(_){
+      print('Ошибка выполнения запроса авторизации');
+    }
     _streamController.sink.add(AuthBlocState.loadedLogIn());
   }
 

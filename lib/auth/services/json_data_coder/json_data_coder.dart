@@ -8,12 +8,12 @@ import 'package:event_on_map/auth/services/user_registration/user_registration_r
 class JsonDataCoder {
 
 
-  void userRegistrationPost(String phone,
+  Future userRegistrationPost(String phone,
       String password,
-      UserRegistrationRepository _registrationRepository,) {
+      UserRegistrationRepository _registrationRepository,) async {
     Map<String, dynamic> _registrationModel =
     UserRegistrationModel(phone: phone, password: password).toJson();
-    try {
+
       _registrationRepository
           .postUserRegistrationData(_registrationModel)
           .then((jsonStringRegistration) {
@@ -21,27 +21,20 @@ class JsonDataCoder {
         jsonDecode(jsonStringRegistration) as Map<String, dynamic>;
         final jsonRegistration =
         UserRegistrationModel.fromJson(listJsonRegistration);
-        print(jsonRegistration.toString());
       });
-    } catch (_) {
-      print('Ошибка регистрации');
-    }
   }
 
-  void userLogInPost(
+   Future userLogInPost(
       String phone,
       String password,
-      UserLogInRepository _logInRepository,) {
+      UserLogInRepository _logInRepository,) async{
     Map<String, dynamic> _logInModel = UserLogInModel(
         phone: phone, password: password).toJson();
-    try{
+
       _logInRepository.postUserLogInData(_logInModel).then((jsonStringLogIn) {
         final listJsonLogIn = jsonDecode(jsonStringLogIn) as Map<String, dynamic>;
         final jsonLogIn = UserLogInModel.fromJson(listJsonLogIn);
+        return jsonLogIn.userData!.phone;
       });
-    }catch (_) {
-      print('Ошибка авторизации');
-    }
-
   }
 }

@@ -1,7 +1,4 @@
 import 'package:event_on_map/generated/l10n.dart';
-import 'package:event_on_map/news_widget/bloc/news_bloc.dart';
-import 'package:event_on_map/news_widget/bloc/news_event.dart';
-import 'package:event_on_map/news_widget/bloc/news_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../custom_icons.dart';
@@ -11,16 +8,12 @@ class HeaderButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NewsBloc _newsBloc = BlocProvider.of<NewsBloc>(context); // реализуем блок , что бы к нему обратьтся и он дженерик
-    // теперь используя этк переменную будем опракидовать события в блок
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InkWell(
-          onTap: () {
-
-          },
+          onTap: () {},
           splashColor: Colors.grey,
           borderRadius: BorderRadius.all(Radius.circular(25)),
           child: Row(
