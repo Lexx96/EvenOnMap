@@ -11,7 +11,7 @@ class HeaderButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NewsBloc newsBloc = BlocProvider.of<NewsBloc>(context); // реализуем блок , что бы к нему обратьтся и он дженерик
+    final NewsBloc _newsBloc = BlocProvider.of<NewsBloc>(context); // реализуем блок , что бы к нему обратьтся и он дженерик
     // теперь используя этк переменную будем опракидовать события в блок
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -19,7 +19,7 @@ class HeaderButtonWidget extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            newsBloc.add(NewsLoadEvent()); //  передали в блок событие при нажатии кнопки
+
           },
           splashColor: Colors.grey,
           borderRadius: BorderRadius.all(Radius.circular(25)),

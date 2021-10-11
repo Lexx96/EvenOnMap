@@ -6,8 +6,8 @@ class NewsEmptyState extends NewsState {}
 class NewsLoadingState extends NewsState {}
 
 class NewsLoadedState extends NewsState {
-  List<dynamic> loadedNews;
-  NewsLoadedState({required this.loadedNews}) : assert(loadedNews != null);  // что за шляпа
+  List <dynamic> loadedNews;
+  NewsLoadedState({required this.loadedNews});
 }
 class NewsClearState extends NewsState {}
 

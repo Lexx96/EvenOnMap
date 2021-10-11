@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:event_on_map/news_widget/models/news.dart';
 import 'package:http/http.dart' as http;
 
-// Provider в BLoC отвечает за предоставление не обработанных данных
+// Provider в BLoC отвечает за предоставление аозможность get запросов
 class NewsProvider {
 
   Future<List<News>> getNews() async {
