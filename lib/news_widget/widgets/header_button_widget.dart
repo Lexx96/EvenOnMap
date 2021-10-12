@@ -1,6 +1,5 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../custom_icons.dart';
 
 class HeaderButtonWidget extends StatelessWidget {

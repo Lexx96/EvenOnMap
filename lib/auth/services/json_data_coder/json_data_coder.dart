@@ -17,10 +17,10 @@ class JsonDataCoder {
       _registrationRepository
           .postUserRegistrationData(_registrationModel)
           .then((jsonStringRegistration) {
-        final listJsonRegistration =
+        final mapJsonRegistration =
         jsonDecode(jsonStringRegistration) as Map<String, dynamic>;
         final jsonRegistration =
-        UserRegistrationModel.fromJson(listJsonRegistration);
+        UserRegistrationModel.fromJson(mapJsonRegistration);
       });
   }
 
@@ -32,8 +32,8 @@ class JsonDataCoder {
         phone: phone, password: password).toJson();
 
       _logInRepository.postUserLogInData(_logInModel).then((jsonStringLogIn) {
-        final listJsonLogIn = jsonDecode(jsonStringLogIn) as Map<String, dynamic>;
-        final jsonLogIn = UserLogInModel.fromJson(listJsonLogIn);
+        final mapJsonLogIn = jsonDecode(jsonStringLogIn) as Map<String, dynamic>;
+        final jsonLogIn = UserLogInModel.fromJson(mapJsonLogIn);
         return jsonLogIn.userData!.phone;
       });
   }

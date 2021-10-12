@@ -12,9 +12,9 @@ class News {
 
   factory News.fromJson(Map<String, dynamic> json){
     return News(
-      name: json['name'],
-      email: json['email'],
-      body: json['body']
+      name: json['name'] as String,
+      email: json['email'] as String,
+      body: json['body'] as String,
     );
   }
 }

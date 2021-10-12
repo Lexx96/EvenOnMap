@@ -7,30 +7,17 @@ import 'package:event_on_map/news_widget/widgets/sceleton.dart';
 import 'package:event_on_map/news_widget/widgets/text_body_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'bloc/news_state.dart';
 
 /*
 сделать:
 убиралась кнопка подробнее, передести все это дело в блок или инхерит
-открывались новости подробнее по индексу и было во весь экран
 
 по нажатию на фото/ видео оно открывалась в проигрователе
 
-сделать кнопку на аву
 сделать кнопки лайк и репост
 
-
-
-
-дря работы страницы нужно:
-
-ник нейм
-тема поста
-тело поста
-медиа поста
-ссылка на профиль позьзователя
-добавление лайков
-список всех новостей
- */
+*/
 
 class NewsWidget extends StatefulWidget {
   const NewsWidget({Key? key}) : super(key: key);
@@ -42,8 +29,6 @@ class NewsWidget extends StatefulWidget {
 class _NewsWidgetState extends State<NewsWidget> {
   _NewsWidgetState(this._newsRepository);
 
-  late bool _maxLinesBool;
-  late var _resultLines;
   late final ServiceNewsBloc _bloc;
   late final NewsRepository _newsRepository;
 
@@ -51,11 +36,8 @@ class _NewsWidgetState extends State<NewsWidget> {
   void initState() {
     super.initState();
     _bloc = ServiceNewsBloc(_newsRepository);
-    _bloc.emptyState();
-    _maxLinesBool = false;
-    _resultLines = 3;
+    _bloc.loading();
   }
-
 
   @override
   void dispose() {
@@ -65,11 +47,6 @@ class _NewsWidgetState extends State<NewsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final maxThreeLines = 3;
-    final maxLines = null;
-    final String textInTextButton =
-        _maxLinesBool ? S.of(context).inMoreDetail : '';
-    _resultLines = _maxLinesBool ? maxThreeLines : maxLines;
 
     return Scaffold(
       appBar: AppBar(),
@@ -143,23 +120,38 @@ class _NewsWidgetState extends State<NewsWidget> {
           ),
         ],
       )),
-      body: _maxLinesBool ? SkeletonWidget() : ListView.builder(
-        physics: BouncingScrollPhysics(),
-        itemCount: 100,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.black.withOpacity(0.9))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const HeaderButtonWidget(),
-                TextBodyWidget(),
-                const EndWidget(),
-              ],
-            ),
-          );
+      body: StreamBuilder(
+        stream: _bloc.newsStreamController,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.data is NewsEmptyState) {
+            return SkeletonWidget();
+          }
+          if (snapshot.data is NewsLoadingState) {
+            return SkeletonWidget();
+          }
+          if (snapshot.data is NewsLoadedState) {
+            var newsResponse = snapshot.data as NewsLoadedState;
+            return ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: newsResponse.news.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border: Border.all(color: Colors.black.withOpacity(0.9))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const HeaderButtonWidget(),
+                      TextBodyWidget(newsResponse.news[index]),
+                      const EndWidget(),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+          return SkeletonWidget();
         },
       ),
     );

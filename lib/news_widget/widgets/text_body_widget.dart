@@ -1,15 +1,19 @@
 import 'package:event_on_map/generated/l10n.dart';
+import 'package:event_on_map/news_widget/models/news.dart';
 import 'package:event_on_map/news_widget/services/news_repository.dart';
 import 'package:flutter/material.dart';
 
 class TextBodyWidget extends StatefulWidget {
-  TextBodyWidget({Key? key}) : super(key: key);
+  final News _newsResponse;
+  TextBodyWidget( this._newsResponse,{Key? key}) : super(key: key);
 
   @override
-  _TextBodyWidgetState createState() => _TextBodyWidgetState();
+  _TextBodyWidgetState createState() => _TextBodyWidgetState(_newsResponse);
 }
 
 class _TextBodyWidgetState extends State<TextBodyWidget> {
+  final News _newsResponse;
+  _TextBodyWidgetState(this._newsResponse);
   late bool _maxLinesBool;
   late var _resultLines;
 
@@ -26,13 +30,6 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
     final maxThreeLines = 3;
     final maxLines = DefaultTextStyle.of(context).maxLines;
     final String textInTextButton = _maxLinesBool ? S.of(context).inMoreDetail : '';
-    final String infoWidget =
-        'Блок камер нового iPhone 13, цены на который в России начинаются '
-        'от 80 тыс. рублей, вызвал немало споров ещё на этапе "разогрева" '
-        'аудитории через блогеров. За пару месяцев до презентации 14 сентября '
-        'Apple разослала им сэмплы новых телефонов, и дизайн с разнесённым по '
-        'диагонали блоком камер взбесил постоянных клиентов Apple и фанатов '
-        'iPhone.';
     _resultLines = _maxLinesBool ? maxThreeLines : maxLines;
 
     return Container(
@@ -44,7 +41,7 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(infoWidget,
+                  child: Text(_newsResponse.email,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -63,7 +60,7 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              infoWidget,
+              _newsResponse.body,
               maxLines: _resultLines,
               overflow: TextOverflow.fade,
             ),

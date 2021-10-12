@@ -21,24 +21,15 @@ class ServiceNewsBloc {
   }
   
  void loading() {
+   _newsStreamController.sink.add(NewsBlocState.newsLoadingState());
+
     _newsRepository.getAllNews().then((jsonString) {
       final newsJson = jsonDecode(jsonString) as List<dynamic>;
-      final jsonNewsModel = newsJson.map((json) => News.fromJson(json as Map<String, dynamic>)).toList();
-      print(jsonNewsModel);
+      final jsonNewsModel = newsJson.map((dynamic json) => News.fromJson(json as Map<String, dynamic>)).toList();
+
+      _newsStreamController.sink.add(NewsBlocState.newsLoadedState(jsonNewsModel));
     });
 
-
-    /*
-      //final List<dynamic> newsJson = json.decode(response.body);
-      //newsJson.map((json) => News.fromJson(json)).toList();
-
-
-
-
-          _logInRepository.postUserLogInData(_logInModel).then((jsonStringLogIn) {
-        final listJsonLogIn = jsonDecode(jsonStringLogIn) as Map<String, dynamic>;
-        final jsonLogIn = UserLogInModel.fromJson(listJsonLogIn);
-     */
  }
 
 

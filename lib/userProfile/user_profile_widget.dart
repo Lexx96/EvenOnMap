@@ -20,73 +20,74 @@ class _UserProfileState extends State<UserProfile> {
       appBar: AppBar(),
       drawer: Drawer(
           child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              SizedBox(
-                height: 180,
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                  child: Stack(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          SizedBox(
+            height: 180,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Stack(
+                children: [
+                  Row(
                     children: [
-                      Row(
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.grey,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Align(
-                            alignment: Alignment.centerLeft,
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Colors.grey,
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              S.of(context).name + ' ' + S.of(context).surname,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 19),
                             ),
                           ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(S.of(context).name + ' ' + S.of(context).surname,
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 19),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight + Alignment(0, .3),
-                                child: Text(S.of(context).mail,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 13)),
-                              ),
-                            ],
+                          Align(
+                            alignment: Alignment.centerRight + Alignment(0, .3),
+                            child: Text(S.of(context).mail,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 13)),
                           ),
                         ],
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
-              ListTile(
-                title: Text(S.of(context).profile),
-                onTap: () {
-                  Navigator.of(context).pushNamed('');
-                },
-              ),
-              ListTile(
-                title: Text(S.of(context).registration),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/InPut');
-                },
-              ),
-              ListTile(
-                title: Text(S.of(context).aboutTheApp),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/InPut');
-                },
-              ),
-            ],
-          )),
+            ),
+          ),
+          ListTile(
+            title: Text(S.of(context).profile),
+            onTap: () {
+              Navigator.of(context).pushNamed('');
+            },
+          ),
+          ListTile(
+            title: Text(S.of(context).registration),
+            onTap: () {
+              Navigator.of(context).pushNamed('/InPut');
+            },
+          ),
+          ListTile(
+            title: Text(S.of(context).aboutTheApp),
+            onTap: () {
+              Navigator.of(context).pushNamed('/InPut');
+            },
+          ),
+        ],
+      )),
       body: Container(
         child: ListView(
           physics: BouncingScrollPhysics(),
@@ -102,7 +103,8 @@ class _UserProfileState extends State<UserProfile> {
                         splashColor: Colors.grey,
                         borderRadius: BorderRadius.all(Radius.circular(40)),
                         child: CircleAvatar(
-                          backgroundImage: const AssetImage('assets/images/mapOne.png'),
+                          backgroundImage:
+                              const AssetImage('assets/images/mapOne.png'),
                           radius: 40,
                         ),
                       ),
@@ -112,13 +114,15 @@ class _UserProfileState extends State<UserProfile> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(S.of(context).name + ' ' + S.of(context).surname,
+                          Text(
+                            S.of(context).name + ' ' + S.of(context).surname,
                             style: const TextStyle(
                                 fontSize: 22,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Text(S.of(context).status,
+                          Text(
+                            S.of(context).status,
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.blue,
@@ -126,7 +130,8 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           Row(
                             children: [
-                              Text(S.of(context).wasOnline,
+                              Text(
+                                S.of(context).wasOnline,
                                 style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -148,11 +153,13 @@ class _UserProfileState extends State<UserProfile> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
                         // цвет фона
                         foregroundColor: MaterialStateProperty.all(Colors.blue),
                         // цвет текста
-                        overlayColor: MaterialStateProperty.all(Colors.grey[300]),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.grey[300]),
                         // цвет анимации при нажатии
                         shadowColor: MaterialStateProperty.all(Colors.grey),
                         // цвет тени
@@ -168,8 +175,10 @@ class _UserProfileState extends State<UserProfile> {
                           borderRadius: BorderRadius.circular(7),
                         )),
                       ),
-                      onPressed: () => Navigator.of(context).pushNamed(MainNavigationRouteName.changePersonalDataPage),
-                      child: Text(S.of(context).edit,
+                      onPressed: () => Navigator.of(context).pushNamed(
+                          MainNavigationRouteName.changePersonalDataPage),
+                      child: Text(
+                        S.of(context).edit,
                         style: const TextStyle(
                           color: Colors.blue,
                           fontSize: 16,
@@ -189,9 +198,14 @@ class _UserProfileState extends State<UserProfile> {
                         children: [
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
+                            icon: Icon(
+                              Icons.photo_camera,
+                              size: 45,
+                              color: Colors.blue[200],
+                            ),
                           ),
-                          Text('   ' + S.of(context).history,
+                          Text(
+                            '   ' + S.of(context).history,
                             style: TextStyle(color: Colors.blue, fontSize: 16),
                           )
                         ],
@@ -200,10 +214,16 @@ class _UserProfileState extends State<UserProfile> {
                         children: [
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
+                            icon: Icon(
+                              Icons.photo_camera,
+                              size: 45,
+                              color: Colors.blue[200],
+                            ),
                           ),
-                          Text('   ' + S.of(context).record,
-                            style: const TextStyle(color: Colors.blue, fontSize: 16),
+                          Text(
+                            '   ' + S.of(context).record,
+                            style: const TextStyle(
+                                color: Colors.blue, fontSize: 16),
                           )
                         ],
                       ),
@@ -211,10 +231,16 @@ class _UserProfileState extends State<UserProfile> {
                         children: [
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
+                            icon: Icon(
+                              Icons.photo_camera,
+                              size: 45,
+                              color: Colors.blue[200],
+                            ),
                           ),
-                          Text('   ' + S.of(context).photo,
-                            style: const TextStyle(color: Colors.blue, fontSize: 16),
+                          Text(
+                            '   ' + S.of(context).photo,
+                            style: const TextStyle(
+                                color: Colors.blue, fontSize: 16),
                           )
                         ],
                       ),
@@ -222,10 +248,16 @@ class _UserProfileState extends State<UserProfile> {
                         children: [
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.photo_camera, size: 45, color: Colors.blue[200],),
+                            icon: Icon(
+                              Icons.photo_camera,
+                              size: 45,
+                              color: Colors.blue[200],
+                            ),
                           ),
-                          Text('   ' + S.of(context).history,
-                            style: const TextStyle(color: Colors.blue, fontSize: 16),
+                          Text(
+                            '   ' + S.of(context).history,
+                            style: const TextStyle(
+                                color: Colors.blue, fontSize: 16),
                           )
                         ],
                       ),
@@ -255,8 +287,12 @@ class _UserProfileState extends State<UserProfile> {
                             size: 24,
                           ),
                           const SizedBox(width: 15),
-                          Text(S.of(context).city + ': ' + S.of(context).novokuznetsk,
-                            style: TextStyle(color: Colors.black54, fontSize: 14),
+                          Text(
+                            S.of(context).city +
+                                ': ' +
+                                S.of(context).novokuznetsk,
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 14),
                           )
                         ],
                       ),
@@ -268,8 +304,10 @@ class _UserProfileState extends State<UserProfile> {
                             size: 24,
                           ),
                           const SizedBox(width: 15),
-                          Text(S.of(context).placeOfStudy,
-                            style: TextStyle(color: Colors.black54, fontSize: 14),
+                          Text(
+                            S.of(context).placeOfStudy,
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 14),
                           )
                         ],
                       ),
@@ -281,8 +319,10 @@ class _UserProfileState extends State<UserProfile> {
                             size: 24,
                           ),
                           const SizedBox(width: 15),
-                          Text(S.of(context).placeOfWork,
-                            style: TextStyle(color: Colors.black54, fontSize: 14),
+                          Text(
+                            S.of(context).placeOfWork,
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 14),
                           )
                         ],
                       ),
@@ -295,8 +335,10 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           const SizedBox(width: 15),
                           TextButton(
-                              onPressed: () => Navigator.of(context).pushNamed('personalDataPage'),
-                              child: Text(S.of(context).detailedInformation,
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed('personalDataPage'),
+                              child: Text(
+                                S.of(context).detailedInformation,
                                 style: const TextStyle(
                                   color: Colors.blue,
                                   fontSize: 14,
@@ -329,38 +371,40 @@ class _UserProfileState extends State<UserProfile> {
                 SizedBox(
                   height: 140,
                   child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Row(
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              children: [
-                                const CircleAvatar(
-                                  radius: 35,
-                                  backgroundColor: Colors.grey,
-                                ),
-                                Text(S.of(context).name),
-                                Text(S.of(context).surname),
-                              ],
-                            ),
-                          ],
-                        );
-                      }),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 10,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            children: [
+                              const CircleAvatar(
+                                radius: 35,
+                                backgroundColor: Colors.grey,
+                              ),
+                              Text(S.of(context).name),
+                              Text(S.of(context).surname),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.transparent,
-                        border: Border.all(color: Colors.black.withOpacity(0.9))),
+                        border:
+                            Border.all(color: Colors.black.withOpacity(0.9))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const HeaderButtonWidget(),
-                        TextBodyWidget(),
+                        //TextBodyWidget(),
                         const EndWidget(),
                       ],
                     ),
