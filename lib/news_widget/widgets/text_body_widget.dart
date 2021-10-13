@@ -1,6 +1,5 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/news_widget/models/news.dart';
-import 'package:event_on_map/news_widget/services/news_repository.dart';
 import 'package:flutter/material.dart';
 
 class TextBodyWidget extends StatefulWidget {
