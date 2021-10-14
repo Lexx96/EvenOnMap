@@ -8,7 +8,9 @@ class AuthMainImage extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height / 10 * 4,
       width: MediaQuery.of(context).size.width / 10 * 9,
-      child: const Image(image: AssetImage('assets/images/mapOne.png')),
+      child: const Image(
+        image: AssetImage('assets/images/mapOne.png'),
+      ),
     );
   }
 }

@@ -3,32 +3,26 @@ import 'package:event_on_map/auth/models/registration/user_registration.dart';
 
 class AuthBlocState{
   AuthBlocState();
-
-  factory AuthBlocState.emptyLogIn() = AuthEmptyState;
-  factory AuthBlocState.emptyRegistration() = AuthRegistrationEmptyState;
+  factory AuthBlocState.emptyBlocState() = EmptyBlocState;
   factory AuthBlocState.loadingRegistration() = AuthRegistrationLoadingState;
-  factory AuthBlocState.loadedRegistration(List<UserRegistrationModel> userRegistrationModel) = AuthRegistrationLoadedState;
+  factory AuthBlocState.loadedRegistration(UserRegistrationModel userRegistrationModel) = AuthRegistrationLoadedState;
   factory AuthBlocState.loadingLogIn() = AuthLogInLoadingState;
-  factory AuthBlocState.loadedLogIn(List<UserLogInModel> userLogInModel) = AuthLogInLoadedState;
-
+  factory AuthBlocState.loadedLogIn(UserLogInModel userLogInModel) = AuthLogInLoadedState;
 }
 
-
-class AuthEmptyState extends AuthBlocState{}
-
-class AuthRegistrationEmptyState extends AuthBlocState{}
+class EmptyBlocState extends AuthBlocState{}
 
 class AuthRegistrationLoadingState extends AuthBlocState {}
 
 class AuthRegistrationLoadedState extends AuthBlocState {
-  List<UserRegistrationModel> userRegistrationModel;
+  UserRegistrationModel userRegistrationModel;
   AuthRegistrationLoadedState(this.userRegistrationModel);
 }
 
 class AuthLogInLoadingState extends AuthBlocState {}
 
 class AuthLogInLoadedState extends AuthBlocState {
-  List<UserLogInModel> userLogInModel;
+  UserLogInModel userLogInModel;
   AuthLogInLoadedState(this.userLogInModel);
 }
 

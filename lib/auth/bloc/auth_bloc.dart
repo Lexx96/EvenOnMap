@@ -17,9 +17,8 @@ class ServiceAuthBloc {
   Stream<AuthBlocState> get streamController => _streamController.stream;
 
   void emptyState() {
-    _streamController.sink.add(AuthBlocState.emptyLogIn());
+    _streamController.sink.add(AuthBlocState.emptyBlocState());
   }
-
 
   /// метод регистрации и получения данных
   void loadingRegistration(String phone, String password,) {
@@ -27,18 +26,18 @@ class ServiceAuthBloc {
     try {
       UserRegistrationProvider().postUserRegistration(phone, password).then((
           responseJsonRegistration) {
-        if (responseJsonRegistration.isNotEmpty) {
+        if (responseJsonRegistration.accessToken != null) {
           _streamController.sink.add(
               AuthBlocState.loadedRegistration(responseJsonRegistration));
         }
         else {
-          _streamController.sink.add(AuthBlocState.emptyRegistration());
+          _streamController.sink.add(AuthBlocState.emptyBlocState());
         }
       });
     }
     catch (_) {
       print('Ошибка выполнения запроса регистрации');
-      _streamController.sink.add(AuthBlocState.emptyRegistration());
+      _streamController.sink.add(AuthBlocState.emptyBlocState());
     }
   }
 
@@ -48,20 +47,23 @@ class ServiceAuthBloc {
     try {
       UserLogInProvider().postUserLogIn(phone, password).then((
           responseJsonLogIn) {
-        if (responseJsonLogIn.isNotEmpty) {
+        if (responseJsonLogIn.accessToken != null) {
+
           _streamController.sink.add(
               AuthBlocState.loadedLogIn(responseJsonLogIn));
         }
         else {
-          _streamController.sink.add(AuthBlocState.emptyLogIn());
+          _streamController.sink.add(AuthBlocState.emptyBlocState());
         }
       });
     }
     catch (_) {
       print('Ошибка выполнения запроса регистрации');
-      _streamController.sink.add(AuthBlocState.emptyLogIn());
+      _streamController.sink.add(AuthBlocState.emptyBlocState());
     }
   }
+
+  /// метод закрытия стрима
   void dispose() {
     _streamController.close();
   }

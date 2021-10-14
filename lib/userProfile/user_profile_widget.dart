@@ -403,7 +403,7 @@ class _UserProfileState extends State<UserProfile> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const HeaderButtonWidget(),
+                        //const HeaderButtonWidget(),
                         //TextBodyWidget(),
                         const EndWidget(),
                       ],

@@ -26,10 +26,24 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
   }
   @override
   Widget build(BuildContext context) {
-    final maxThreeLines = 3;
-    final maxLines = DefaultTextStyle.of(context).maxLines;
-    final String textInTextButton = _maxLinesBool ? S.of(context).inMoreDetail : '';
-    _resultLines = _maxLinesBool ? maxThreeLines : maxLines;
+    final _maxThreeLines = 3;
+    final _maxLines = DefaultTextStyle.of(context).maxLines;
+    final Widget _buttonMoreDetails = _maxLinesBool ? TextButton(
+      onPressed: () {
+        setState(() {
+          if (_maxLinesBool) {
+            _maxLinesBool = !_maxLinesBool;
+          }else {
+            _maxLinesBool = true;
+          }
+        });
+      },
+      style: ButtonStyle(
+        padding: MaterialStateProperty.all(EdgeInsets.zero),
+      ),
+      child: Text(S.of(context).inMoreDetail),
+    ) : SizedBox();
+    final _resultLines = _maxLinesBool ? _maxThreeLines : _maxLines;
 
     return Container(
       child: Column(
@@ -66,21 +80,7 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  if (_maxLinesBool) {
-                    _maxLinesBool = !_maxLinesBool;
-                  }else {
-                    _maxLinesBool = true;
-                  }
-                });
-              },
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
-              ),
-              child: Text(textInTextButton),
-            ),
+            child: _buttonMoreDetails,
           ),
           SizedBox(
             height: 20,
