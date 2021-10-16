@@ -1,8 +1,6 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/news_widget/widgets/end_widget.dart';
-import 'package:event_on_map/news_widget/widgets/header_button_widget.dart';
-import 'package:event_on_map/news_widget/widgets/text_body_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -102,7 +100,7 @@ class _UserProfileState extends State<UserProfile> {
                         onTap: () => print('cc'),
                         splashColor: Colors.grey,
                         borderRadius: BorderRadius.all(Radius.circular(40)),
-                        child: CircleAvatar(
+                        child: CircleAvatar(  // https://www.youtube.com/watch?v=MSv38jO4EJk
                           backgroundImage:
                               const AssetImage('assets/images/mapOne.png'),
                           radius: 40,
@@ -336,7 +334,7 @@ class _UserProfileState extends State<UserProfile> {
                           const SizedBox(width: 15),
                           TextButton(
                               onPressed: () => Navigator.of(context)
-                                  .pushNamed('personalDataPage'),
+                                  .pushNamed(MainNavigationRouteName.personalDataPage),
                               child: Text(
                                 S.of(context).detailedInformation,
                                 style: const TextStyle(

@@ -45,7 +45,7 @@ class _AuthWidgetState extends State<AuthWidget> {
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data is EmptyBlocState) {
+              if (snapshot.data is AuthLogInLoadedState ) {
                 return ListView(
                   children: [
                     const AuthHeaderWidget(),
@@ -158,7 +158,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                                 borderRadius: BorderRadius.circular(15),
                               ))),
                           onPressed: () {
-                            _bloc.loadingRegistration('78889558899', '12345');
+                            _bloc.loadingRegistration('78889558999', '12345');
                           },
                           child: Expanded(
                             child: Text(
@@ -176,9 +176,12 @@ class _AuthWidgetState extends State<AuthWidget> {
                 );
               }
               if (snapshot.data is AuthRegistrationLoadedState ||
-                  snapshot.data is AuthLogInLoadedState) {
-                Navigator.of(context)
-                    .pushNamed(MainNavigationRouteName.mainScreen);
+                  snapshot.data is EmptyBlocState) {
+
+                Future.delayed(Duration.zero, () {
+                  Navigator.of(context)
+                      .pushNamed(MainNavigationRouteName.mainScreen);
+                });
               }
               return Center(
                 child: Column(

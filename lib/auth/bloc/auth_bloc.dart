@@ -48,7 +48,6 @@ class ServiceAuthBloc {
       UserLogInProvider().postUserLogIn(phone, password).then((
           responseJsonLogIn) {
         if (responseJsonLogIn.accessToken != null) {
-
           _streamController.sink.add(
               AuthBlocState.loadedLogIn(responseJsonLogIn));
         }

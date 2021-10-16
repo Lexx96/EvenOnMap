@@ -32,6 +32,11 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _showCreateAnEventWidget =
         _createAnEventWidgetBool ? CreateAnEventWidget() : null;
