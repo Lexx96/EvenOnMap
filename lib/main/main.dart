@@ -6,12 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../generated/l10n.dart';
 import '../navigation/main_navigation.dart';
 
-/*
-Темы приложения
-DataBase
-Ргистрация
-Авторизация
- */
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // говорит о там что инициализацию приложения проводить тут

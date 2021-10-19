@@ -1,6 +1,6 @@
 import 'package:event_on_map/auth/auth_screen_widget.dart';
 import 'package:event_on_map/change_personal_data_page/change_personal_data_page.dart';
-import 'package:event_on_map/create_an_event_widget/create_an_event_widget.dart';
+import 'package:event_on_map/create_event/create_event_screen.dart';
 import 'package:event_on_map/main_screen/main_screen_widget.dart';
 import 'package:event_on_map/map_widget/map_widget.dart';
 import 'package:event_on_map/news_widget/news_widget.dart';
@@ -28,7 +28,7 @@ class MainNavigation {
     //MainNavigationRouteName.authSignUp: (context) => const AuthSignUpWidget(),
     MainNavigationRouteName.personalDataPage: (context) => const PersonalDataPageWidget(),
     MainNavigationRouteName.changePersonalDataPage: (context) => const ChangePersonalDataPage(),
-    MainNavigationRouteName.createAnEventWidget: (context) => const CreateAnEventWidget(),
+    MainNavigationRouteName.createAnEventWidget: (context) => const CreateEventWidget(),
     MainNavigationRouteName.userProfile: (context) => const UserProfile(),
     MainNavigationRouteName.newsWidget: (context) => const NewsWidget(),
     MainNavigationRouteName.mapWidget: (context) => const MapWidget(),

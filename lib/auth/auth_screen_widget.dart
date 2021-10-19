@@ -36,6 +36,8 @@ class _AuthWidgetState extends State<AuthWidget> {
     _bloc.emptyState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,6 +199,11 @@ class _AuthWidgetState extends State<AuthWidget> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 }
 

@@ -1,4 +1,4 @@
-import 'package:event_on_map/create_an_event_widget/create_an_event_widget.dart';
+
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,33 +15,26 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  late bool _createAnEventWidgetBool;
 
-  void _changeCreateAnEventWidgetBool() {
-    if (_createAnEventWidgetBool) {
-      _createAnEventWidgetBool = !_createAnEventWidgetBool;
-    } else {
-      _createAnEventWidgetBool = true;
-    }
-  }
+  final _myLocation = LatLng(53.769997, 87.137535);
+
+  late GoogleMapController _googleMapController;
+
 
   @override
   void initState() {
     super.initState();
-    _createAnEventWidgetBool = false;
   }
 
   @override
   void dispose() {
     super.dispose();
+    _googleMapController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _showCreateAnEventWidget =
-        _createAnEventWidgetBool ? CreateAnEventWidget() : null;
-    final icon = _createAnEventWidgetBool ? Icons.close : Icons.add_rounded;
-    final _myLocation = LatLng(53.769997, 87.137535);
+
     return Scaffold(
         body: Stack(
       children: [
@@ -51,7 +44,7 @@ class _MapWidgetState extends State<MapWidget> {
             zoom: 16,
           ),
         ),
-      ]),
+      ],),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
