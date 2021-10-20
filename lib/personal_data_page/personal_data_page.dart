@@ -1,12 +1,11 @@
 import 'package:event_on_map/generated/l10n.dart';
-import 'package:event_on_map/personal_data_page/switch_private_additional_information_widget.dart';
-import 'package:event_on_map/personal_data_page/switch_private_information_widget.dart';
+import 'package:event_on_map/personal_data_page/widgets/switch_private_additional_information_widget.dart';
+import 'package:event_on_map/personal_data_page/widgets/switch_private_information_widget.dart';
 import 'package:flutter/material.dart';
-import 'header_pages_widget.dart';
+import 'widgets/header_pages_widget.dart';
 
 /*
 добавить изминение авы
-
  */
 class PersonalDataPageWidget extends StatefulWidget {
   const PersonalDataPageWidget({Key? key}) : super(key: key);

@@ -1,4 +1,5 @@
 import 'package:event_on_map/generated/l10n.dart';
+import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/news_widget/bloc/news_bloc.dart';
 import 'package:event_on_map/news_widget/services/news_api_repository.dart';
 import 'package:event_on_map/news_widget/widgets/end_widget.dart';
@@ -11,8 +12,6 @@ import 'bloc/news_state.dart';
 
 /*
 сделать:
-убиралась кнопка подробнее, передести все это дело в блок или инхерит
-
 по нажатию на фото/ видео оно открывалась в проигрователе
 
 сделать кнопки лайк и репост
@@ -103,19 +102,19 @@ class _NewsWidgetState extends State<NewsWidget> {
           ListTile(
             title: Text(S.of(context).profile),
             onTap: () {
-              Navigator.of(context).pushNamed('');
+              Navigator.of(context).pushNamed(MainNavigationRouteName.userProfile);
             },
           ),
           ListTile(
             title: Text(S.of(context).registration),
             onTap: () {
-              Navigator.of(context).pushNamed('/InPut');
+              Navigator.of(context).pushNamed(MainNavigationRouteName.auth);
             },
           ),
           ListTile(
             title: Text(S.of(context).aboutTheApp),
             onTap: () {
-              Navigator.of(context).pushNamed('/InPut');
+              Navigator.of(context).pushNamed('');
             },
           ),
         ],
@@ -138,7 +137,7 @@ class _NewsWidgetState extends State<NewsWidget> {
                 return Container(
                   decoration: BoxDecoration(
                       color: Colors.transparent,
-                      border: Border.all(color: Colors.black.withOpacity(0.9))),
+                      border: Border.symmetric(vertical : BorderSide.none,)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

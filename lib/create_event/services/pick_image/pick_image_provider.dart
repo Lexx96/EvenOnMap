@@ -1,8 +1,6 @@
 
 import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
-
 import 'pick_image_repository.dart';
 
 class PickImageProvider {
@@ -18,12 +16,4 @@ class PickImageProvider {
     }
 
   }
-  /*
-    возвращаю файл из репозитория
-   */
-
-
-
-
-
 }

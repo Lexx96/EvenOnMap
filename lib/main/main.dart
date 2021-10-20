@@ -5,7 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../generated/l10n.dart';
 import '../navigation/main_navigation.dart';
+/*
+подключить текс филды и создать логику
+получение лат и лнг с карты
+профиль отрефачить
+корректировка данных профиля отрефачить
+сделать темы
 
+
+
+проверка токена
+выгрузка нового события
+сделать карту
+ */
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // говорит о там что инициализацию приложения проводить тут

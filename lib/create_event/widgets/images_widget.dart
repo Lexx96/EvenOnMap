@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../bloc/pick_image/pick_image_bloc.dart';
 import '../bloc/pick_image/pick_image_bloc_state.dart';
 
@@ -26,7 +24,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
    и полученный файл записываем в переменную
    */
 
-  showImagesSource(BuildContext context) async {
+  _showImagesSource(BuildContext context) async {
     if (Platform.isIOS) {
       return showCupertinoModalPopup<ImageSource>(
         context: context,
@@ -83,7 +81,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
     }
   }
 
-  showActions(BuildContext context, index) async {
+  _showActions(BuildContext context, index) async {
     if (Platform.isIOS) {
       return showCupertinoModalPopup<ImageSource>(
         context: context,
@@ -134,7 +132,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
     }
   }
 
-  Widget isButton (index){
+  Widget _isButton (index){
     if(index <= 4) {
       return Container(
         height: 195,
@@ -154,7 +152,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
         ),
         clipBehavior: Clip.hardEdge,
         child: TextButton(
-          onPressed: () => showImagesSource(context),
+          onPressed: () => _showImagesSource(context),
           child: Icon(
             Icons.add_rounded,
             size: 45,
@@ -173,6 +171,12 @@ class _ImagesWidgetState extends State<ImagesWidget> {
     super.initState();
     _bloc = PickImageBloc();
     _bloc.emptyPickImageBloc();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 
   @override
@@ -205,7 +209,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                     ),
                     clipBehavior: Clip.hardEdge,
                     child: TextButton(
-                      onPressed: () => showImagesSource(context),
+                      onPressed: () => _showImagesSource(context),
                       child: Icon(
                         Icons.add_rounded,
                         size: 45,
@@ -260,14 +264,14 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                               color: Colors.transparent,
                               child: InkWell(
                                 splashColor: Colors.grey[1],
-                                onTap: () => showActions(context, index),
+                                onTap: () => _showActions(context, index),
                               ),
                             )
                           ],
                         ),
                       ),
                       SizedBox(width: 10,),
-                      (selectedImages.length - 1 == index || selectedImages.length == 0) ? isButton(index) : SizedBox()
+                      (selectedImages.length - 1 == index || selectedImages.length == 0) ? _isButton(index) : SizedBox.shrink()
                     ],
                   );
                 },

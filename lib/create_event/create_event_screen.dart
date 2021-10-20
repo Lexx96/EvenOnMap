@@ -26,6 +26,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
@@ -146,11 +152,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         }
       )
     );
-  }
-  @override
-  void dispose() {
-    super.dispose();
-    _bloc.dispose();
   }
 }
 
