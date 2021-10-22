@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:event_on_map/userProfile/services/user_profile__page_repository.dart';
+import 'package:event_on_map/userProfile/services/user_profile__image_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfileProvider {

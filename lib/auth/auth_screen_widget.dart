@@ -179,7 +179,6 @@ class _AuthWidgetState extends State<AuthWidget> {
               }
               if (snapshot.data is AuthRegistrationLoadedState ||
                   snapshot.data is EmptyBlocState) {
-
                 Future.delayed(Duration.zero, () {
                   Navigator.of(context)
                       .pushNamed(MainNavigationRouteName.mainScreen);

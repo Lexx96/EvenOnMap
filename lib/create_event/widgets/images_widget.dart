@@ -13,7 +13,7 @@ class ImagesWidget extends StatefulWidget {
 }
 
 class _ImagesWidgetState extends State<ImagesWidget> {
-  final selectedImages = <File?>[];
+  final _selectedImages = <File?>[];
   late PickImageBloc _bloc;
 
   /*
@@ -96,7 +96,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
-                selectedImages.removeAt(index);
+                _selectedImages.removeAt(index);
                  Navigator.of(context).pop();
                  },
               child: Row(
@@ -122,7 +122,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
               leading: Icon(Icons.delete_outline),
               title: Text('Удалить'),
               onTap: () {
-                  selectedImages.removeAt(index);
+                  _selectedImages.removeAt(index);
                 Navigator.of(context).pop();
               },
             ),
@@ -221,12 +221,13 @@ class _ImagesWidgetState extends State<ImagesWidget> {
               );
             }
             if (snapshot.data is LoadedPickImage) {
-              var images = snapshot.data as LoadedPickImage;
-              selectedImages.add(images.image);
+              LoadedPickImage _data = snapshot.data as LoadedPickImage;
+              final _images = _data.image;
+              _images != null ?  _selectedImages.add(_images) : _selectedImages;
               return ListView.builder(
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
-                itemCount: selectedImages.length,
+                itemCount: _selectedImages.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Row(
                     children: [
@@ -248,7 +249,32 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                         clipBehavior: Clip.hardEdge,
                         child: Stack(
                           children: [
-                            Center(child: Image.file(selectedImages[index] as File)),
+                            // проблемка
+                            _selectedImages.isNotEmpty ?
+                            Center(child: Image.file(_selectedImages[index] as File)) : Container(
+                              height: 195,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.black.withOpacity(0.2)),
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black,
+                                      blurRadius: 8,
+                                      offset: Offset(0, 2))
+                                ],
+                              ),
+                              clipBehavior: Clip.hardEdge,
+                              child: TextButton(
+                                onPressed: () => _showImagesSource(context),
+                                child: Icon(
+                                  Icons.add_rounded,
+                                  size: 45,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -271,7 +297,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                         ),
                       ),
                       SizedBox(width: 10,),
-                      (selectedImages.length - 1 == index || selectedImages.length == 0) ? _isButton(index) : SizedBox.shrink()
+                      (_selectedImages.length - 1 == index || _selectedImages.length == 0) ? _isButton(index) : SizedBox.shrink()
                     ],
                   );
                 },

@@ -1,6 +1,6 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/map_widget/map_widget.dart';
-import 'package:event_on_map/news_widget/news_widget.dart';
+import 'package:event_on_map/news_widget/news_pages.dart';
 import 'package:event_on_map/userProfile/user_profile_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -15,13 +15,8 @@ import 'package:flutter/material.dart';
 
 Сделать дивайдей меню в профиле
 форма заполнения личных данных
-(
-TextField(
-    maxLines: null,
-    keyboardType: TextInputType.multiline,
-))
-спеш скрин
 
+спеш скрин
 
 анимированны иконки
 (  class _CreatePackageViewState extends State<CreatePackageView>
@@ -85,7 +80,7 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             NewsWidget(),
             MapWidget(),
-            UserProfile(),
+            UserProfilePage(),
           ],
         ),
         bottomNavigationBar: SizedBox(

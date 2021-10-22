@@ -1,5 +1,4 @@
-import 'package:event_on_map/generated/l10n.dart';
-import 'package:event_on_map/navigation/main_navigation.dart';
+
 import 'package:event_on_map/news_widget/bloc/news_bloc.dart';
 import 'package:event_on_map/news_widget/services/news_api_repository.dart';
 import 'package:event_on_map/news_widget/widgets/end_widget.dart';
@@ -8,6 +7,7 @@ import 'package:event_on_map/news_widget/widgets/sceleton.dart';
 import 'package:event_on_map/news_widget/widgets/text_body_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../main_drawer.dart';
 import 'bloc/news_state.dart';
 
 /*
@@ -49,76 +49,7 @@ class _NewsWidgetState extends State<NewsWidget> {
 
     return Scaffold(
       appBar: AppBar(),
-      drawer: Drawer(
-          child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          SizedBox(
-            height: 180,
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Stack(
-                children: [
-                  Row(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              S.of(context).name + ' ' + S.of(context).surname,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 19),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight + Alignment(0, .3),
-                            child: Text(S.of(context).mail,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 13)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text(S.of(context).profile),
-            onTap: () {
-              Navigator.of(context).pushNamed(MainNavigationRouteName.userProfile);
-            },
-          ),
-          ListTile(
-            title: Text(S.of(context).registration),
-            onTap: () {
-              Navigator.of(context).pushNamed(MainNavigationRouteName.auth);
-            },
-          ),
-          ListTile(
-            title: Text(S.of(context).aboutTheApp),
-            onTap: () {
-              Navigator.of(context).pushNamed('');
-            },
-          ),
-        ],
-      )),
+      drawer: MainDrawer(),
       body: StreamBuilder(
         stream: _bloc.newsStreamController,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -130,7 +61,8 @@ class _NewsWidgetState extends State<NewsWidget> {
           }
           if (snapshot.data is NewsLoadedState) {
             var newsResponse = snapshot.data as NewsLoadedState;
-            return ListView.builder(
+            return
+              ListView.builder(
               physics: BouncingScrollPhysics(),
               itemCount: newsResponse.news.length,
               itemBuilder: (BuildContext context, int index) {
