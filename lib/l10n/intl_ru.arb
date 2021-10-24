@@ -49,5 +49,6 @@
   "placeOfWork" : "Место работы",
   "friends" : "Друзья",
   "mail" : "Почта",
-  "aboutTheApp" : "О приложении"
+  "aboutTheApp" : "О приложении",
+  "licenseAgreement" : "Лицензионное соглашение"
 }

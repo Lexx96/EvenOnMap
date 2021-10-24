@@ -1,5 +1,5 @@
+import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
-
 import 'generated/l10n.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -62,19 +62,19 @@ class MainDrawer extends StatelessWidget {
             ListTile(
               title: Text(S.of(context).profile),
               onTap: () {
-                Navigator.of(context).pushNamed('');
+                Navigator.of(context).pushNamed(MainNavigationRouteName.userProfile);
               },
             ),
+            // ListTile(
+            //   title: Text(S.of(context).registration),
+            //   onTap: () {
+            //     Navigator.of(context).pushNamed('/InPut');
+            //   },
+            // ),
             ListTile(
-              title: Text(S.of(context).registration),
+              title: Text(S.of(context).licenseAgreement),
               onTap: () {
-                Navigator.of(context).pushNamed('/InPut');
-              },
-            ),
-            ListTile(
-              title: Text(S.of(context).aboutTheApp),
-              onTap: () {
-                Navigator.of(context).pushNamed('/InPut');
+                Navigator.of(context).pushNamed(MainNavigationRouteName.licenseAgreement);
               },
             ),
           ],

@@ -1,6 +1,8 @@
-import 'package:event_on_map/auth/auth_screen_widget.dart';
+
+import 'package:event_on_map/auth/auth_screen.dart';
 import 'package:event_on_map/change_personal_data_page/change_personal_data_page.dart';
 import 'package:event_on_map/create_event/create_event_screen.dart';
+import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/main_screen/main_screen_widget.dart';
 import 'package:event_on_map/map_widget/map_widget.dart';
 import 'package:event_on_map/news_widget/news_pages.dart';
@@ -19,6 +21,7 @@ abstract class MainNavigationRouteName {
   static const newsWidget = 'newsWidget';
   static const mapWidget = 'mapWidget';
   static const mainScreen = 'mainScreen';
+  static const licenseAgreement = 'aboutTheApp';
 }
 
 class MainNavigation {
@@ -33,5 +36,6 @@ class MainNavigation {
     MainNavigationRouteName.newsWidget: (context) => const NewsWidget(),
     MainNavigationRouteName.mapWidget: (context) => const MapWidget(),
     MainNavigationRouteName.mainScreen: (context) => const MainScreen(),
+    MainNavigationRouteName.licenseAgreement: (context) => const LicenseAgreement(),
   };
 }

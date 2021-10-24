@@ -1,12 +1,12 @@
-import 'package:event_on_map/auth/auth_header_widget.dart';
-import 'package:event_on_map/auth/auth_main_image.dart';
-import 'package:event_on_map/auth/auth_text_horizontion.dart';
+import 'package:event_on_map/auth/widgets/auth_header_widget.dart';
+import 'package:event_on_map/auth/widgets/auth_text_horizontion_widget.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:event_on_map/auth_sign_in/main_screen_decoration.dart';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
+import 'widgets/auth_main_image_widget.dart';
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_bloc_state.dart';
 

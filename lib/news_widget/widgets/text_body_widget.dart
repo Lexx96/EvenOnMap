@@ -47,45 +47,53 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
 
     return Container(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(_newsResponse.email,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(_newsResponse.email,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    maxLines: 1,
-                    // максимальное колличество линий, остальное обрежется
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                    Expanded(child: Text(''),),
+                  ],
                 ),
-                Expanded(child: Text(''),),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  _newsResponse.body,
+                  maxLines: _resultLines,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _buttonMoreDetails,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
           ),
-          SizedBox(
-            height: 10,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image(image: NetworkImage('https://im0-tub-ru.yandex.net/i?id=16d9e6eddcbdfdeba9de432422bca25e-l&n=13')),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              _newsResponse.body,
-              maxLines: _resultLines,
-              overflow: TextOverflow.fade,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: _buttonMoreDetails,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Image(image: AssetImage('assets/images/mapOne.png')),
         ],
       ),
     );

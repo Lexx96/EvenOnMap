@@ -4,7 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../custom_icons.dart';
-
+/*
+ какая то ошибка есть
+ Creating a virtual display of size: [2156, 324] may result in problems(https://github.com/flutter/flutter/issues/2897).
+ It is larger than the device screen size: [1080, 2156].
+ */
 
 
 class MapWidget extends StatefulWidget {
@@ -24,6 +28,7 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   void initState() {
     super.initState();
+    GoogleMapController _googleMapController;
   }
 
   @override

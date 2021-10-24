@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../custom_icons.dart';
+import 'package:share_plus/share_plus.dart';
 
 class EndWidget extends StatelessWidget {
   const EndWidget({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class EndWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10),
                         child: Icon(
                           CustomIcons.favorite,
-                          color: Colors.blue,
+                          color: Colors.blue,  // в блоке сделать метод, по выполнению которго будет меняться цвет иконки тернарной операцией
                         ),
                       ),
                       Text(
@@ -44,11 +44,8 @@ class EndWidget extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(25)),
               ),
             ),
-            SizedBox(
-              width: 5,
-            ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => Share.share('text'),  //https://www.youtube.com/watch?v=-PmUFbbA-Fs
               child: Icon(Icons.share),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),

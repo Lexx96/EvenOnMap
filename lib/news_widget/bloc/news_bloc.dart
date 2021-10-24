@@ -31,10 +31,30 @@ class ServiceNewsBloc {
           }
         },
       );
-    } catch (ErrorBloc) {
+    } catch (errorBloc) {
       _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
-      print('Ошибка запроса новостей $ErrorBloc');
+      print('Ошибка запроса новостей $errorBloc');
     }
+  }
+
+  Future <void> onRefresh() async{
+      try{
+        NewsProvider().getAllNews().then(
+              (jsonNewsModel) {
+            if (jsonNewsModel.isNotEmpty) {
+              _newsStreamController.sink
+                  .add(NewsBlocState.newsLoadedState(jsonNewsModel));
+            }
+            else {
+              loading();
+            }
+          },
+        );
+      }
+      catch(errorOnRefresh){
+        loading();
+        print('Ошибка запроса новостей $errorOnRefresh');
+      }
   }
 
   void dispose() {
