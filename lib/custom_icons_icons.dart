@@ -28,10 +28,26 @@
 ///         Author:    Stephen Hutchings
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://typicons.com/
+/// * Iconic, Copyright (C) 2012 by P.J. Onori
+///         Author:    P.J. Onori
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://somerandomdude.com/work/iconic/
 /// * Linearicons Free, Copyright (C) Linearicons.com
 ///         Author:    Perxis
 ///         License:   CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
 ///         Homepage:  https://linearicons.com
+/// * Maki, Copyright (C) Mapbox, LCC
+///         Author:    Mapbox
+///         License:   BSD (https://github.com/mapbox/maki/blob/gh-pages/LICENSE.txt)
+///         Homepage:  http://mapbox.com/maki/
+/// * Elusive, Copyright (C) 2013 by Aristeides Stathopoulos
+///         Author:    Aristeides Stathopoulos
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://aristeides.com/
+/// * MFG Labs, Copyright (C) 2012 by Daniel Bruce
+///         Author:    MFG Labs
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://www.mfglabs.com/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -89,19 +105,40 @@ class CustomIcons {
   static const IconData cancel_outline = IconData(0xe82d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData map_1 = IconData(0xe82e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData map_2 = IconData(0xe82f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData brush = IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData brush_alt = IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData brush_1 = IconData(0xe832, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData user_1 = IconData(0xe833, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData map = IconData(0xe834, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData location_1 = IconData(0xe835, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData menu_outline = IconData(0xe836, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData menu = IconData(0xe837, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData art_gallery = IconData(0xe838, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData mail_2 = IconData(0xe839, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData picture = IconData(0xe83a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData trash_circled = IconData(0xe83b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData alarm = IconData(0xe858, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData pause = IconData(0xf00e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData play = IconData(0xf00f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData to_end = IconData(0xf010, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData to_start = IconData(0xf011, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData fast_forward = IconData(0xf012, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData fast_backward = IconData(0xf013, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData user_female = IconData(0xf063, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData stop = IconData(0xf080, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData comment_empty = IconData(0xf0e5, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData chat_empty = IconData(0xf0e6, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData direction = IconData(0xf124, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData thumbs_up_alt = IconData(0xf164, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData thumbs_down_alt = IconData(0xf165, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData vk = IconData(0xf189, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData language = IconData(0xf1ab, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sliders = IconData(0xf1de, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData paint_brush = IconData(0xf1fc, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData odnoklassniki = IconData(0xf263, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData map_3 = IconData(0xf279, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData comment_alt = IconData(0xf27a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData trash_alt = IconData(0xf2ed, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData hubspot = IconData(0xf3b2, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData viber = IconData(0xf409, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData whmcs = IconData(0xf40d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

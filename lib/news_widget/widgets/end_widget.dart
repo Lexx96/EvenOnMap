@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../custom_icons.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../custom_icons_icons.dart';
 
 class EndWidget extends StatelessWidget {
   const EndWidget({Key? key}) : super(key: key);

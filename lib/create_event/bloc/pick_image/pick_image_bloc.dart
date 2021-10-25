@@ -11,20 +11,25 @@ class PickImageBloc {
 
   Stream<PickImageBlocState> get streamPickImage => _streamController.stream;
 
-  void emptyPickImageBloc(){
-    _streamController.sink.add(PickImageBlocState.emptyPickImage());
+  void notSelectedPickImage(){
+    _streamController.sink.add(PickImageBlocState.notSelectedPickImage());
   }
 
   void addPickImageBloc(ImageSource source){
     _streamController.sink.add(PickImageBlocState.loadingPickImage());
     try{
       PickImageProvider().getImageFile(source).then((image) {
-        _streamController.sink.add(PickImageBlocState.loadedPickImage(image));
+        if(image != null) {
+          _streamController.sink.add(PickImageBlocState.loadedPickImage(image));
+        }
+        else {
+          _streamController.sink.add(PickImageBlocState.notSelectedPickImage());
+        }
       });
     }
     catch(error){
       print('Ошибка получения изображения от провайдета $error');
-      _streamController.sink.add(PickImageBlocState.emptyPickImage());
+      _streamController.sink.add(PickImageBlocState.notSelectedPickImage());
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import '../../custom_icons.dart';
+
+import '../../custom_icons_icons.dart';
 
 class HeaderButtonWidget extends StatelessWidget {
   const HeaderButtonWidget({Key? key}) : super(key: key);

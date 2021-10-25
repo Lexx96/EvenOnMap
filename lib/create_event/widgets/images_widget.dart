@@ -88,7 +88,9 @@ class _ImagesWidgetState extends State<ImagesWidget> {
         builder: (context) => CupertinoActionSheet(
           actions: [
             CupertinoActionSheetAction(
-              onPressed: () {Navigator.of(context).pop();},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [Icon(Icons.image), Text('Открыть')],
@@ -97,8 +99,9 @@ class _ImagesWidgetState extends State<ImagesWidget> {
             CupertinoActionSheetAction(
               onPressed: () {
                 _selectedImages.removeAt(index);
-                 Navigator.of(context).pop();
-                 },
+                _bloc.notSelectedPickImage();
+                Navigator.of(context).pop();
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [Icon(Icons.delete_outline), Text('Удалить')],
@@ -116,13 +119,16 @@ class _ImagesWidgetState extends State<ImagesWidget> {
             ListTile(
               leading: Icon(Icons.image),
               title: Text('Открыть'),
-              onTap: () {Navigator.of(context).pop();},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
             ListTile(
               leading: Icon(Icons.delete_outline),
               title: Text('Удалить'),
               onTap: () {
-                  _selectedImages.removeAt(index);
+                _selectedImages.removeAt(index);
+                _bloc.notSelectedPickImage();
                 Navigator.of(context).pop();
               },
             ),
@@ -132,45 +138,35 @@ class _ImagesWidgetState extends State<ImagesWidget> {
     }
   }
 
-  Widget _isButton (index){
-    if(index <= 4) {
-      return Container(
-        height: 195,
-        width: 90,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-              color: Colors.black.withOpacity(0.2)),
-          borderRadius:
-          BorderRadius.all(Radius.circular(10)),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black,
-                blurRadius: 8,
-                offset: Offset(0, 2))
-          ],
+  Widget _isButton() {
+    return Container(
+      height: 195,
+      width: 90,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black.withOpacity(0.2)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(color: Colors.black, blurRadius: 8, offset: Offset(0, 2))
+        ],
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: TextButton(
+        onPressed: () => _showImagesSource(context),
+        child: Icon(
+          Icons.add_rounded,
+          size: 45,
+          color: Colors.grey,
         ),
-        clipBehavior: Clip.hardEdge,
-        child: TextButton(
-          onPressed: () => _showImagesSource(context),
-          child: Icon(
-            Icons.add_rounded,
-            size: 45,
-            color: Colors.grey,
-          ),
-        ),
-      );
-    }
-    else {
-      return SizedBox();
-    }
+      ),
+    );
   }
 
   @override
   void initState() {
     super.initState();
     _bloc = PickImageBloc();
-    _bloc.emptyPickImageBloc();
+    _bloc.notSelectedPickImage();
   }
 
   @override
@@ -188,76 +184,37 @@ class _ImagesWidgetState extends State<ImagesWidget> {
         child: StreamBuilder(
           stream: _bloc.streamPickImage,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.data is EmptyPickImage) {
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 1,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 195,
-                    width: 90,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.black.withOpacity(0.2)),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 8,
-                            offset: Offset(0, 2))
+            if (snapshot.data is LoadedPickImage ||
+                snapshot.data is NotSelectedPickImage) {
+              if (snapshot.data is LoadedPickImage) {
+                LoadedPickImage _data = snapshot.data as LoadedPickImage;
+                final _images = _data.image;
+                _images != null
+                    ? _selectedImages.add(_images)
+                    : _selectedImages;
+              }
+              return (_selectedImages.length == 0)
+                  ? Row(
+                      children: [
+                        _isButton(),
                       ],
-                    ),
-                    clipBehavior: Clip.hardEdge,
-                    child: TextButton(
-                      onPressed: () => _showImagesSource(context),
-                      child: Icon(
-                        Icons.add_rounded,
-                        size: 45,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  );
-                },
-              );
-            }
-            if (snapshot.data is LoadedPickImage) {
-              LoadedPickImage _data = snapshot.data as LoadedPickImage;
-              final _images = _data.image;
-              _images != null ?  _selectedImages.add(_images) : _selectedImages;
-              return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: _selectedImages.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    children: [
-                      Container(
-                        height: 195,
-                        width: 90,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border:
-                              Border.all(color: Colors.black.withOpacity(0.2)),
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black,
-                                blurRadius: 8,
-                                offset: Offset(0, 2))
-                          ],
-                        ),
-                        clipBehavior: Clip.hardEdge,
-                        child: Stack(
+                    )
+                  : ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _selectedImages.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Row(
                           children: [
-                            // проблемка
-                            _selectedImages.isNotEmpty ?
-                            Center(child: Image.file(_selectedImages[index] as File)) : Container(
+                            Container(
                               height: 195,
                               width: 90,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                border: Border.all(color: Colors.black.withOpacity(0.2)),
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                    color: Colors.black.withOpacity(0.2)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
                                 boxShadow: [
                                   BoxShadow(
                                       color: Colors.black,
@@ -266,42 +223,52 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                                 ],
                               ),
                               clipBehavior: Clip.hardEdge,
-                              child: TextButton(
-                                onPressed: () => _showImagesSource(context),
-                                child: Icon(
-                                  Icons.add_rounded,
-                                  size: 45,
-                                  color: Colors.grey,
-                                ),
+                              child: Stack(
+                                children: [
+                                  Center(
+                                      child: Image.file(
+                                          _selectedImages[index] as File)),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          (snapshot.data is LoadedPickImage ||
+                                                  snapshot.data
+                                                      is NotSelectedPickImage)
+                                              ? Icon(
+                                                  Icons.done,
+                                                  color: Colors.deepOrange,
+                                                  size: 18,
+                                                )
+                                              : CircularProgressIndicator(),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      splashColor: Colors.grey[1],
+                                      onTap: () => _showActions(context, index),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    (snapshot.data is LoadedPickImage) ? Icon(Icons.done, color: Colors.deepOrange, size: 18,) : CircularProgressIndicator(),
-                                  ],
-                                )
-                              ],
+                            SizedBox(
+                              width: 10,
                             ),
-                            Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                splashColor: Colors.grey[1],
-                                onTap: () => _showActions(context, index),
-                              ),
-                            )
+                            (_selectedImages.length <= 6 &&
+                                    index == _selectedImages.length - 1)
+                                ? _isButton()
+                                : SizedBox.shrink(),
                           ],
-                        ),
-                      ),
-                      SizedBox(width: 10,),
-                      (_selectedImages.length - 1 == index || _selectedImages.length == 0) ? _isButton(index) : SizedBox.shrink()
-                    ],
-                  );
-                },
-              );
+                        );
+                      },
+                    );
             }
             return Center(child: CircularProgressIndicator());
           },

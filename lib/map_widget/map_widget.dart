@@ -3,7 +3,7 @@ import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../custom_icons.dart';
+import '../custom_icons_icons.dart';
 /*
  какая то ошибка есть
  Creating a virtual display of size: [2156, 324] may result in problems(https://github.com/flutter/flutter/issues/2897).

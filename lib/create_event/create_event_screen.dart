@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../custom_icons.dart';
+import '../custom_icons_icons.dart';
 import 'widgets/images_widget.dart';
 import 'bloc/create_event/create_event_bloc_state.dart';
 import 'bloc/create_event/create_event_bloc.dart';
