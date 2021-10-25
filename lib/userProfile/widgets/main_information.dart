@@ -121,13 +121,13 @@ class MainInformationWidget extends StatelessWidget {
             color: Colors.black54,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 8.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
                     onPressed: () {},
-                    child: Text(S.of(context).friends + ' ' + '354',
+                    child: Text('Были рядом',
                         style: const TextStyle(
                             color: Colors.black54,
                             fontWeight: FontWeight.bold)))

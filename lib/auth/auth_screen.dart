@@ -52,67 +52,8 @@ class _AuthWidgetState extends State<AuthWidget> {
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data is AuthLogInLoadedState ) {
-                return ListView(
-                  children: [
-                    const AuthHeaderWidget(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    const AuthMainImage(),
-                    const FormWidget(),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-                    const AuthTextAuthorization(),
-                    TextButton(
-                      style: ButtonStyle(
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
-                          overlayColor: MaterialStateProperty.all(Colors.grey),
-                          shadowColor: MaterialStateProperty.all(Colors.grey),
-                          elevation: MaterialStateProperty.all(5),
-                          shape:
-                              MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ))),
-                      onPressed: () {
-                        _bloc.loadingLogIn('79516196915', '12345');
-                      },
-                      child: Text(
-                        S.of(context).enter,
-                        style: TextStyle(fontSize: 23),
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    TextButton(
-                      style: ButtonStyle(
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.blue),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                          overlayColor: MaterialStateProperty.all(Colors.grey),
-                          shadowColor: MaterialStateProperty.all(Colors.grey),
-                          elevation: MaterialStateProperty.all(5),
-                          shape:
-                              MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ))),
-                      onPressed: () {
-                        _bloc.loadingRegistration('79134322205', '12345');
-                      },
-                      child: Expanded(
-                        child: Text(
-                          S.of(context).registration,
-                          style: const TextStyle(fontSize: 23),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }
-              if (snapshot.data is AuthRegistrationLoadingState ||
-                  snapshot.data is AuthLogInLoadingState) {
+              if (snapshot.data is EmptyBlocState || snapshot.data is AuthRegistrationLoadingState ||
+              snapshot.data is AuthLogInLoadingState) {
                 return Stack(
                   children: [
                     ListView(
@@ -129,19 +70,21 @@ class _AuthWidgetState extends State<AuthWidget> {
                         TextButton(
                           style: ButtonStyle(
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
+                              MaterialStateProperty.all(Colors.white),
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.blue),
+                              MaterialStateProperty.all(Colors.blue),
                               overlayColor:
-                                  MaterialStateProperty.all(Colors.grey),
+                              MaterialStateProperty.all(Colors.grey),
                               shadowColor:
-                                  MaterialStateProperty.all(Colors.grey),
+                              MaterialStateProperty.all(Colors.grey),
                               elevation: MaterialStateProperty.all(5),
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ))),
-                          onPressed: () {},
+                                    borderRadius: BorderRadius.circular(15),
+                                  ))),
+                          onPressed: () {
+                            _bloc.loadingLogIn('78889555982', '12345');
+                          },
                           child: Text(
                             S.of(context).enter,
                             style: TextStyle(fontSize: 23),
@@ -152,20 +95,20 @@ class _AuthWidgetState extends State<AuthWidget> {
                         TextButton(
                           style: ButtonStyle(
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.blue),
+                              MaterialStateProperty.all(Colors.blue),
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.white),
+                              MaterialStateProperty.all(Colors.white),
                               overlayColor:
-                                  MaterialStateProperty.all(Colors.grey),
+                              MaterialStateProperty.all(Colors.grey),
                               shadowColor:
-                                  MaterialStateProperty.all(Colors.grey),
+                              MaterialStateProperty.all(Colors.grey),
                               elevation: MaterialStateProperty.all(5),
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ))),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ))),
                           onPressed: () {
-                            _bloc.loadingRegistration('78889558999', '12345');
+                            _bloc.loadingRegistration('78889555982', '12345');
                           },
                           child: Expanded(
                             child: Text(
@@ -176,14 +119,11 @@ class _AuthWidgetState extends State<AuthWidget> {
                         ),
                       ],
                     ),
-                    Center(
-                      child: CircularProgressIndicator(),
-                    )
+                    (snapshot.data is AuthRegistrationLoadingState || snapshot.data is AuthLogInLoadingState) ? Center(child: CircularProgressIndicator())  : SizedBox.shrink(),
                   ],
                 );
               }
-              if (snapshot.data is AuthRegistrationLoadedState ||
-                  snapshot.data is EmptyBlocState) {
+              if (snapshot.data is AuthRegistrationLoadedState || snapshot.data is AuthLogInLoadedState) {
                 Future.delayed(Duration.zero, () {
                   Navigator.of(context)
                       .pushNamed(MainNavigationRouteName.mainScreen);

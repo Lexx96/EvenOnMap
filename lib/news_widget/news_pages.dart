@@ -51,8 +51,10 @@ class _NewsWidgetState extends State<NewsWidget> {
 
   Future <void> _onLoading() async {
     await Future.delayed(Duration(milliseconds: 1000));
-    // как правельносделать загрузку в нижней части лист вью
-    _refreshController.loadComplete();
+    _bloc.onLoading().then((value) {
+      _refreshController.loadComplete();
+    });
+    _refreshController.loadFailed();
   }
 
   @override
@@ -78,9 +80,6 @@ class _NewsWidgetState extends State<NewsWidget> {
       body: StreamBuilder(
         stream: _bloc.newsStreamController,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          // if (snapshot.data is NewsEmptyState) {
-          //   return SkeletonWidget();
-          // }
           if (snapshot.data is NewsLoadingState || snapshot.data is NewsEmptyState) {
             return SkeletonWidget();
           }

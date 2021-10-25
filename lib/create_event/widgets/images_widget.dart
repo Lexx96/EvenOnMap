@@ -243,7 +243,10 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                                                   color: Colors.deepOrange,
                                                   size: 18,
                                                 )
-                                              : CircularProgressIndicator(),
+                                              : SizedBox(
+                                                height: 20,
+                                                width: 20,
+                                                  child: CircularProgressIndicator()),
                                         ],
                                       )
                                     ],

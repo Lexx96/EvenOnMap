@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../custom_icons_icons.dart';
@@ -15,7 +14,6 @@ class CreateEventWidget extends StatefulWidget {
 }
 
 class _CreateEventWidgetState extends State<CreateEventWidget> {
-
   late ServiceNewEventBloc _bloc;
 
   @override
@@ -34,127 +32,77 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-        stream: _bloc.streamEventController,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if(snapshot.data is EventEmptyBloc) {
-            return ListView(
-              children: [
-                FormWidget(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Center(child: Text('Добавить фото'),),
-                ),
-                SizedBox(height: 10,),
-                ImagesWidget(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Укажите место',
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: TextButton(
-                          onPressed: () => _bloc.getLatLngOnMap(),
-                          child: Icon(
-                            CustomIcons.location,
-                            color: Colors.blue,
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStateProperty.all(Colors.transparent),
-                            overlayColor:
-                            MaterialStateProperty.all(Colors.grey),
-                            elevation: MaterialStateProperty.all(0),
-                            minimumSize:
-                            MaterialStateProperty.all(Size(60, 30)),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                )),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            );
-          }
-          if(snapshot.data is GetLatLng) {
-            return GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(53.769997, 87.137535),
-                zoom: 16,
-              ),
-            );
-          }
-          if(snapshot.data is EventLoadingBloc) {
-            return Stack(
-              children: [
-                ListView(
+        body: StreamBuilder(
+            stream: _bloc.streamEventController,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.data is EventEmptyBloc ||
+                  snapshot.data is EventLoadingBloc) {
+                return Stack(
                   children: [
-                    FormWidget(),
-                    Center(child: Text('Добавить фото'),),
-                    SizedBox(height: 10,),
-                    ImagesWidget(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Укажите место',
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: TextButton(
-                              onPressed: () => _bloc.getLatLngOnMap(),
-                              child: Icon(
-                                CustomIcons.location,
-                                color: Colors.blue,
+                    ListView(
+                      children: [
+                        FormWidget(),
+                        Center(
+                          child: Text('Добавить фото'),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ImagesWidget(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Укажите место',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
                               ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                                overlayColor:
-                                MaterialStateProperty.all(Colors.grey),
-                                elevation: MaterialStateProperty.all(0),
-                                minimumSize:
-                                MaterialStateProperty.all(Size(60, 30)),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: TextButton(
+                                  onPressed: () => _bloc.getLatLngOnMap(),
+                                  child: Icon(
+                                    CustomIcons.location,
+                                    color: Colors.blue,
+                                  ),
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.transparent),
+                                    overlayColor:
+                                        MaterialStateProperty.all(Colors.grey),
+                                    elevation: MaterialStateProperty.all(0),
+                                    minimumSize:
+                                        MaterialStateProperty.all(Size(60, 30)),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(25),
                                     )),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+                    snapshot.data is EventLoadingBloc
+                        ? Center(child: CircularProgressIndicator())
+                        : SizedBox.shrink(),
                   ],
-                ),
-                Center(child: CircularProgressIndicator()),
-              ],
-            );
-          }
-          if(snapshot.data is EventLoadedBloc) {}
-          return Center(child: CircularProgressIndicator());
-        }
-      )
-    );
+                );
+              }
+              if (snapshot.data is GetLatLng) {
+                return GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(53.769997, 87.137535),
+                    zoom: 16,
+                  ),
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            }));
   }
 }
-
-
-
-

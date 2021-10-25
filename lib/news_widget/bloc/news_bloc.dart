@@ -57,6 +57,26 @@ class ServiceNewsBloc {
       }
   }
 
+  Future <void> onLoading() async{
+    try{
+      NewsProvider().getAllNews().then(
+            (jsonNewsModel) {
+          if (jsonNewsModel.isNotEmpty) {
+            _newsStreamController.sink
+                .add(NewsBlocState.newsLoadedState(jsonNewsModel));
+          }
+          else {
+            loading();
+          }
+        },
+      );
+    }
+    catch(errorOnRefresh){
+      loading();
+      print('Ошибка запроса новостей $errorOnRefresh');
+    }
+  }
+
   void dispose() {
     _newsStreamController.close();
   }

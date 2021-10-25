@@ -52,6 +52,7 @@ class ServiceAuthBloc {
               AuthBlocState.loadedLogIn(responseJsonLogIn));
         }
         else {
+
           _streamController.sink.add(AuthBlocState.emptyBlocState());
         }
       });

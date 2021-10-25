@@ -12,6 +12,9 @@ class UserRegistrationProvider {
     final Response response =
         await UserRegistrationRepository.postUserRegistrationData(
             _jsonRegistrationModel);
+    print(response.statusCode);
+    print(response.body);
+    print('222222222222222222222222222222');
     final jsonRegistrationModel = UserRegistrationModel();
     if (response.statusCode == 201) {
       try {
