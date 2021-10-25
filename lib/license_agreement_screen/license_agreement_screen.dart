@@ -12,13 +12,13 @@ class LicenseAgreement extends StatefulWidget {
 }
 
 class _LicenseAgreementState extends State<LicenseAgreement> {
-  bool? isAccepted;
+  bool? _isAccepted;
   late final LicenseAgreementBloc _bloc;
-  final mainTextStyle =
+  final _mainTextStyle =
       TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black);
-  final secondTextStyle = TextStyle(fontSize: 16, color: Colors.black);
+  final _secondTextStyle = TextStyle(fontSize: 16, color: Colors.black);
 
-  void agreeTerms (bool? isAccepted) {
+  void _agreeTerms (bool? isAccepted) {
     if(isAccepted == false) {
       _bloc.emptyState();
     }
@@ -32,7 +32,7 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
     super.initState();
     _bloc = LicenseAgreementBloc();
     _bloc.emptyState();
-    isAccepted = false;
+    _isAccepted = false;
   }
 
   @override
@@ -63,7 +63,7 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                       children: [
                         Text(
                           '''Лицензионное соглашение на использование программы «EventOnMap» для мобильных устройств''',
-                          style: mainTextStyle,
+                          style: _mainTextStyle,
                         ),
                         SizedBox(
                           height: 10,
@@ -73,13 +73,13 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                   \nЛюбое использование Вами программы означает полное и безоговорочное принятие Вами условий настоящего лицензионного соглашения.
                   \nЕсли Вы не принимаете условия лицензионного соглашения в полном объёме, Вы не имеете права использовать программу в каких-либо целях.
 ''',
-                          style: secondTextStyle,
+                          style: _secondTextStyle,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: Text(
                             '1. Общие положения',
-                            style: mainTextStyle,
+                            style: _mainTextStyle,
                           ),
                         ),
                         Text(
@@ -88,13 +88,13 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                   \n1.3. Использование Программы разрешается только на условиях настоящей Лицензии. Если Пользователь не принимает условия Лицензии в полном объёме, Пользователь не имеет права использовать Программу в каких-либо целях. Использование Программы с нарушением (невыполнением) какого-либо из условий Лицензии запрещено.
                   \n1.4. Использование Программы Пользователем на условиях настоящей Лицензии в личных некоммерческих целях осуществляется безвозмездно.  Использование Программы на условиях и способами, не предусмотренными настоящей Лицензией, возможно только на основании отдельного соглашенияс Правообладателем.
 ''',
-                          style: secondTextStyle,
+                          style: _secondTextStyle,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: Text(
                             '2. Право на Программу',
-                            style: mainTextStyle,
+                            style: _mainTextStyle,
                           ),
                         ),
                         Text(
@@ -107,7 +107,7 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: Text(
                             '3. Лицензия',
-                            style: mainTextStyle,
+                            style: _mainTextStyle,
                           ),
                         ),
                         Text(
@@ -115,11 +115,11 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                   \n3.1.1. Применять Программу по прямому функциональному назначению, в целях чего произвести ее копирование и установку (воспроизведение) устройство(-ва) Пользователя. Пользователь вправе произвести установку Программы на неограниченное число устройств. При установке на устройство каждой копии Программы присваивается индивидуальный номер, который автоматически сообщается Правообладателю.
                   \n3.1.2. Воспроизводить и распространять Программу в некоммерческих целях (безвозмездно).
 ''',
-                          style: secondTextStyle,
+                          style: _secondTextStyle,
                         ),
                         Text(
                           '4. Ограничения',
-                          style: mainTextStyle,
+                          style: _mainTextStyle,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -129,14 +129,14 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                     \n4.3. Пользователь не имеет права распространять Программу в виде, отличном от того, в котором он ее получил, без письменного согласия Правообладателя.
                     \n4.4. Программа должна использоваться (в том числе распространяться) под наименованием: «EventOnMap». Пользователь не вправе изменять наименование Программы, изменять и/или удалять знак охраны авторского права или иное указание на Правообладателя.
 ''',
-                            style: secondTextStyle,
+                            style: _secondTextStyle,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: Text(
                             '5. Условия использования отдельных функций Программы',
-                            style: mainTextStyle,
+                            style: _mainTextStyle,
                           ),
                         ),
                         Text(
@@ -145,14 +145,14 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                   \n5.3. Пользователь может в любой момент отказаться от передачи данных, указанных в п. 5.2, отключив соответствующую функцию.
                   \n5.4. Все данные об использовании Программы, передаваемые в соответствии с настоящей Лицензией, сохраняются и обрабатываются в соответствии с Политикой конфиденциальности.
 ''',
-                          style: secondTextStyle,
+                          style: _secondTextStyle,
                         ),
                         Row(
                           children: [
-                            Text('Принять', style: secondTextStyle,),
+                            Text('Принять', style: _secondTextStyle,),
                             Checkbox(
-                              value: data is EmptyLicenseAgreementState ? isAccepted : true,
-                              onChanged: (bool? isAccepted) => agreeTerms(isAccepted),
+                              value: data is EmptyLicenseAgreementState ? _isAccepted : true,
+                              onChanged: (bool? isAccepted) => _agreeTerms(isAccepted),
                             ),
                           ],
                         ),
@@ -193,7 +193,7 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                           children: [
                             Text(
                               '''Лицензионное соглашение на использование программы «EventOnMap» для мобильных устройств''',
-                              style: mainTextStyle,
+                              style: _mainTextStyle,
                             ),
                             SizedBox(
                               height: 10,
@@ -203,13 +203,13 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                   \nЛюбое использование Вами программы означает полное и безоговорочное принятие Вами условий настоящего лицензионного соглашения.
                   \nЕсли Вы не принимаете условия лицензионного соглашения в полном объёме, Вы не имеете права использовать программу в каких-либо целях.
 ''',
-                              style: secondTextStyle,
+                              style: _secondTextStyle,
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
                                 '1. Общие положения',
-                                style: mainTextStyle,
+                                style: _mainTextStyle,
                               ),
                             ),
                             Text(
@@ -218,13 +218,13 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                   \n1.3. Использование Программы разрешается только на условиях настоящей Лицензии. Если Пользователь не принимает условия Лицензии в полном объёме, Пользователь не имеет права использовать Программу в каких-либо целях. Использование Программы с нарушением (невыполнением) какого-либо из условий Лицензии запрещено.
                   \n1.4. Использование Программы Пользователем на условиях настоящей Лицензии в личных некоммерческих целях осуществляется безвозмездно.  Использование Программы на условиях и способами, не предусмотренными настоящей Лицензией, возможно только на основании отдельного соглашенияс Правообладателем.
 ''',
-                              style: secondTextStyle,
+                              style: _secondTextStyle,
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
                                 '2. Право на Программу',
-                                style: mainTextStyle,
+                                style: _mainTextStyle,
                               ),
                             ),
                             Text(
@@ -237,7 +237,7 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                               padding: const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
                                 '3. Лицензия',
-                                style: mainTextStyle,
+                                style: _mainTextStyle,
                               ),
                             ),
                             Text(
@@ -245,11 +245,11 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                   \n3.1.1. Применять Программу по прямому функциональному назначению, в целях чего произвести ее копирование и установку (воспроизведение) устройство(-ва) Пользователя. Пользователь вправе произвести установку Программы на неограниченное число устройств. При установке на устройство каждой копии Программы присваивается индивидуальный номер, который автоматически сообщается Правообладателю.
                   \n3.1.2. Воспроизводить и распространять Программу в некоммерческих целях (безвозмездно).
 ''',
-                              style: secondTextStyle,
+                              style: _secondTextStyle,
                             ),
                             Text(
                               '4. Ограничения',
-                              style: mainTextStyle,
+                              style: _mainTextStyle,
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -259,14 +259,14 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                     \n4.3. Пользователь не имеет права распространять Программу в виде, отличном от того, в котором он ее получил, без письменного согласия Правообладателя.
                     \n4.4. Программа должна использоваться (в том числе распространяться) под наименованием: «EventOnMap». Пользователь не вправе изменять наименование Программы, изменять и/или удалять знак охраны авторского права или иное указание на Правообладателя.
 ''',
-                                style: secondTextStyle,
+                                style: _secondTextStyle,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
                                 '5. Условия использования отдельных функций Программы',
-                                style: mainTextStyle,
+                                style: _mainTextStyle,
                               ),
                             ),
                             Text(
@@ -275,7 +275,7 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                   \n5.3. Пользователь может в любой момент отказаться от передачи данных, указанных в п. 5.2, отключив соответствующую функцию.
                   \n5.4. Все данные об использовании Программы, передаваемые в соответствии с настоящей Лицензией, сохраняются и обрабатываются в соответствии с Политикой конфиденциальности.
 ''',
-                              style: secondTextStyle,
+                              style: _secondTextStyle,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,

@@ -1,11 +1,10 @@
+import 'package:event_on_map/custom_icons.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
 import 'generated/l10n.dart';
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({
-    Key? key,
-  }) : super(key: key);
+  const MainDrawer({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,24 +59,52 @@ class MainDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text(S.of(context).profile),
+              title: Row(
+                children: [
+                  Icon(Icons.add_alert_rounded),
+                  Text('Уведомления'),
+                ],
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed('/InPut');
+              },
+            ),
+            Divider(height: 1,),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(CustomIcons.user),
+                  Text(S.of(context).profile),
+                ],
+              ),
               onTap: () {
                 Navigator.of(context).pushNamed(MainNavigationRouteName.userProfile);
               },
             ),
-            // ListTile(
-            //   title: Text(S.of(context).registration),
-            //   onTap: () {
-            //     Navigator.of(context).pushNamed('/InPut');
-            //   },
-            // ),
             ListTile(
-              title: Text(S.of(context).licenseAgreement),
+              title: Row(
+                children: [
+                  Icon(Icons.image),
+                  Text('Оформление'),
+                ],
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed('/InPut');
+              },
+            ),
+            Divider(height: 1,),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(CustomIcons.people),
+                  Text('О приложении'),
+                ],
+              ),
               onTap: () {
                 Navigator.of(context).pushNamed(MainNavigationRouteName.licenseAgreement);
               },
             ),
           ],
-        ));
+        ),);
   }
 }

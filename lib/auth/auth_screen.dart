@@ -2,6 +2,7 @@ import 'package:event_on_map/auth/widgets/auth_header_widget.dart';
 import 'package:event_on_map/auth/widgets/auth_text_horizontion_widget.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
+import 'package:event_on_map/auth/widgets/form_widget.dart';
 import 'package:event_on_map/auth_sign_in/main_screen_decoration.dart';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
@@ -36,7 +37,11 @@ class _AuthWidgetState extends State<AuthWidget> {
     _bloc.emptyState();
   }
 
-
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +60,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                       height: 20,
                     ),
                     const AuthMainImage(),
-                    const _FormWidget(),
+                    const FormWidget(),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.06),
                     const AuthTextAuthorization(),
                     TextButton(
@@ -117,7 +122,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                           height: 20,
                         ),
                         const AuthMainImage(),
-                        const _FormWidget(),
+                        const FormWidget(),
                         SizedBox(
                             height: MediaQuery.of(context).size.height * 0.06),
                         const AuthTextAuthorization(),
@@ -182,7 +187,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                 Future.delayed(Duration.zero, () {
                   Navigator.of(context)
                       .pushNamed(MainNavigationRouteName.mainScreen);
-                });
+                },);
               }
               return Center(
                 child: Column(
@@ -199,90 +204,6 @@ class _AuthWidgetState extends State<AuthWidget> {
       ),
     );
   }
-  @override
-  void dispose() {
-    super.dispose();
-    _bloc.dispose();
-  }
 }
 
-class _FormWidget extends StatelessWidget {
-  const _FormWidget({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final _numberTextFieldController = TextEditingController();
-    final _passwordTextFieldController = TextEditingController();
-    final _height = MediaQuery.of(context).size.height;
-    final _textStyle = TextStyle(fontSize: 16, color: Colors.white);
-    return Column(
-      children: [
-        SizedBox(height: _height * 0.01),
-        Text(S.of(context).enterYourPhoneNumber, style: _textStyle),
-        SizedBox(height: _height * 0.01),
-        TextField(
-          decoration: InputDecoration(
-            prefix: const Text('+7'),
-            prefixStyle: const TextStyle(color: Colors.black, fontSize: 16),
-            prefixIcon: const Icon(
-              Icons.phone,
-              color: Colors.green,
-            ),
-            isCollapsed: true,
-            contentPadding: const EdgeInsets.all(15),
-            hintText: S.of(context).phoneNumber,
-            hintStyle: const TextStyle(color: Colors.green),
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(width: 1.0, color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.green,
-              ),
-            ),
-          ),
-          controller: _numberTextFieldController,
-          keyboardType: TextInputType.number,
-        ),
-        SizedBox(height: _height * 0.02),
-        Text(S.of(context).enterThePassword, style: _textStyle),
-        SizedBox(height: _height * 0.01),
-        TextField(
-          decoration: InputDecoration(
-            prefixStyle: const TextStyle(color: Colors.black, fontSize: 16),
-            prefixIcon: const Icon(
-              Icons.lock,
-              color: Colors.green,
-            ),
-            isCollapsed: true,
-            contentPadding: const EdgeInsets.all(15),
-            hintText: '     ' + S.of(context).password,
-            hintStyle: const TextStyle(color: Colors.green),
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 1.0, color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.green,
-              ),
-            ),
-          ),
-          obscureText: true,
-          // скрывать вводимые данные, как правело для паролей
-          obscuringCharacter: '*',
-          controller: _passwordTextFieldController,
-        ),
-      ],
-    );
-  }
-}
