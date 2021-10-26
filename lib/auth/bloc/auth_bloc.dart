@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:event_on_map/auth/models/log_in/user_log_in.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_provider.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
@@ -47,13 +48,12 @@ class ServiceAuthBloc {
     try {
       UserLogInProvider().postUserLogIn(phone, password).then((
           responseJsonLogIn) {
-        if (responseJsonLogIn.accessToken != null) {
+        if (responseJsonLogIn is UserLogInModel && responseJsonLogIn.accessToken != null) {
           _streamController.sink.add(
               AuthBlocState.loadedLogIn(responseJsonLogIn));
         }
         else {
-
-          _streamController.sink.add(AuthBlocState.emptyBlocState());
+          
         }
       });
     }
@@ -63,7 +63,17 @@ class ServiceAuthBloc {
     }
   }
 
-  /// метод закрытия стрима
+  void errorLengthNumber(){
+    _streamController.sink.add(AuthBlocState.errorLengthNumber());
+  }
+  void errorLengthPassword(){
+    _streamController.sink.add(AuthBlocState.errorLengthPassword());
+  }
+
+  void errorLengthLoginAndPassword(){
+    _streamController.sink.add(AuthBlocState.errorLengthLoginAndPassword());
+  }
+
   void dispose() {
     _streamController.close();
   }

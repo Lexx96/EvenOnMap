@@ -11,6 +11,8 @@ class UserLogInProvider {
     final Response response =
         await UserLogInRepository.postUserLogInData(_jsonLogInPost);
     final jsonLogInModel = UserLogInModel();
+    print('11111111111111111111111111111111111111');
+    print(response.statusCode);
     if (response.statusCode == 201) {
       try {
         final jsonLogInList =
@@ -21,6 +23,8 @@ class UserLogInProvider {
         return jsonLogInModel;
       }
     }
-    return jsonLogInModel;
+    else{
+      throw response.statusCode;
+    }
   }
 }

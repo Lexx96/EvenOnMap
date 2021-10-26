@@ -40,9 +40,6 @@ class NewEventModel {
       "description": description as String,
       "lat": lat as double,
       "lng": lng as double,
-      "userId": userId as String,
-      "createAt": createAt as String,
-      "updateAt": updateAt as String,
     };
   }
 }

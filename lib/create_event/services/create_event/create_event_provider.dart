@@ -6,42 +6,32 @@ import 'package:http/http.dart';
 import 'create_event_repository.dart';
 
 class PostNewEventProvider {
-  Future<List<NewEventModel>> postNewEvent(
-    String title,
-    String description,
-    String id,
-    double lat,
-    double lng,
-    String userId,
-    String createAt,
-    String updateAt,
+
+  Future <NewEventModel> postNewEvent(
+    String? title,
+    String? description,
+    double? lat,
+    double? lng,
   ) async {
     final _newEventModel = NewEventModel(
       title: title,
       description: description,
-      id: id,
-      userId: userId,
       lat: lat,
       lng: lng,
-      createAt: createAt,
-      updateAt: userId,
     ).toJson();
 
     final Response response =
         await PostEventRepository.postNewEvent(_newEventModel);
-    List<NewEventModel> newEventModel = [];
+    final newEventModel = {} as NewEventModel;
 
     if (response.statusCode == 201) {
       try {
-        final newJSonModelList = jsonDecode(response.body) as List<dynamic>;
+        final newJSonModelList = jsonDecode(response.body) as Map<String, dynamic>;
 
-        final newJSonMode = newJSonModelList
-            .map((dynamic newJSonModelMap) =>
-                NewEventModel.fromJson(newJSonModelMap))
-            .toList();
-
-        return newJSonMode;
-      } catch (_) {
+        final newJSonModel = NewEventModel.fromJson(newJSonModelList);
+        return newJSonModel;
+      } catch (error) {
+        print('Ошибка запроса на размещение события $error');
         return newEventModel;
       }
     }

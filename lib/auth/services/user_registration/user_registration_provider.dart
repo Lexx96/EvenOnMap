@@ -7,8 +7,10 @@ class UserRegistrationProvider {
 
   Future<UserRegistrationModel> postUserRegistration(
       String phone, String password) async {
+
     final _jsonRegistrationModel =
         UserRegistrationModel(phone: phone, password: password).toJson();
+
     final Response response =
         await UserRegistrationRepository.postUserRegistrationData(
             _jsonRegistrationModel);

@@ -1,31 +1,57 @@
+import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
+import 'package:event_on_map/create_event/models/post_event_model.dart';
 import 'package:flutter/material.dart';
 
-class FormWidget extends StatelessWidget {
+class FormWidget extends StatefulWidget {
   const FormWidget({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<FormWidget> createState() => _FormWidgetState();
+}
+
+class _FormWidgetState extends State<FormWidget> {
+
+  late final ServiceNewEventBloc _bloc;
+  final _headerTextController = TextEditingController();
+  final _bodyTextController = TextEditingController();
+
+  NewEventModel headerAndBodyText () {
+    final _textFromTitle = _headerTextController.text;
+    print(_textFromTitle);
+    final _textFromDescription = _bodyTextController.text;
+    final modelEvent = NewEventModel(title: _textFromTitle, description: _textFromDescription);
+    return modelEvent;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ServiceNewEventBloc _bloc ;
+    _headerTextController.addListener(headerAndBodyText);
+    _bodyTextController.addListener(headerAndBodyText);
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 10.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Создать событие',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 15,
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Создать событие',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ),
           TextField(
             maxLines: 1,
@@ -85,15 +111,13 @@ class FormWidget extends StatelessWidget {
                 ),
               ),
             ),
+            controller: _headerTextController,
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          Divider(
-            height: 1,
-          ),
-          SizedBox(
-            height: 15,
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            child: Divider(
+              height: 1,
+            ),
           ),
           TextField(
             maxLines: DefaultTextStyle.of(context).maxLines,
@@ -156,15 +180,16 @@ class FormWidget extends StatelessWidget {
                 ),
               ),
             ),
+            controller: _bodyTextController,
           ),
-          const SizedBox(
-            height: 15,
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            child: Divider(
+              height: 1,
+            ),
           ),
-          Divider(
-            height: 1,
-          ),
-          SizedBox(
-            height: 15,
+          Center(
+            child: Text('Добавить фото'),
           ),
         ],
       ),

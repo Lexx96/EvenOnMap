@@ -3,20 +3,41 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
-class FormWidget extends StatelessWidget {
-  const FormWidget({Key? key}) : super(key: key);
+class FormAuthWidget extends StatefulWidget {
+  const FormAuthWidget({Key? key}) : super(key: key);
+
+  @override
+  State<FormAuthWidget> createState() => _FormAuthWidgetState();
+}
+
+class _FormAuthWidgetState extends State<FormAuthWidget> {
+
+  final _numberController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  final _textStyle = TextStyle(fontSize: 16, color: Colors.white);
+
+  void numberText(){
+    final _numberText = _numberController.text;
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _numberController.addListener(numberText);
+    _passwordTextController.addListener(numberText);
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final _numberTextFieldController = TextEditingController();
-    final _passwordTextFieldController = TextEditingController();
     final _height = MediaQuery.of(context).size.height;
-    final _textStyle = TextStyle(fontSize: 16, color: Colors.white);
     return Column(
       children: [
-        SizedBox(height: _height * 0.01),
-        Text(S.of(context).enterYourPhoneNumber, style: _textStyle),
-        SizedBox(height: _height * 0.01),
+        Padding(
+          padding: EdgeInsets.only(top: _height * 0.01, bottom: _height * 0.07),
+          child: Text(S.of(context).enterYourPhoneNumber, style: _textStyle),
+        ),
         TextField(
           decoration: InputDecoration(
             prefix: const Text('+7'),
@@ -43,7 +64,7 @@ class FormWidget extends StatelessWidget {
               ),
             ),
           ),
-          controller: _numberTextFieldController,
+          controller: _numberController,
           keyboardType: TextInputType.number,
         ),
         SizedBox(height: _height * 0.02),
@@ -77,7 +98,7 @@ class FormWidget extends StatelessWidget {
           obscureText: true,
           // скрывать вводимые данные, как правело для паролей
           obscuringCharacter: '*',
-          controller: _passwordTextFieldController,
+          controller: _passwordTextController,
         ),
       ],
     );

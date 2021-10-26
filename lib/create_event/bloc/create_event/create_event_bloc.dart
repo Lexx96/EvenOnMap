@@ -14,27 +14,25 @@ class ServiceNewEventBloc {
     _streamController.sink.add(NewEventBlocState.emptyEvent());
   }
 
-  void loadingPostEventBloc(
-    String title,
-    String description,
-    String id,
-    double lat,
-    double lng,
-    String userId,
-    String createAt,
-    String updateAt,
-  ) {
+  Future<void> loadingPostEventBloc (
+  {
+  String? title,
+  String? description,
+  double? lat,
+  double? lng,
+  }
+  ) async{
     _streamController.sink.add(NewEventBlocState.loadingEvent());
 
     PostNewEventProvider()
         .postNewEvent(
-            title, description, id, lat, lng, userId, createAt, updateAt)
+      title, description, lat, lng,)
         .then(
-      (responseJsonNewEvent) {
+      (responseModelNewEvent) {
         try {
-          if (responseJsonNewEvent.isNotEmpty) {
+          if (responseModelNewEvent.userId != null) {
             _streamController.sink
-                .add(NewEventBlocState.loadedEvent(responseJsonNewEvent));
+                .add(NewEventBlocState.loadedEvent(responseModelNewEvent));
           } else {
             _streamController.sink.add(NewEventBlocState.emptyEvent());
           }

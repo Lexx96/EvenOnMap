@@ -8,6 +8,9 @@ class AuthBlocState{
   factory AuthBlocState.loadedRegistration(UserRegistrationModel userRegistrationModel) = AuthRegistrationLoadedState;
   factory AuthBlocState.loadingLogIn() = AuthLogInLoadingState;
   factory AuthBlocState.loadedLogIn(UserLogInModel userLogInModel) = AuthLogInLoadedState;
+  factory AuthBlocState.errorLengthNumber() = ErrorLengthNumber;
+  factory AuthBlocState.errorLengthPassword() = ErrorLengthPassword;
+  factory AuthBlocState.errorLengthLoginAndPassword() = ErrorLengthLoginAndPassword;
 }
 
 class EmptyBlocState extends AuthBlocState{}
@@ -25,4 +28,10 @@ class AuthLogInLoadedState extends AuthBlocState {
   UserLogInModel userLogInModel;
   AuthLogInLoadedState(this.userLogInModel);
 }
+
+class ErrorLengthNumber extends AuthBlocState {}
+
+class ErrorLengthPassword extends AuthBlocState {}
+
+class ErrorLengthLoginAndPassword extends AuthBlocState {}
 

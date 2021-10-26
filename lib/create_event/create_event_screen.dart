@@ -42,50 +42,8 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     ListView(
                       children: [
                         FormWidget(),
-                        Center(
-                          child: Text('Добавить фото'),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
                         ImagesWidget(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Укажите место',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: TextButton(
-                                  onPressed: () => _bloc.getLatLngOnMap(),
-                                  child: Icon(
-                                    CustomIcons.location,
-                                    color: Colors.blue,
-                                  ),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Colors.transparent),
-                                    overlayColor:
-                                        MaterialStateProperty.all(Colors.grey),
-                                    elevation: MaterialStateProperty.all(0),
-                                    minimumSize:
-                                        MaterialStateProperty.all(Size(60, 30)),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                    )),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                        GetLatLngWidget(bloc: _bloc),
                       ],
                     ),
                     snapshot.data is EventLoadingBloc
@@ -104,5 +62,55 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               }
               return Center(child: CircularProgressIndicator());
             }));
+  }
+}
+
+class GetLatLngWidget extends StatelessWidget {
+  const GetLatLngWidget({
+    Key? key,
+    required ServiceNewEventBloc bloc,
+  }) : _bloc = bloc, super(key: key);
+
+  final ServiceNewEventBloc _bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Укажите место',
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: TextButton(
+              onPressed: () => _bloc.getLatLngOnMap(),
+              child: Icon(
+                CustomIcons.location,
+                color: Colors.blue,
+              ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                    Colors.transparent),
+                overlayColor:
+                    MaterialStateProperty.all(Colors.grey),
+                elevation: MaterialStateProperty.all(0),
+                minimumSize:
+                    MaterialStateProperty.all(Size(60, 30)),
+                shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                )),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
