@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:event_on_map/auth/bloc/auth_bloc.dart';
 import 'package:event_on_map/auth/models/log_in/user_log_in.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:http/http.dart';
@@ -11,20 +12,25 @@ class UserLogInProvider {
     final Response response =
         await UserLogInRepository.postUserLogInData(_jsonLogInPost);
     final jsonLogInModel = UserLogInModel();
-    print('11111111111111111111111111111111111111');
-    print(response.statusCode);
+
     if (response.statusCode == 201) {
       try {
         final jsonLogInList =
-            jsonDecode(response.body) as Map<String, dynamic>; // проблемка
+            jsonDecode(response.body) as Map<String, dynamic>;
         final jsonLogInModel = UserLogInModel.fromJson(jsonLogInList);
         return jsonLogInModel;
       } catch (_) {
         return jsonLogInModel;
       }
     }
-    else{
-      throw response.statusCode;
+    else if(response.statusCode == 401){
+      throw ErrorPasswordException();
+    }
+    else if(response.statusCode == 500){
+      throw NotRegisteredException();
+    }
+    else {
+      throw Exception();
     }
   }
 }

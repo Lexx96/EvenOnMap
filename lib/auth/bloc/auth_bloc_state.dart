@@ -11,6 +11,9 @@ class AuthBlocState{
   factory AuthBlocState.errorLengthNumber() = ErrorLengthNumber;
   factory AuthBlocState.errorLengthPassword() = ErrorLengthPassword;
   factory AuthBlocState.errorLengthLoginAndPassword() = ErrorLengthLoginAndPassword;
+  factory AuthBlocState.userAlreadyRegistered() = UserAlreadyRegistered;
+  factory AuthBlocState.errorPassword() = ErrorPassword;
+  factory AuthBlocState.notRegistered() = NotRegistered;
 }
 
 class EmptyBlocState extends AuthBlocState{}
@@ -34,4 +37,12 @@ class ErrorLengthNumber extends AuthBlocState {}
 class ErrorLengthPassword extends AuthBlocState {}
 
 class ErrorLengthLoginAndPassword extends AuthBlocState {}
+
+class UserAlreadyRegistered extends AuthBlocState {}
+
+class ErrorPassword extends AuthBlocState {}
+
+class NotRegistered extends AuthBlocState {}
+
+
 

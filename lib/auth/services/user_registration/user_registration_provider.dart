@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:event_on_map/auth/bloc/auth_bloc.dart';
 import 'package:event_on_map/auth/models/registration/user_registration.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:http/http.dart';
@@ -14,9 +15,6 @@ class UserRegistrationProvider {
     final Response response =
         await UserRegistrationRepository.postUserRegistrationData(
             _jsonRegistrationModel);
-    print(response.statusCode);
-    print(response.body);
-    print('222222222222222222222222222222');
     final jsonRegistrationModel = UserRegistrationModel();
     if (response.statusCode == 201) {
       try {
@@ -27,6 +25,11 @@ class UserRegistrationProvider {
         return jsonRegistrationModel;
       }
     }
-    return jsonRegistrationModel;
+    else if (response.statusCode == 400) {
+      throw UserAlreadyRegisteredException();
+    }
+    else {
+      throw Exception();
+    }
   }
 }

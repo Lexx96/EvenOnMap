@@ -2,10 +2,10 @@ import 'package:event_on_map/auth/widgets/auth_header_widget.dart';
 import 'package:event_on_map/auth/widgets/auth_text_horizontion_widget.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
-import 'package:event_on_map/auth/widgets/form_widget.dart';
 import 'package:event_on_map/auth_sign_in/main_screen_decoration.dart';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'widgets/auth_main_image_widget.dart';
 import 'bloc/auth_bloc.dart';
@@ -31,60 +31,89 @@ class _AuthWidgetState extends State<AuthWidget> {
   final _passwordController = TextEditingController();
   final _textStyle = TextStyle(fontSize: 16, color: Colors.white);
 
-  void _goLogIn(){
+  void _goLogIn() {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;
-    print(_numberText + _passwordText);
 
-    if (_numberText.length <= 9 && _passwordText.length <= 7){
+    if (_numberText.length <= 9 && _passwordText.length <= 7) {
       _bloc.errorLengthLoginAndPassword();
-    }
-    else if (_numberText.length <= 9){
+    } else if (_numberText.length <= 9) {
       _bloc.errorLengthNumber();
-    }
-    else if (_passwordText.length <= 7){
+    } else if (_passwordText.length <= 7) {
       _bloc.errorLengthPassword();
-    }
-    else{
+    } else {
       _bloc.loadingLogIn(_numberText, _passwordText);
     }
-
   }
 
-  void _goRegistration(){
+  void _goRegistration() {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;
-    print(_numberText + _passwordText);
+    // print(_numberText + _passwordText);
 
-    if (_numberText.length <= 9 && _passwordText.length <= 7){
+    if (_numberText.length <= 9 && _passwordText.length <= 7) {
       _bloc.errorLengthLoginAndPassword();
-    }
-    else if (_numberText.length <= 9){
+    } else if (_numberText.length <= 9) {
       _bloc.errorLengthNumber();
-    }
-    else if (_passwordText.length <= 7){
+    } else if (_passwordText.length <= 7) {
       _bloc.errorLengthPassword();
-    }
-    else{
+    } else {
       _bloc.loadingRegistration(_numberText, _passwordText);
     }
-
   }
 
-  Text showNumberText(AsyncSnapshot snapshot){
-    return
-      (snapshot.data is ErrorLengthNumber) || (snapshot.data is ErrorLengthLoginAndPassword)
-          ? Text('Номер должен содержать 11 знаков', style: TextStyle(color: Colors.red, fontSize:16 ),)
-          : Text(S.of(context).enterYourPhoneNumber, style: _textStyle);
+  Text showNumberText(AsyncSnapshot snapshot) {
+    return (snapshot.data is ErrorLengthNumber) ||
+            (snapshot.data is ErrorLengthLoginAndPassword)
+        ? Text(
+            'Номер должен содержать 11 знаков',
+            style: TextStyle(color: Colors.red, fontSize: 16),
+          )
+        : Text(S.of(context).enterYourPhoneNumber, style: _textStyle);
   }
 
-  Text showPasswordText (AsyncSnapshot snapshot) {
-    return
-      (snapshot.data is ErrorLengthPassword) || (snapshot.data is ErrorLengthLoginAndPassword)
-          ? Text('Пароль должен содержать 8 знаков и более', style: TextStyle(color: Colors.red, fontSize:16 ),)
-          : Text(S.of(context).enterThePassword, style: _textStyle);
+  Text showPasswordText(AsyncSnapshot snapshot) {
+    return (snapshot.data is ErrorLengthPassword) ||
+            (snapshot.data is ErrorLengthLoginAndPassword)
+        ? Text(
+            'Пароль должен содержать 8 знаков и более',
+            style: TextStyle(color: Colors.red, fontSize: 16),
+          )
+        : Text(S.of(context).enterThePassword, style: _textStyle);
   }
 
+  Widget showException (AsyncSnapshot snapshot){
+    if (snapshot.data is ErrorPassword) {
+      return AlertDialog(
+        title: Center(child: Text('Не верный пароль',)),
+        actions: [
+          TextButton(onPressed: () => _bloc.emptyState(),
+            child: Text('OK'),)
+        ],
+      );
+    }
+    else if (snapshot.data is NotRegistered) {
+      return AlertDialog(
+        title: Center(child: Text('Пользователь не зарегистрирован',)),
+        actions: [
+          TextButton(onPressed: () => _bloc.emptyState(),
+            child: Text('OK'),)
+        ],
+      );
+    }
+    else if (snapshot.data is UserAlreadyRegistered) {
+      return AlertDialog(
+        title: Center(child: Text('Пользователь уже зарегистрирован',)),
+        actions: [
+          TextButton(onPressed: () => _bloc.emptyState(),
+            child: Text('OK'),)
+        ],
+      );
+    }
+    else {
+      return SizedBox.shrink();
+    }
+  }
 
   @override
   void initState() {
@@ -112,9 +141,15 @@ class _AuthWidgetState extends State<AuthWidget> {
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data is EmptyBlocState || snapshot.data is AuthRegistrationLoadingState ||
-              snapshot.data is AuthLogInLoadingState || snapshot.data is ErrorLengthNumber || snapshot.data is ErrorLengthPassword
-                  || snapshot.data is ErrorLengthLoginAndPassword) {
+              if (snapshot.data is EmptyBlocState ||
+                  snapshot.data is AuthRegistrationLoadingState ||
+                  snapshot.data is AuthLogInLoadingState ||
+                  snapshot.data is ErrorLengthNumber ||
+                  snapshot.data is ErrorLengthPassword ||
+                  snapshot.data is ErrorLengthLoginAndPassword ||
+                  snapshot.data is ErrorPassword ||
+                  snapshot.data is NotRegistered ||
+                  snapshot.data is UserAlreadyRegistered) {
                 return Stack(
                   children: [
                     ListView(
@@ -124,13 +159,15 @@ class _AuthWidgetState extends State<AuthWidget> {
                         Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(top: _height * 0.01, bottom: _height * 0.01),
+                              padding: EdgeInsets.only(
+                                  top: _height * 0.01, bottom: _height * 0.01),
                               child: showNumberText(snapshot),
                             ),
                             TextField(
                               decoration: InputDecoration(
                                 prefix: const Text('+7'),
-                                prefixStyle: const TextStyle(color: Colors.black, fontSize: 16),
+                                prefixStyle: const TextStyle(
+                                    color: Colors.black, fontSize: 16),
                                 prefixIcon: const Icon(
                                   Icons.phone,
                                   color: Colors.green,
@@ -143,7 +180,8 @@ class _AuthWidgetState extends State<AuthWidget> {
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(width: 1.0, color: Colors.white),
+                                  borderSide: const BorderSide(
+                                      width: 1.0, color: Colors.white),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -161,7 +199,8 @@ class _AuthWidgetState extends State<AuthWidget> {
                             SizedBox(height: _height * 0.01),
                             TextField(
                               decoration: InputDecoration(
-                                prefixStyle: const TextStyle(color: Colors.black, fontSize: 16),
+                                prefixStyle: const TextStyle(
+                                    color: Colors.black, fontSize: 16),
                                 prefixIcon: const Icon(
                                   Icons.lock,
                                   color: Colors.green,
@@ -174,7 +213,8 @@ class _AuthWidgetState extends State<AuthWidget> {
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(width: 1.0, color: Colors.white),
+                                  borderSide: BorderSide(
+                                      width: 1.0, color: Colors.white),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -195,18 +235,18 @@ class _AuthWidgetState extends State<AuthWidget> {
                         TextButton(
                           style: ButtonStyle(
                               foregroundColor:
-                              MaterialStateProperty.all(Colors.white),
+                                  MaterialStateProperty.all(Colors.white),
                               backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
+                                  MaterialStateProperty.all(Colors.blue),
                               overlayColor:
-                              MaterialStateProperty.all(Colors.grey),
+                                  MaterialStateProperty.all(Colors.grey),
                               shadowColor:
-                              MaterialStateProperty.all(Colors.grey),
+                                  MaterialStateProperty.all(Colors.grey),
                               elevation: MaterialStateProperty.all(5),
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ))),
+                                borderRadius: BorderRadius.circular(15),
+                              ))),
                           child: Text(
                             S.of(context).enter,
                             style: TextStyle(fontSize: 23),
@@ -218,18 +258,18 @@ class _AuthWidgetState extends State<AuthWidget> {
                         TextButton(
                           style: ButtonStyle(
                               foregroundColor:
-                              MaterialStateProperty.all(Colors.blue),
+                                  MaterialStateProperty.all(Colors.blue),
                               backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
+                                  MaterialStateProperty.all(Colors.white),
                               overlayColor:
-                              MaterialStateProperty.all(Colors.grey),
+                                  MaterialStateProperty.all(Colors.grey),
                               shadowColor:
-                              MaterialStateProperty.all(Colors.grey),
+                                  MaterialStateProperty.all(Colors.grey),
                               elevation: MaterialStateProperty.all(5),
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ))),
+                                borderRadius: BorderRadius.circular(15),
+                              ))),
                           onPressed: () => _goRegistration(),
                           child: Expanded(
                             child: Text(
@@ -240,15 +280,23 @@ class _AuthWidgetState extends State<AuthWidget> {
                         ),
                       ],
                     ),
-                    (snapshot.data is AuthRegistrationLoadingState || snapshot.data is AuthLogInLoadingState) ? Center(child: CircularProgressIndicator())  : SizedBox.shrink(),
+                    (snapshot.data is AuthRegistrationLoadingState ||
+                            snapshot.data is AuthLogInLoadingState)
+                        ? Center(child: CircularProgressIndicator())
+                        : SizedBox.shrink(),
+                    showException(snapshot),
                   ],
                 );
               }
-              if (snapshot.data is AuthRegistrationLoadedState || snapshot.data is AuthLogInLoadedState) {
-                Future.delayed(Duration.zero, () {
-                  Navigator.of(context)
-                      .pushNamed(MainNavigationRouteName.mainScreen);
-                },);
+              if (snapshot.data is AuthRegistrationLoadedState ||
+                  snapshot.data is AuthLogInLoadedState) {
+                Future.delayed(
+                  Duration.zero,
+                  () {
+                    Navigator.of(context)
+                        .pushNamed(MainNavigationRouteName.mainScreen);
+                  },
+                );
               }
               return Center(
                 child: Column(
@@ -266,5 +314,3 @@ class _AuthWidgetState extends State<AuthWidget> {
     );
   }
 }
-
-
