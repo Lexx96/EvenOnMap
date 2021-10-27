@@ -159,7 +159,6 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-
                             TextButton(
                               onPressed: data is EmptyLicenseAgreementState ? null : () => Navigator.pop(context, true),
                               child: Text('OK'),
@@ -170,9 +169,7 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10,),
                       ],
                     ),
                   ),

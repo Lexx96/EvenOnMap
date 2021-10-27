@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../custom_icons_icons.dart';
+import 'models/post_event_model.dart';
 import 'widgets/images_widget.dart';
 import 'bloc/create_event/create_event_bloc_state.dart';
 import 'bloc/create_event/create_event_bloc.dart';
@@ -15,6 +16,20 @@ class CreateEventWidget extends StatefulWidget {
 
 class _CreateEventWidgetState extends State<CreateEventWidget> {
   late ServiceNewEventBloc _bloc;
+
+  final _headerTextController = TextEditingController();
+  final _bodyTextController = TextEditingController();
+
+  void _postNewEventInServer () {
+    final _textFromTitle = _headerTextController.text;
+    final _textFromDescription = _bodyTextController.text;
+    final String lat;
+    final String lng;
+    _bloc.loadingPostEventBloc(title: _textFromTitle, description: _textFromDescription, lng: '5.0', lat: '10.0');
+  }
+
+
+
 
   @override
   void initState() {
@@ -36,14 +51,175 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             stream: _bloc.streamEventController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data is EventEmptyBloc ||
-                  snapshot.data is EventLoadingBloc) {
+                  snapshot.data is EventLoadingBloc
+              || snapshot.data is EventLoadedBloc) {
+                print('1111111111111111111111111111111111111');
+                print(snapshot.data);
                 return Stack(
                   children: [
                     ListView(
                       children: [
-                        FormWidget(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0, bottom: 15.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Создать событие',
+                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TextField(
+                                maxLines: 1,
+                                maxLength: 50,
+                                decoration: InputDecoration(
+                                  enabled: true,
+                                  fillColor: Colors.grey[200],
+                                  filled: true,
+                                  hintText: 'Заголовок',
+                                  hintStyle: const TextStyle(color: Colors.grey),
+                                  isCollapsed: true,
+                                  contentPadding: const EdgeInsets.all(15),
+
+                                  enabledBorder: OutlineInputBorder(
+                                    // рабочее , но не активное состояние
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      width: 1.0,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+
+                                  focusedBorder: OutlineInputBorder(
+                                    // в фокусе
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                      width: 2.0,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+
+                                  disabledBorder: OutlineInputBorder(
+                                    //  в не актоивном состоянии
+                                      borderRadius: BorderRadius.circular(20),
+                                      // скругление рамки поля ввода
+                                      borderSide: const BorderSide(
+                                        width: 1.0,
+                                        color: Colors.grey,
+                                      )),
+
+                                  errorBorder: OutlineInputBorder(
+                                    // с ошибкой
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                      width: 1.0, // ширина рамки поля ввода
+                                      color: Colors.red, // цвет рамки поля ввода
+                                    ),
+                                  ),
+
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    // с ошибкой и в фокусе
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                      width: 1.0, // ширина рамки поля ввода
+                                      color: Colors.red, // цвет рамки поля ввода
+                                    ),
+                                  ),
+                                ),
+                                controller: _headerTextController,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                                child: Divider(
+                                  height: 1,
+                                ),
+                              ),
+                              TextField(
+                                maxLines: DefaultTextStyle.of(context).maxLines,
+                                minLines: 10,
+                                maxLength: 1500,
+                                decoration: InputDecoration(
+                                  enabled: true,
+                                  fillColor: Colors.grey[200],
+                                  filled: true,
+                                  hintText: 'Тело события',
+                                  hintStyle: const TextStyle(color: Colors.grey),
+                                  hintMaxLines: 2,
+                                  isCollapsed: true,
+                                  contentPadding: EdgeInsets.all(15),
+
+                                  enabledBorder: OutlineInputBorder(
+                                    // рабочее , но не активное состояние
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      width: 1.0,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+
+                                  focusedBorder: OutlineInputBorder(
+                                    // в фокусе
+                                    borderRadius: BorderRadius.circular(20),
+                                    // скругление каждого угла отдельно
+                                    borderSide: const BorderSide(
+                                      width: 2.0,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+
+                                  disabledBorder: OutlineInputBorder(
+                                    //  в не актоивном состоянии
+                                      borderRadius: BorderRadius.circular(20),
+                                      // скругление рамки поля ввода
+                                      borderSide: const BorderSide(
+                                        width: 1.0, // ширина рамки поля ввода
+                                        color: Colors.grey, // цвет рамки поля ввода
+                                      )),
+
+                                  //errorText: 'Ошибка',     // текст ошибки под полем ввода
+                                  errorBorder: OutlineInputBorder(
+                                    // с ошибкой
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                      width: 1.0, // ширина рамки поля ввода
+                                      color: Colors.red, // цвет рамки поля ввода
+                                    ),
+                                  ),
+
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    // с ошибкой и в фокусе
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                      width: 1.0, // ширина рамки поля ввода
+                                      color: Colors.red, // цвет рамки поля ввода
+                                    ),
+                                  ),
+                                ),
+                                controller: _bodyTextController,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                                child: Divider(
+                                  height: 1,
+                                ),
+                              ),
+                              Center(
+                                child: Text('Добавить фото'),
+                              ),
+                              TextButton(onPressed: () => _postNewEventInServer(), child: Text('123'))
+                            ],
+                          ),
+                        ),
                         ImagesWidget(),
-                        GetLatLngWidget(bloc: _bloc),
+                        GetLatLngWidget(
+                            bloc: _bloc),
                       ],
                     ),
                     snapshot.data is EventLoadingBloc

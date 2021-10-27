@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/create_event/services/create_event/create_event_provider.dart';
 
 import 'create_event_bloc_state.dart';
@@ -16,17 +17,15 @@ class ServiceNewEventBloc {
 
   Future<void> loadingPostEventBloc (
   {
-  String? title,
-  String? description,
-  double? lat,
-  double? lng,
+    String? title,
+    String? description,
+    String? lat,
+    String? lng,
   }
   ) async{
     _streamController.sink.add(NewEventBlocState.loadingEvent());
 
-    PostNewEventProvider()
-        .postNewEvent(
-      title, description, lat, lng,)
+    PostNewEventProvider().postNewEvent(title: title, description: description, lat: lat, lng: lng,)
         .then(
       (responseModelNewEvent) {
         try {

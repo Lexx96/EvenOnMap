@@ -14,6 +14,7 @@ class AuthBlocState{
   factory AuthBlocState.userAlreadyRegistered() = UserAlreadyRegistered;
   factory AuthBlocState.errorPassword() = ErrorPassword;
   factory AuthBlocState.notRegistered() = NotRegistered;
+  factory AuthBlocState.accessTokenNotSet() = AccessTokenNotSet;
 }
 
 class EmptyBlocState extends AuthBlocState{}
@@ -43,6 +44,8 @@ class UserAlreadyRegistered extends AuthBlocState {}
 class ErrorPassword extends AuthBlocState {}
 
 class NotRegistered extends AuthBlocState {}
+
+class AccessTokenNotSet extends AuthBlocState {}
 
 
 

@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'package:event_on_map/auth/models/log_in/user_log_in.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_provider.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_provider.dart';
-import 'package:flutter/material.dart';
 import 'auth_bloc_state.dart';
 
 class ServiceAuthBloc {
@@ -31,14 +29,15 @@ class ServiceAuthBloc {
   ) {
     _streamController.sink.add(AuthBlocState.loadingRegistration());
     UserRegistrationProvider().postUserRegistration(phone, password).then(
-      (responseJsonRegistration) {
-        _streamController.sink
-            .add(AuthBlocState.loadedRegistration(responseJsonRegistration));
+      (responseJsonRegistration) {_streamController.sink.add(AuthBlocState.loadedRegistration(responseJsonRegistration));
+      UserLogInProvider().setAccessTokenInSharedPreferences(accessToken: responseJsonRegistration.accessToken as String);
       },
     ).catchError(
-      (error) {
-        if (error is UserAlreadyRegisteredException) {
+      (exception) {
+        if (exception is UserAlreadyRegisteredException) {
           _streamController.sink.add(AuthBlocState.userAlreadyRegistered());
+        } else if (exception is AccessTokenNotSetInSharedPreferencesException) {
+          _streamController.sink.add(AuthBlocState.accessTokenNotSet());
         } else {
           print('Ошибка выполнения запроса регистрации');
           _streamController.sink.add(AuthBlocState.emptyBlocState());
@@ -54,13 +53,17 @@ class ServiceAuthBloc {
       (responseJsonLogIn) {
         _streamController.sink
             .add(AuthBlocState.loadedLogIn(responseJsonLogIn));
+        UserLogInProvider().setAccessTokenInSharedPreferences(
+            accessToken: responseJsonLogIn.accessToken as String);
       },
     ).catchError(
-      (error) {
-        if (error is ErrorPasswordException) {
+      (exception) {
+        if (exception is ErrorPasswordException) {
           _streamController.sink.add(AuthBlocState.errorPassword());
-        } else if (error is NotRegisteredException) {
+        } else if (exception is NotRegisteredException) {
           _streamController.sink.add(AuthBlocState.notRegistered());
+        } else if (exception is AccessTokenNotSetInSharedPreferencesException) {
+          _streamController.sink.add(AuthBlocState.accessTokenNotSet());
         } else {
           print('Ошибка выполнения запроса авторизации');
           _streamController.sink.add(AuthBlocState.emptyBlocState());
@@ -95,3 +98,5 @@ class UserAlreadyRegisteredException implements Exception {
 class ErrorPasswordException implements Exception {}
 
 class NotRegisteredException implements Exception {}
+
+class AccessTokenNotSetInSharedPreferencesException implements Exception {}

@@ -1,5 +1,6 @@
 
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 
 class DecorationPage extends StatelessWidget {
@@ -16,6 +17,8 @@ class DecorationPage extends StatelessWidget {
               Column(
                 children: [
                   Text('Тут будет что то по оформлению'),
+                  TextButton(onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(), child: Text('Сменить тему'))
+
                 ],
               ),
             ],

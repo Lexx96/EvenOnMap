@@ -5,7 +5,6 @@ import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repositor
 import 'package:http/http.dart';
 
 class UserLogInProvider {
-
   Future<UserLogInModel> postUserLogIn(String phone, String password) async {
     final _jsonLogInPost =
         UserLogInModel(phone: phone, password: password).toJson();
@@ -15,22 +14,30 @@ class UserLogInProvider {
 
     if (response.statusCode == 201) {
       try {
-        final jsonLogInList =
-            jsonDecode(response.body) as Map<String, dynamic>;
+        final jsonLogInList = jsonDecode(response.body) as Map<String, dynamic>;
         final jsonLogInModel = UserLogInModel.fromJson(jsonLogInList);
         return jsonLogInModel;
       } catch (_) {
         return jsonLogInModel;
       }
-    }
-    else if(response.statusCode == 401){
+    } else if (response.statusCode == 401) {
       throw ErrorPasswordException();
-    }
-    else if(response.statusCode == 500){
+    } else if (response.statusCode == 500) {
       throw NotRegisteredException();
-    }
-    else {
+    } else {
       throw Exception();
+    }
+  }
+
+  /// Метод вызывает сохранение accessToken в SharedPreferences
+  Future <void> setAccessTokenInSharedPreferences(
+      {required String accessToken}) async {
+    try{
+      SetAndReadAccessTokenFromSharedPreferences()
+          .setAccessToken(accessToken: accessToken);
+    }
+    catch(_) {
+      throw AccessTokenNotSetInSharedPreferencesException();
     }
   }
 }

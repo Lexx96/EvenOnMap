@@ -27,8 +27,8 @@ class _AuthWidgetState extends State<AuthWidget> {
   late final UserRegistrationRepository _repository;
   late final UserLogInRepository _authLogInRepository;
 
-  final _numberController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _numberController = TextEditingController(text: '9134322000');
+  final _passwordController = TextEditingController(text: 'Sex12345LK');
   final _textStyle = TextStyle(fontSize: 16, color: Colors.white);
 
   void _goLogIn() {
@@ -104,6 +104,15 @@ class _AuthWidgetState extends State<AuthWidget> {
     else if (snapshot.data is UserAlreadyRegistered) {
       return AlertDialog(
         title: Center(child: Text('Пользователь уже зарегистрирован',)),
+        actions: [
+          TextButton(onPressed: () => _bloc.emptyState(),
+            child: Text('OK'),)
+        ],
+      );
+    }
+    else if (snapshot.data is AccessTokenNotSet) {
+      return AlertDialog(
+        title: Center(child: Text('Ошибка записи AccessToken',)),
         actions: [
           TextButton(onPressed: () => _bloc.emptyState(),
             child: Text('OK'),)
@@ -290,12 +299,10 @@ class _AuthWidgetState extends State<AuthWidget> {
               }
               if (snapshot.data is AuthRegistrationLoadedState ||
                   snapshot.data is AuthLogInLoadedState) {
+                if(snapshot.data is AuthLogInLoadedState) {
+                }
                 Future.delayed(
-                  Duration.zero,
-                  () {
-                    Navigator.of(context)
-                        .pushNamed(MainNavigationRouteName.mainScreen);
-                  },
+                  Duration.zero, () => Navigator.of(context).pushNamed(MainNavigationRouteName.mainScreen),
                 );
               }
               return Center(
@@ -303,7 +310,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Неизвестная ошибка'),
-                    CircularProgressIndicator()
+                    CircularProgressIndicator()  // https://www.youtube.com/watch?v=O-rhXZLtpv0
                   ],
                 ),
               );

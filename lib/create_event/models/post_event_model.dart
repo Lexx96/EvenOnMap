@@ -4,8 +4,8 @@ class NewEventModel {
   String? id;
   String? title;
   String? description;
-  double? lat;
-  double? lng;
+  dynamic lat;
+  dynamic lng;
   String? userId;
   String? createAt;
   String? updateAt;
@@ -24,11 +24,11 @@ class NewEventModel {
   factory NewEventModel.fromJson(Map<String, dynamic> eventJson){
     return NewEventModel(
       id: eventJson ['id'] as String,
+      userId: eventJson ['userId'] as String,
       title: eventJson ['title'] as String,
       description: eventJson ['description'] as String,
       lat: eventJson ['lat'] as double,
       lng: eventJson ['lng'] as double,
-      userId: eventJson ['userId'] as String,
       createAt: eventJson ['createAt'] as String,
       updateAt: eventJson ['updateAt'] as String,
     );
@@ -36,10 +36,10 @@ class NewEventModel {
 
   Map<String, dynamic> toJson() {
     return {
-      "id": id as String,
+      "title": title as String,
       "description": description as String,
-      "lat": lat as double,
-      "lng": lng as double,
+      "lat": lat as String,
+      "lng": lng as String,
     };
   }
 }

@@ -16,6 +16,8 @@ class UserRegistrationProvider {
         await UserRegistrationRepository.postUserRegistrationData(
             _jsonRegistrationModel);
     final jsonRegistrationModel = UserRegistrationModel();
+    print('44444444444444444444444444444444444444444444');
+    print(response.statusCode);
     if (response.statusCode == 201) {
       try {
         final jsonRegistrationList = jsonDecode(response.body) as Map <String, dynamic>;

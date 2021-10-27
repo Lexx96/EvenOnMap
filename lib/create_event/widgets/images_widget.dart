@@ -184,6 +184,8 @@ class _ImagesWidgetState extends State<ImagesWidget> {
         child: StreamBuilder(
           stream: _bloc.streamPickImage,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
+            // print('1111111111111111111111111111111111111');
+            // print(snapshot.data);
             if (snapshot.data is LoadedPickImage ||
                 snapshot.data is NotSelectedPickImage) {
               if (snapshot.data is LoadedPickImage) {

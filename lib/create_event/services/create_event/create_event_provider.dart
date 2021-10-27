@@ -7,11 +7,12 @@ import 'create_event_repository.dart';
 
 class PostNewEventProvider {
 
-  Future <NewEventModel> postNewEvent(
+  Future <NewEventModel> postNewEvent({
     String? title,
     String? description,
-    double? lat,
-    double? lng,
+    String? lat,
+    String? lng,
+}
   ) async {
     final _newEventModel = NewEventModel(
       title: title,
@@ -22,12 +23,10 @@ class PostNewEventProvider {
 
     final Response response =
         await PostEventRepository.postNewEvent(_newEventModel);
-    final newEventModel = {} as NewEventModel;
-
+    NewEventModel newEventModel = NewEventModel();
     if (response.statusCode == 201) {
       try {
         final newJSonModelList = jsonDecode(response.body) as Map<String, dynamic>;
-
         final newJSonModel = NewEventModel.fromJson(newJSonModelList);
         return newJSonModel;
       } catch (error) {

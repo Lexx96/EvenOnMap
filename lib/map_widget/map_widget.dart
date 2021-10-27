@@ -55,7 +55,7 @@ class _MapWidgetState extends State<MapWidget> {
         children: [
           TextButton(
             onPressed: () =>
-                Navigator.of(context).pushNamed(MainNavigationRouteName.createAnEventWidget),
+                Navigator.of(context).pushNamedAndRemoveUntil(MainNavigationRouteName.createAnEventWidget, (route) => false),
             child: Icon(
               Icons.add_rounded,
               size: 30,
