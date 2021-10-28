@@ -23,9 +23,11 @@ class PostNewEventProvider {
 
     final Response response =
         await PostEventRepository.postNewEvent(_newEventModel);
+
     NewEventModel newEventModel = NewEventModel();
     if (response.statusCode == 201) {
       try {
+        print(response.statusCode);
         final newJSonModelList = jsonDecode(response.body) as Map<String, dynamic>;
         final newJSonModel = NewEventModel.fromJson(newJSonModelList);
         return newJSonModel;

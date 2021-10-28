@@ -1,8 +1,5 @@
 import 'dart:async';
-
-import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/create_event/services/create_event/create_event_provider.dart';
-
 import 'create_event_bloc_state.dart';
 
 class ServiceNewEventBloc {

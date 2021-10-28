@@ -23,10 +23,15 @@ class SetAndReadAccessTokenFromSharedPreferences {
   }
 
   /// Получение accessToken из SharedPreferences
-  Future<String?> readAccessToken() async {
+  Future<String> readAccessToken() async {
     final storage = await _storage;
-    final getAccessTokenFromSharedPreferences =
-        storage.getString(_SharedPreferencesKeys._accessToken);
-    return getAccessTokenFromSharedPreferences;
+    try{
+      final getAccessTokenFromSharedPreferences =
+      storage.getString(_SharedPreferencesKeys._accessToken);
+      return getAccessTokenFromSharedPreferences as String;
+    }
+    catch(_){
+      return "Получение accessToken из SharedPreferences не удалось";
+    }
   }
 }

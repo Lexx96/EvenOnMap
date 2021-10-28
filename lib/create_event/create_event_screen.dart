@@ -25,7 +25,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     final _textFromDescription = _bodyTextController.text;
     final String lat;
     final String lng;
-    _bloc.loadingPostEventBloc(title: _textFromTitle, description: _textFromDescription, lng: '5.0', lat: '10.0');
+    _bloc.loadingPostEventBloc(title: _textFromTitle, description: _textFromDescription, lng: '5.1', lat: '10.1');
   }
 
 

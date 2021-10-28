@@ -5,6 +5,7 @@ import 'package:event_on_map/news_widget/services/news_api_repository.dart';
 import 'package:http/http.dart';
 
 class NewsProvider{
+
   Future<List<News>> getAllNews() async {
     final Response response = await NewsRepository.getNews();
     List<News> newsJsonModel = [];

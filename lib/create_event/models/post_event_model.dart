@@ -1,5 +1,3 @@
-
-
 class NewEventModel {
   String? id;
   String? title;
@@ -7,8 +5,8 @@ class NewEventModel {
   dynamic lat;
   dynamic lng;
   String? userId;
-  String? createAt;
-  String? updateAt;
+  String? createdAt;
+  String? updatedAt;
 
   NewEventModel({
     this.id,
@@ -17,20 +15,20 @@ class NewEventModel {
     this.lat,
     this.lng,
     this.userId,
-    this.createAt,
-    this.updateAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  factory NewEventModel.fromJson(Map<String, dynamic> eventJson){
+  factory NewEventModel.fromJson(Map<String, dynamic> eventJson) {
     return NewEventModel(
-      id: eventJson ['id'] as String,
-      userId: eventJson ['userId'] as String,
-      title: eventJson ['title'] as String,
-      description: eventJson ['description'] as String,
-      lat: eventJson ['lat'] as double,
-      lng: eventJson ['lng'] as double,
-      createAt: eventJson ['createAt'] as String,
-      updateAt: eventJson ['updateAt'] as String,
+      id: eventJson['id'] as String,
+      userId: eventJson['user_id'] as String,
+      title: eventJson['title'] as String,
+      description: eventJson['description'] as String,
+      lat: eventJson['lat'] as double,
+      lng: eventJson['lng'] as double,
+      createdAt: eventJson['createdAt'] as String,
+      updatedAt: eventJson['updatedAt'] as String,
     );
   }
 
@@ -43,3 +41,4 @@ class NewEventModel {
     };
   }
 }
+
