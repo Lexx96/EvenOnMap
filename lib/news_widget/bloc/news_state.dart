@@ -7,7 +7,7 @@ class NewsBlocState {
 
   factory NewsBlocState.newsEmptyState() = NewsEmptyState;
   factory NewsBlocState.newsLoadingState() = NewsLoadingState;
-  factory NewsBlocState.newsLoadedState(List<News> news) = NewsLoadedState;
+  factory NewsBlocState.newsLoadedState(List<GetNewsFromServerModel> newsFromServer) = NewsLoadedState;
 
 }
 
@@ -17,6 +17,6 @@ class NewsEmptyState extends NewsBlocState {}
 class NewsLoadingState extends NewsBlocState {}
 
 class NewsLoadedState extends NewsBlocState {
-  final List<News> news;
-  NewsLoadedState(this.news);
+  final List<GetNewsFromServerModel> newsFromServer;
+  NewsLoadedState(this.newsFromServer);
 }

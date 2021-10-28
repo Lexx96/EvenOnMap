@@ -3,7 +3,7 @@ import 'package:event_on_map/news_widget/models/news.dart';
 import 'package:flutter/material.dart';
 
 class TextBodyWidget extends StatefulWidget {
-  final News _newsResponse;
+  final GetNewsFromServerModel  _newsResponse;
   TextBodyWidget( this._newsResponse,{Key? key}) : super(key: key);
 
   @override
@@ -11,7 +11,7 @@ class TextBodyWidget extends StatefulWidget {
 }
 
 class _TextBodyWidgetState extends State<TextBodyWidget> {
-  final News _newsResponse;
+  final GetNewsFromServerModel  _newsResponse;
   _TextBodyWidgetState(this._newsResponse);
   late bool _maxLinesBool;
   late var _resultLines;
@@ -56,7 +56,7 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(_newsResponse.email,
+                      child: Text(_newsResponse.title,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -74,7 +74,7 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  _newsResponse.body,
+                  _newsResponse.description,
                   maxLines: _resultLines,
                   overflow: TextOverflow.fade,
                 ),

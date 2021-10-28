@@ -20,15 +20,12 @@ class ServiceNewsBloc {
   void loading()  {
     _newsStreamController.sink.add(NewsBlocState.newsLoadingState());
     try {
-       NewsProvider().getAllNews().then(
+       NewsProvider().getAllNewsFromServer().then(
         (jsonNewsModel) {
-          if (jsonNewsModel.isNotEmpty) {
+
+          print(jsonNewsModel.length);
             _newsStreamController.sink
                 .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-          }
-          else {
-            _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
-          }
         },
       );
     } catch (errorBloc) {
@@ -39,15 +36,11 @@ class ServiceNewsBloc {
 
   Future <void> onRefresh() async{
       try{
-        NewsProvider().getAllNews().then(
+        NewsProvider().getAllNewsFromServer().then(
               (jsonNewsModel) {
-            if (jsonNewsModel.isNotEmpty) {
               _newsStreamController.sink
                   .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-            }
-            else {
               loading();
-            }
           },
         );
       }
@@ -59,15 +52,11 @@ class ServiceNewsBloc {
 
   Future <void> onLoading() async{
     try{
-      NewsProvider().getAllNews().then(
+      NewsProvider().getAllNewsFromServer().then(
             (jsonNewsModel) {
-          if (jsonNewsModel.isNotEmpty) {
             _newsStreamController.sink
                 .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-          }
-          else {
             loading();
-          }
         },
       );
     }

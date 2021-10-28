@@ -41,7 +41,7 @@ class MainNavigation {
     MainNavigationRouteName.changePersonalDataPage: (context) => const ChangePersonalDataPage(),
     MainNavigationRouteName.createAnEventWidget: (context) => const CreateEventWidget(),
     MainNavigationRouteName.userProfile: (context) => const UserProfilePage(),
-    MainNavigationRouteName.newsWidget: (context) => const NewsWidget(),
+    MainNavigationRouteName.newsWidget: (context) => const NewsPage(),
     MainNavigationRouteName.mapWidget: (context) => const MapWidget(),
     MainNavigationRouteName.mainScreen: (context) => const MainScreen(),
     MainNavigationRouteName.licenseAgreement: (context) => const LicenseAgreement(),

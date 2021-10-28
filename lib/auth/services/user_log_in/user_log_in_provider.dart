@@ -29,7 +29,7 @@ class UserLogInProvider {
     }
   }
 
-  /// Метод вызывает сохранение accessToken в SharedPreferences
+  /// сохранение accessToken в SharedPreferences
   Future <void> setAccessTokenInSharedPreferences(
       {required String accessToken}) async {
     try{

@@ -1,21 +1,21 @@
-
 import 'dart:convert';
 import 'package:event_on_map/news_widget/models/news.dart';
 import 'package:event_on_map/news_widget/services/news_api_repository.dart';
 import 'package:http/http.dart';
 
-class NewsProvider{
+class NewsProvider {
 
-  Future<List<News>> getAllNews() async {
-    final Response response = await NewsRepository.getNews();
-    List<News> newsJsonModel = [];
-    if(response.statusCode == 200) {
+  Future<List<GetNewsFromServerModel>> getAllNewsFromServer() async {
+    final Response response = await NewsRepository.getAllNews();
+
+    List<GetNewsFromServerModel> newsJsonModel = [];
+
+
+
+    if (response.statusCode == 200) {
       try {
         final newsJsonList = jsonDecode(response.body) as List<dynamic>;
-        newsJsonModel = newsJsonList
-            .map(
-                (dynamic json) => News.fromJson(json as Map<String, dynamic>))
-            .toList();
+        final newsJsonModel = newsJsonList.map((dynamic e) => GetNewsFromServerModel.fromJson(e as Map<String, dynamic>)).toList();
         return newsJsonModel;
       } catch (_) {
         return newsJsonModel;
@@ -31,4 +31,3 @@ class NewsProvider{
 и сохр его в репозитории
  */
 }
-

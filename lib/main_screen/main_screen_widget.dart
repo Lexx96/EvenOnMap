@@ -78,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
         body: IndexedStack(
           index: _selectedTab,
           children: [
-            NewsWidget(),
+            NewsPage(),
             MapWidget(),
             UserProfilePage(),
           ],

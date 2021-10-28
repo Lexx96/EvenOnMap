@@ -30,8 +30,8 @@ class SetAndReadAccessTokenFromSharedPreferences {
       storage.getString(_SharedPreferencesKeys._accessToken);
       return getAccessTokenFromSharedPreferences as String;
     }
-    catch(_){
-      return "Получение accessToken из SharedPreferences не удалось";
+    catch(e){
+      return "Получить accessToken из SharedPreferences не удалось $e";
     }
   }
 }
