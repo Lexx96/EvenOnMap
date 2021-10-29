@@ -5,11 +5,16 @@ import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repositor
 import 'package:http/http.dart';
 
 class UserLogInProvider {
-  Future<UserLogInModel> postUserLogIn(String phone, String password) async {
-    final _jsonLogInPost =
+
+  /// Авторизация уже зарегистрированного пользователя
+  Future<UserLogInModel> postUserLogIn(
+    String phone,
+    String password,
+  ) async {
+    final _jsonLogInPostModel =
         UserLogInModel(phone: phone, password: password).toJson();
     final Response response =
-        await UserLogInRepository.postUserLogInData(_jsonLogInPost);
+        await UserLogInRepository.postUserLogInData(_jsonLogInPostModel);
     final jsonLogInModel = UserLogInModel();
 
     if (response.statusCode == 201) {
@@ -17,7 +22,8 @@ class UserLogInProvider {
         final jsonLogInList = jsonDecode(response.body) as Map<String, dynamic>;
         final jsonLogInModel = UserLogInModel.fromJson(jsonLogInList);
         return jsonLogInModel;
-      } catch (_) {
+      } catch (e) {
+        print('Ошибка получения данных от UserLogInModel.fromJson $e');
         return jsonLogInModel;
       }
     } else if (response.statusCode == 401) {
@@ -29,14 +35,13 @@ class UserLogInProvider {
     }
   }
 
-  /// сохранение accessToken в SharedPreferences
-  Future <void> setAccessTokenInSharedPreferences(
+  /// Сохранение accessToken в SharedPreferences
+  Future<void> setAccessTokenInSharedPreferences(
       {required String accessToken}) async {
-    try{
+    try {
       SetAndReadAccessTokenFromSharedPreferences()
           .setAccessToken(accessToken: accessToken);
-    }
-    catch(_) {
+    } catch (_) {
       throw AccessTokenNotSetInSharedPreferencesException();
     }
   }

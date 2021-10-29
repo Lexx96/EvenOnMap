@@ -13,9 +13,9 @@ class UserDataLogIn {
 
   factory UserDataLogIn.fromJson(Map<String, dynamic> json){
     return UserDataLogIn(
-      status: json ['status'] as String,
-      phone: json ['phone'] as String,
-      password: json['password'] as String,
+      status: json ["status"] as String,
+      phone: json ["phone"] as String,
+      password: json["password"] as String,
     );
   }
 }

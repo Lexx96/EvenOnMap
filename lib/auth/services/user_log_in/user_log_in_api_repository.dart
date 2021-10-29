@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserLogInRepository {
+
+  /// Отправка запроса на вход уже зарегистрированного пользователя
   static postUserLogInData<Response>(Map<String, dynamic> jsonLogIn) async {
     return await http.post(Uri.parse('http://23.152.0.13:3000/auth/login'),
         body: jsonLogIn);

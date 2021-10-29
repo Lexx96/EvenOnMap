@@ -22,15 +22,18 @@ class ServiceAuthBloc {
     _streamController.sink.add(AuthBlocState.emptyBlocState());
   }
 
-  /// метод регистрации и получения данных
+  /// Регистрация и получения данных
   void loadingRegistration(
     String phone,
     String password,
   ) {
     _streamController.sink.add(AuthBlocState.loadingRegistration());
     UserRegistrationProvider().postUserRegistration(phone, password).then(
-      (responseJsonRegistration) {_streamController.sink.add(AuthBlocState.loadedRegistration(responseJsonRegistration));
-      UserLogInProvider().setAccessTokenInSharedPreferences(accessToken: responseJsonRegistration.accessToken as String);
+      (responseJsonRegistration) {
+        _streamController.sink
+            .add(AuthBlocState.loadedRegistration(responseJsonRegistration));
+        UserLogInProvider().setAccessTokenInSharedPreferences(
+            accessToken: responseJsonRegistration.accessToken as String);
       },
     ).catchError(
       (exception) {
@@ -46,8 +49,11 @@ class ServiceAuthBloc {
     );
   }
 
-  /// метод авторизации и получения данных
-  void loadingLogIn(String phone, String password) {
+  /// Авторизация и получения данных
+  void loadingLogIn(
+    String phone,
+    String password,
+  ) {
     _streamController.sink.add(AuthBlocState.loadingLogIn());
     UserLogInProvider().postUserLogIn(phone, password).then(
       (responseJsonLogIn) {

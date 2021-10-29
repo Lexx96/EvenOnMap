@@ -57,7 +57,7 @@ class _NewsPageState extends State<NewsPage> {
   void initState() {
     super.initState();
     _bloc = ServiceNewsBloc(_newsRepository);
-    _bloc.loading();
+    _bloc.loadingNewsFromServer();
     _refreshController = RefreshController();
   }
 

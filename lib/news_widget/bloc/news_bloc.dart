@@ -17,56 +17,80 @@ class ServiceNewsBloc {
     _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
   }
 
-  void loading()  {
+  /// Получение новостей с сервера
+  void loadingNewsFromServer() {
     _newsStreamController.sink.add(NewsBlocState.newsLoadingState());
-    try {
-       NewsProvider().getAllNewsFromServer().then(
-        (jsonNewsModel) {
-
-          print(jsonNewsModel.length);
-            _newsStreamController.sink
-                .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-        },
-      );
-    } catch (errorBloc) {
-      _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
-      print('Ошибка запроса новостей $errorBloc');
-    }
+    NewsProvider().getAllNewsFromServer().then(
+      (jsonNewsModel) {
+        _newsStreamController.sink
+            .add(NewsBlocState.newsLoadedState(jsonNewsModel));
+      },
+    ).catchError(
+      (exception) {
+        if (exception is DataErrorSendingServerException) {
+          _newsStreamController.sink
+              .add(NewsBlocState.dataErrorSendingServer());
+        } else if (exception is NotRegisteredSendingServerException) {
+          _newsStreamController.sink
+              .add(NewsBlocState.notRegisteredSendingServer());
+        } else {
+          _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
+        }
+      },
+    );
   }
 
-  Future <void> onRefresh() async{
-      try{
-        NewsProvider().getAllNewsFromServer().then(
-              (jsonNewsModel) {
-              _newsStreamController.sink
-                  .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-              loading();
-          },
-        );
-      }
-      catch(errorOnRefresh){
-        loading();
-        print('Ошибка запроса новостей $errorOnRefresh');
-      }
+  /// Обновление новостной ленты in Top
+  Future<void> onRefresh() async {
+    NewsProvider().getAllNewsFromServer().then(
+      (jsonNewsModel) {
+        _newsStreamController.sink
+            .add(NewsBlocState.newsLoadedState(jsonNewsModel));
+        loadingNewsFromServer();
+      },
+    ).catchError(
+      (exception) {
+        if (exception is DataErrorSendingServerException) {
+          _newsStreamController.sink
+              .add(NewsBlocState.dataErrorSendingServer());
+        } else if (exception is NotRegisteredSendingServerException) {
+          _newsStreamController.sink
+              .add(NewsBlocState.notRegisteredSendingServer());
+        } else {
+          _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
+        }
+      },
+    );
   }
 
-  Future <void> onLoading() async{
-    try{
-      NewsProvider().getAllNewsFromServer().then(
-            (jsonNewsModel) {
-            _newsStreamController.sink
-                .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-            loading();
-        },
-      );
-    }
-    catch(errorOnRefresh){
-      loading();
-      print('Ошибка запроса новостей $errorOnRefresh');
-    }
+  /// Обновление новостной ленты in Bottom
+  Future<void> onLoading() async {
+    NewsProvider().getAllNewsFromServer().then(
+      (jsonNewsModel) {
+        _newsStreamController.sink
+            .add(NewsBlocState.newsLoadedState(jsonNewsModel));
+        loadingNewsFromServer();
+      },
+    ).catchError(
+      (exception) {
+        if (exception is DataErrorSendingServerException) {
+          _newsStreamController.sink
+              .add(NewsBlocState.dataErrorSendingServer());
+        } else if (exception is NotRegisteredSendingServerException) {
+          _newsStreamController.sink
+              .add(NewsBlocState.notRegisteredSendingServer());
+        } else {
+          _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
+        }
+      },
+    );
   }
 
   void dispose() {
     _newsStreamController.close();
   }
 }
+
+class DataErrorSendingServerException implements Exception {}
+
+class NotRegisteredSendingServerException implements Exception {}

@@ -8,7 +8,8 @@ class NewsBlocState {
   factory NewsBlocState.newsEmptyState() = NewsEmptyState;
   factory NewsBlocState.newsLoadingState() = NewsLoadingState;
   factory NewsBlocState.newsLoadedState(List<GetNewsFromServerModel> newsFromServer) = NewsLoadedState;
-
+  factory NewsBlocState.dataErrorSendingServer() = DataErrorSendingServer;
+  factory NewsBlocState.notRegisteredSendingServer() = NotRegisteredSendingServer;
 }
 
 
@@ -20,3 +21,7 @@ class NewsLoadedState extends NewsBlocState {
   final List<GetNewsFromServerModel> newsFromServer;
   NewsLoadedState(this.newsFromServer);
 }
+
+class DataErrorSendingServer extends NewsBlocState {}
+
+class NotRegisteredSendingServer extends NewsBlocState {}
