@@ -12,35 +12,42 @@ class ServiceNewEventBloc {
     _streamController.sink.add(NewEventBlocState.emptyEvent());
   }
 
-  Future<void> loadingPostEventBloc (
-  {
+  /// Размещение нового события на сервер и получение данных
+  Future<void> loadingPostEventBloc({
     String? title,
     String? description,
     String? lat,
     String? lng,
-  }
-  ) async{
+  }) async {
     _streamController.sink.add(NewEventBlocState.loadingEvent());
 
-    PostNewEventProvider().postNewEvent(title: title, description: description, lat: lat, lng: lng,)
+    PostNewEventProvider()
+        .postNewEvent(
+      title: title,
+      description: description,
+      lat: lat,
+      lng: lng,
+    )
         .then(
       (responseModelNewEvent) {
-        try {
-          if (responseModelNewEvent.userId != null) {
-            _streamController.sink
-                .add(NewEventBlocState.loadedEvent(responseModelNewEvent));
-          } else {
-            _streamController.sink.add(NewEventBlocState.emptyEvent());
-          }
-        } catch (error) {
-          print('Ошибка запроса на размещение события $error');
+        _streamController.sink
+            .add(NewEventBlocState.loadedEvent(responseModelNewEvent));
+      },
+    ).catchError(
+      (exception) {
+        if (exception is PostEvenErrorSendingServerException) {
+          _streamController.sink.add(NewEventBlocState.postEvenErrorSendingServer());
+        } else if (exception is PostEventNotRegisteredSendingServerException) {
+          _streamController.sink.add(NewEventBlocState.postEventNotRegisteredSendingServer());
+        } else {
+          print('Ошибка выполнения запроса регистрации');
           _streamController.sink.add(NewEventBlocState.emptyEvent());
         }
       },
     );
   }
 
-  void getLatLngOnMap(){
+  void getLatLngOnMap() {
     _streamController.sink.add(NewEventBlocState.getLatLng());
   }
 
@@ -48,3 +55,7 @@ class ServiceNewEventBloc {
     _streamController.close();
   }
 }
+
+class PostEvenErrorSendingServerException implements Exception {}
+
+class PostEventNotRegisteredSendingServerException implements Exception {}

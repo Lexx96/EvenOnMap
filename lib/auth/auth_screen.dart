@@ -82,7 +82,7 @@ class _AuthWidgetState extends State<AuthWidget> {
         : Text(S.of(context).enterThePassword, style: _textStyle);
   }
 
-  Widget showException (AsyncSnapshot snapshot){
+  Widget _showException (AsyncSnapshot snapshot){
     if (snapshot.data is ErrorPassword) {
       return AlertDialog(
         title: Center(child: Text('Не верный пароль',)),
@@ -293,7 +293,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                             snapshot.data is AuthLogInLoadingState)
                         ? Center(child: CircularProgressIndicator())
                         : SizedBox.shrink(),
-                    showException(snapshot),
+                    _showException(snapshot),
                   ],
                 );
               }

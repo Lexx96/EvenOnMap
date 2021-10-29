@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 class PostEventRepository {
 
+  /// Получение токена из SharedPreferences азмещение нового события
   static postNewEvent<Response>(Map<String, dynamic> eventJson) async {
 
       String _accessToken = await SetAndReadAccessTokenFromSharedPreferences().readAccessToken();

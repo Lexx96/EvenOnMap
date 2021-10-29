@@ -7,6 +7,8 @@ class NewEventBlocState {
   factory NewEventBlocState.loadingEvent() = EventLoadingBloc;
   factory NewEventBlocState.loadedEvent(NewEventModel newEventModel) = EventLoadedBloc;
   factory NewEventBlocState.getLatLng() = GetLatLng;
+  factory NewEventBlocState.postEvenErrorSendingServer() = PostEvenErrorSendingServer;
+  factory NewEventBlocState.postEventNotRegisteredSendingServer() = PostEventNotRegisteredSendingServer;
 }
 
 class EventEmptyBloc extends NewEventBlocState {}
@@ -19,3 +21,7 @@ class EventLoadedBloc extends NewEventBlocState {
 }
 
 class GetLatLng extends NewEventBlocState {}
+
+class PostEvenErrorSendingServer extends NewEventBlocState {}
+
+class PostEventNotRegisteredSendingServer extends NewEventBlocState {}

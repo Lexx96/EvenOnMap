@@ -22,8 +22,9 @@ class NewsProvider {
       throw DataErrorSendingServerException;
     } else if(response.statusCode == 500){
       throw NotRegisteredSendingServerException;
+    } else {
+      return newsJsonModel;
     }
-    return newsJsonModel;
   }
 
 // метод который проверяет обновление токен
