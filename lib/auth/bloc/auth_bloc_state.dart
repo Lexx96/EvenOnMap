@@ -4,8 +4,8 @@ import 'package:event_on_map/auth/models/registration/user_registration.dart';
 class AuthBlocState{
   AuthBlocState();
   factory AuthBlocState.emptyBlocState() = EmptyBlocState;
-  factory AuthBlocState.loadingRegistration() = AuthRegistrationLoadingState;
-  factory AuthBlocState.loadedRegistration(UserRegistrationModel userRegistrationModel) = AuthRegistrationLoadedState;
+  factory AuthBlocState.loadingRegistration() = RegistrationLoadingState;
+  factory AuthBlocState.loadedRegistration(UserRegistrationModel userRegistrationModel) = RegistrationLoadedState;
   factory AuthBlocState.loadingLogIn() = AuthLogInLoadingState;
   factory AuthBlocState.loadedLogIn(UserLogInModel userLogInModel) = AuthLogInLoadedState;
   factory AuthBlocState.errorLengthNumber() = ErrorLengthNumber;
@@ -15,15 +15,17 @@ class AuthBlocState{
   factory AuthBlocState.errorPassword() = ErrorPassword;
   factory AuthBlocState.notRegistered() = NotRegistered;
   factory AuthBlocState.accessTokenNotSet() = AccessTokenNotSet;
+  factory AuthBlocState.showPassword() = ShowPassword;
+  factory AuthBlocState.closePassword() = ClosePassword;
 }
 
 class EmptyBlocState extends AuthBlocState{}
 
-class AuthRegistrationLoadingState extends AuthBlocState {}
+class RegistrationLoadingState extends AuthBlocState {}
 
-class AuthRegistrationLoadedState extends AuthBlocState {
+class RegistrationLoadedState extends AuthBlocState {
   UserRegistrationModel userRegistrationModel;
-  AuthRegistrationLoadedState(this.userRegistrationModel);
+  RegistrationLoadedState(this.userRegistrationModel);
 }
 
 class AuthLogInLoadingState extends AuthBlocState {}
@@ -46,6 +48,10 @@ class ErrorPassword extends AuthBlocState {}
 class NotRegistered extends AuthBlocState {}
 
 class AccessTokenNotSet extends AuthBlocState {}
+
+class ShowPassword extends AuthBlocState {}
+
+class ClosePassword extends AuthBlocState {}
 
 
 

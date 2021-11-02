@@ -14,6 +14,5 @@ class PickImageProvider {
     catch(error){
       print('Ошибка получения изображения от репозитория $error');
     }
-
   }
 }

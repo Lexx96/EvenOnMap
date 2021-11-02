@@ -90,6 +90,14 @@ class ServiceAuthBloc {
     _streamController.sink.add(AuthBlocState.errorLengthLoginAndPassword());
   }
 
+  void showPasswordBloc () {
+    _streamController.sink.add(AuthBlocState.showPassword());
+  }
+
+  void closePasswordBloc () {
+    _streamController.sink.add(AuthBlocState.closePassword());
+  }
+
   void dispose() {
     _streamController.close();
   }

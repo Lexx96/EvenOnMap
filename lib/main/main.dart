@@ -2,22 +2,15 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/themes/my_dark_theme.dart';
 import 'package:event_on_map/themes/my_light_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../generated/l10n.dart';
 import '../navigation/main_navigation.dart';
 /*
-подключить текс филды и создать логику
+
 получение лат и лнг с карты
-профиль отрефачить
-корректировка данных профиля отрефачить
 сделать темы
 
-
-
-проверка токена
-выгрузка нового события
 сделать карту
  */
 

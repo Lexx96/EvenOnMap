@@ -37,8 +37,8 @@ class MainInformationWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(7),
                     )),
               ),
-              onPressed: () => Navigator.of(context).pushNamed(
-                  MainNavigationRouteName.changePersonalDataPage),
+              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                  MainNavigationRouteName.changePersonalDataPage,  (route) => false),
               child: Text(
                 S.of(context).edit,
                 style: const TextStyle(

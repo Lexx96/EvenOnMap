@@ -51,7 +51,7 @@ class HorizontalListViewWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 10),
                     Text(S.of(context).name),
                     Text(S.of(context).surname),
                   ],

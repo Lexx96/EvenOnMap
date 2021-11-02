@@ -1,7 +1,7 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/map_widget/map_widget.dart';
-import 'package:event_on_map/news_widget/news_pages.dart';
-import 'package:event_on_map/userProfile/user_profile_widget.dart';
+import 'package:event_on_map/news_page/news_pages.dart';
+import 'package:event_on_map/userProfile/user_profile_page.dart';
 import 'package:flutter/material.dart';
 
 /*
@@ -12,9 +12,6 @@ import 'package:flutter/material.dart';
 темами
 иконками
 шрифтами
-
-Сделать дивайдей меню в профиле
-форма заполнения личных данных
 
 спеш скрин
 
@@ -75,42 +72,43 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: IndexedStack(
-          index: _selectedTab,
-          children: [
-            NewsPage(),
-            MapWidget(),
-            UserProfilePage(),
-          ],
-        ),
-        bottomNavigationBar: SizedBox(
-          height: 65,
-          child: BottomNavigationBar(
-            backgroundColor: Colors.grey[200],
-            selectedIconTheme: IconThemeData(
-              size: 30,
-              color: Colors.blue,
-            ),
-            unselectedIconTheme: IconThemeData(color: Colors.grey),
-            selectedLabelStyle: TextStyle(fontSize: 12),
-            unselectedLabelStyle: TextStyle(fontSize: 12),
-            currentIndex: _selectedTab,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.event_sharp,
-                  ),
-                  label: S.of(context).news),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.location_on_outlined),
-                label: S.of(context).map,
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.supervised_user_circle_rounded),
-                  label: S.of(context).profile),
-            ],
-            onTap: onSelectTab,
+      body: IndexedStack(
+        index: _selectedTab,
+        children: [
+          NewsPage(),
+          MapWidget(),
+          UserProfilePage(),
+        ],
+      ),
+      bottomNavigationBar: SizedBox(
+        height: 65,
+        child: BottomNavigationBar(
+          backgroundColor: Colors.grey[200],
+          selectedIconTheme: IconThemeData(
+            size: 30,
+            color: Colors.blue,
           ),
-        ));
+          unselectedIconTheme: IconThemeData(color: Colors.grey),
+          selectedLabelStyle: TextStyle(fontSize: 12),
+          unselectedLabelStyle: TextStyle(fontSize: 12),
+          currentIndex: _selectedTab,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.event_sharp,
+                ),
+                label: S.of(context).news),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.location_on_outlined),
+              label: S.of(context).map,
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.supervised_user_circle_rounded),
+                label: S.of(context).profile),
+          ],
+          onTap: onSelectTab,
+        ),
+      ),
+    );
   }
 }

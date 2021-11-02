@@ -1,15 +1,17 @@
 import 'package:event_on_map/auth/widgets/auth_header_widget.dart';
-import 'package:event_on_map/auth/widgets/auth_text_horizontion_widget.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:event_on_map/auth_sign_in/main_screen_decoration.dart';
 import 'package:event_on_map/generated/l10n.dart';
+import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../custom_icons_icons.dart';
 import 'widgets/auth_main_image_widget.dart';
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_bloc_state.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AuthWidget extends StatefulWidget {
   const AuthWidget({Key? key}) : super(key: key);
@@ -31,6 +33,7 @@ class _AuthWidgetState extends State<AuthWidget> {
   final _passwordController = TextEditingController(text: 'Sex12345LK');
   final _textStyle = TextStyle(fontSize: 16, color: Colors.white);
 
+  /// Вход уже зарегистрированного пользователя
   void _goLogIn() {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;
@@ -46,6 +49,7 @@ class _AuthWidgetState extends State<AuthWidget> {
     }
   }
 
+  /// Регистрация нового пользователя
   void _goRegistration() {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;
@@ -62,7 +66,8 @@ class _AuthWidgetState extends State<AuthWidget> {
     }
   }
 
-  Text showNumberText(AsyncSnapshot snapshot) {
+  /// Оповещение при недостаточном колличестве знаков в номере
+  Text _showNumberText(AsyncSnapshot snapshot) {
     return (snapshot.data is ErrorLengthNumber) ||
             (snapshot.data is ErrorLengthLoginAndPassword)
         ? Text(
@@ -72,7 +77,8 @@ class _AuthWidgetState extends State<AuthWidget> {
         : Text(S.of(context).enterYourPhoneNumber, style: _textStyle);
   }
 
-  Text showPasswordText(AsyncSnapshot snapshot) {
+  /// Оповещение при недостаточном колличестве знаков в пароле
+  Text _showPasswordText(AsyncSnapshot snapshot) {
     return (snapshot.data is ErrorLengthPassword) ||
             (snapshot.data is ErrorLengthLoginAndPassword)
         ? Text(
@@ -82,47 +88,74 @@ class _AuthWidgetState extends State<AuthWidget> {
         : Text(S.of(context).enterThePassword, style: _textStyle);
   }
 
-  Widget _showException (AsyncSnapshot snapshot){
+  /// Оповещение при исключении
+  Widget _showException(AsyncSnapshot snapshot) {
     if (snapshot.data is ErrorPassword) {
       return AlertDialog(
-        title: Center(child: Text('Не верный пароль',)),
+        title: Center(
+            child: Text(
+          'Не верный пароль',
+        )),
         actions: [
-          TextButton(onPressed: () => _bloc.emptyState(),
-            child: Text('OK'),)
+          TextButton(
+            onPressed: () => _bloc.emptyState(),
+            child: Text('OK'),
+          )
         ],
       );
-    }
-    else if (snapshot.data is NotRegistered) {
+    } else if (snapshot.data is NotRegistered) {
       return AlertDialog(
-        title: Center(child: Text('Пользователь не зарегистрирован',)),
+        title: Center(
+            child: Text(
+          'Пользователь не зарегистрирован',
+        )),
         actions: [
-          TextButton(onPressed: () => _bloc.emptyState(),
-            child: Text('OK'),)
+          TextButton(
+            onPressed: () => _bloc.emptyState(),
+            child: Text('OK'),
+          )
         ],
       );
-    }
-    else if (snapshot.data is UserAlreadyRegistered) {
+    } else if (snapshot.data is UserAlreadyRegistered) {
       return AlertDialog(
-        title: Center(child: Text('Пользователь уже зарегистрирован',)),
+        title: Center(
+            child: Text(
+          'Пользователь уже зарегистрирован',
+        )),
         actions: [
-          TextButton(onPressed: () => _bloc.emptyState(),
-            child: Text('OK'),)
+          TextButton(
+            onPressed: () => _bloc.emptyState(),
+            child: Text('OK'),
+          )
         ],
       );
-    }
-    else if (snapshot.data is AccessTokenNotSet) {
+    } else if (snapshot.data is AccessTokenNotSet) {
       return AlertDialog(
-        title: Center(child: Text('Ошибка записи AccessToken',)),
+        title: Center(
+            child: Text(
+          'Ошибка записи AccessToken',
+        )),
         actions: [
-          TextButton(onPressed: () => _bloc.emptyState(),
-            child: Text('OK'),)
+          TextButton(
+            onPressed: () => _bloc.emptyState(),
+            child: Text('OK'),
+          )
         ],
       );
-    }
-    else {
+    } else {
       return SizedBox.shrink();
     }
   }
+
+  final spinkit = SpinKitWave(
+    itemBuilder: (BuildContext context, int index) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: index.isEven ? Colors.lightBlue : Colors.white,
+        ),
+      );
+    },
+  ); // сделать глобальным
 
   @override
   void initState() {
@@ -151,14 +184,17 @@ class _AuthWidgetState extends State<AuthWidget> {
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data is EmptyBlocState ||
-                  snapshot.data is AuthRegistrationLoadingState ||
+                  snapshot.data is RegistrationLoadingState ||
                   snapshot.data is AuthLogInLoadingState ||
                   snapshot.data is ErrorLengthNumber ||
                   snapshot.data is ErrorLengthPassword ||
                   snapshot.data is ErrorLengthLoginAndPassword ||
                   snapshot.data is ErrorPassword ||
                   snapshot.data is NotRegistered ||
-                  snapshot.data is UserAlreadyRegistered) {
+                  snapshot.data is UserAlreadyRegistered ||
+                  snapshot.data is RegistrationLoadedState ||
+                  snapshot.data is ShowPassword ||
+                  snapshot.data is ClosePassword) {
                 return Stack(
                   children: [
                     ListView(
@@ -170,7 +206,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                             Padding(
                               padding: EdgeInsets.only(
                                   top: _height * 0.01, bottom: _height * 0.01),
-                              child: showNumberText(snapshot),
+                              child: _showNumberText(snapshot),
                             ),
                             TextField(
                               decoration: InputDecoration(
@@ -204,7 +240,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                               keyboardType: TextInputType.number,
                             ),
                             SizedBox(height: _height * 0.02),
-                            showPasswordText(snapshot),
+                            _showPasswordText(snapshot),
                             SizedBox(height: _height * 0.01),
                             TextField(
                               decoration: InputDecoration(
@@ -213,6 +249,15 @@ class _AuthWidgetState extends State<AuthWidget> {
                                 prefixIcon: const Icon(
                                   Icons.lock,
                                   color: Colors.green,
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: () =>
+                                      (snapshot.data is ShowPassword)
+                                          ? _bloc.closePasswordBloc()
+                                          : _bloc.showPasswordBloc(),
+                                  icon: (snapshot.data is ShowPassword)
+                                      ? Icon(CustomIcons.eye)
+                                      : Icon(CustomIcons.eye_off),
                                 ),
                                 isCollapsed: true,
                                 contentPadding: const EdgeInsets.all(15),
@@ -233,14 +278,23 @@ class _AuthWidgetState extends State<AuthWidget> {
                                   ),
                                 ),
                               ),
-                              obscureText: true,
-                              // скрывать вводимые данные, как правело для паролей
+                              obscureText: (snapshot.data is ShowPassword)
+                                  ? false
+                                  : true,
                               obscuringCharacter: '*',
                               controller: _passwordController,
                             ),
                           ],
                         ),
-                        const AuthTextAuthorization(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Center(
+                            child: Text(
+                                S.of(context).logInToYourAccountOrRegister,
+                                style: const TextStyle(
+                                    fontSize: 13, color: Colors.grey)),
+                          ),
+                        ),
                         TextButton(
                           style: ButtonStyle(
                               foregroundColor:
@@ -289,20 +343,25 @@ class _AuthWidgetState extends State<AuthWidget> {
                         ),
                       ],
                     ),
-                    (snapshot.data is AuthRegistrationLoadingState ||
+                    (snapshot.data is RegistrationLoadingState ||
                             snapshot.data is AuthLogInLoadingState)
-                        ? Center(child: CircularProgressIndicator())
+                        ? Center(child: spinkit)
                         : SizedBox.shrink(),
                     _showException(snapshot),
+                    (snapshot.data is RegistrationLoadedState)
+                        ? Padding(
+                            padding: const EdgeInsets.all(25.0),
+                            child: LicenseAgreement(),
+                          )
+                        : SizedBox.shrink(),
                   ],
                 );
               }
-              if (snapshot.data is AuthRegistrationLoadedState ||
-                  snapshot.data is AuthLogInLoadedState) {
-                if(snapshot.data is AuthLogInLoadedState) {
-                }
+              if (snapshot.data is AuthLogInLoadedState) {
                 Future.delayed(
-                  Duration.zero, () => Navigator.of(context).pushNamed(MainNavigationRouteName.mainScreen),
+                  Duration.zero,
+                  () => Navigator.of(context)
+                      .pushNamed(MainNavigationRouteName.mainScreen),
                 );
               }
               return Center(
@@ -310,7 +369,8 @@ class _AuthWidgetState extends State<AuthWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Неизвестная ошибка'),
-                    CircularProgressIndicator()  // https://www.youtube.com/watch?v=O-rhXZLtpv0
+                    spinkit
+                    // https://www.youtube.com/watch?v=O-rhXZLtpv0 или  flutter_spinkit
                   ],
                 ),
               );

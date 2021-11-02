@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:event_on_map/news_widget/services/news_api_repository.dart';
-import 'package:event_on_map/news_widget/services/news_provider.dart';
+
+import 'package:event_on_map/news_page/services/news_api_repository.dart';
+import 'package:event_on_map/news_page/services/news_provider.dart';
+
 import 'news_state.dart';
 
 class ServiceNewsBloc {

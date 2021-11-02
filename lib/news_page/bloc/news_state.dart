@@ -1,6 +1,8 @@
 
 
-import 'package:event_on_map/news_widget/models/news.dart';
+
+
+import 'package:event_on_map/news_page/models/news.dart';
 
 class NewsBlocState {
   NewsBlocState();

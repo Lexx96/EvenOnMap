@@ -1,5 +1,6 @@
 import 'package:event_on_map/generated/l10n.dart';
-import 'package:event_on_map/news_widget/models/news.dart';
+import 'package:event_on_map/news_page/models/news.dart';
+
 import 'package:flutter/material.dart';
 
 class TextBodyWidget extends StatefulWidget {
@@ -16,8 +17,6 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
   late bool _maxLinesBool;
   late var _resultLines;
 
-
-  // final _newsRepository = NewsRepository();
   @override
   void initState() {
     super.initState();
@@ -64,7 +63,7 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Expanded(child: Text(''),),
+                    Expanded(child: Text('')),
                   ],
                 ),
               ),

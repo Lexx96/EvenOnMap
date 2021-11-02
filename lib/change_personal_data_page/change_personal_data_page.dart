@@ -303,7 +303,8 @@ class ChangePersonalDataPage extends StatelessWidget {
             child: Text(S.of(context).save, style: const TextStyle(fontSize: 17),),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+    MainNavigationRouteName.userProfile,  (route) => false),
             child: Text(S.of(context).back, style: const TextStyle(fontSize: 17),),
           ),
         ],

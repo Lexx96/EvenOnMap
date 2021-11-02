@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'package:event_on_map/news_widget/bloc/news_bloc.dart';
-import 'package:event_on_map/news_widget/models/news.dart';
-import 'package:event_on_map/news_widget/services/news_api_repository.dart';
+import 'package:event_on_map/news_page/bloc/news_bloc.dart';
+import 'package:event_on_map/news_page/models/news.dart';
 import 'package:http/http.dart';
+
+import 'news_api_repository.dart';
 
 class NewsProvider {
 
