@@ -50,7 +50,7 @@ class HeaderButtonWidget extends StatelessWidget {
           child: TextButton(
             onPressed: () {},
             child: Icon(
-              CustomIcons.location,
+              CustomIcons.map_marker,
               color: Colors.blue,
             ),
             style: ButtonStyle(

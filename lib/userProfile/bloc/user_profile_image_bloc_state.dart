@@ -6,7 +6,8 @@ class UserProfileImageBlocState {
   factory UserProfileImageBlocState.emptyPickImage() = EmptyImageUserProfile;
   factory UserProfileImageBlocState.loadingPickImage() = LoadingImageUserProfile;
   factory UserProfileImageBlocState.loadedPickImage(File? image) = LoadedImageUserProfile;
-  factory UserProfileImageBlocState.loadedImageUserProfileForDrawer(File? image) = LoadedImageUserProfileForDrawer;
+  factory UserProfileImageBlocState.loadedImageUserForDrawer(File? image) = LoadedImageUserForDrawer;
+  factory UserProfileImageBlocState.emptyImageDrawer() = EmptyImageDrawer;
 }
 
 class EmptyImageUserProfile extends UserProfileImageBlocState {}
@@ -18,7 +19,9 @@ class LoadedImageUserProfile extends UserProfileImageBlocState {
   LoadedImageUserProfile(this.image);
 }
 
-class LoadedImageUserProfileForDrawer extends UserProfileImageBlocState {
+class LoadedImageUserForDrawer extends UserProfileImageBlocState {
   late File? image;
-  LoadedImageUserProfileForDrawer(this.image);
+  LoadedImageUserForDrawer(this.image);
 }
+
+class EmptyImageDrawer extends UserProfileImageBlocState {}

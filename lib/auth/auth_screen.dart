@@ -183,7 +183,7 @@ class _AuthWidgetState extends State<AuthWidget> {
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data is EmptyBlocState ||
+              if (//snapshot.data is EmptyBlocState ||
                   snapshot.data is RegistrationLoadingState ||
                   snapshot.data is AuthLogInLoadingState ||
                   snapshot.data is ErrorLengthNumber ||
@@ -357,7 +357,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                   ],
                 );
               }
-              if (snapshot.data is AuthLogInLoadedState) {
+              if (snapshot.data is EmptyBlocState) { //AuthLogInLoadedState
                 Future.delayed(
                   Duration.zero,
                   () => Navigator.of(context)

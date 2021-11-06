@@ -7,25 +7,17 @@ import 'package:image_picker/image_picker.dart';
 class UserProfileImageBloc {
   final _streamController = StreamController<UserProfileImageBlocState>();
 
-  Stream<UserProfileImageBlocState> get streamPersonalData => _streamController.stream;
-
-  final _streamControllerForDrawer = StreamController<UserProfileImageBlocState>();
-
-  Stream<UserProfileImageBlocState> get streamPersonalDataForDrawer => _streamControllerForDrawer.stream;
-
-  void emptyUserProfileImageBloc() {
-    _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
-  }
+  Stream<UserProfileImageBlocState> get streamPersonalData =>
+      _streamController.stream;
 
   void addPersonalImageBloc(ImageSource source) {
     _streamController.sink.add(UserProfileImageBlocState.loadingPickImage());
     try {
       UserProfileProvider().getImageFileUserProfile(source).then(
         (image) async {
-              _streamControllerForDrawer.sink.add(UserProfileImageBlocState.loadedImageUserProfileForDrawer(image));
-              _streamController.sink.add(UserProfileImageBlocState.loadedPickImage(image));
-              await UserProfileProvider().writePhotoInMemory(image as File);
-            },
+          await UserProfileProvider().writePhotoInMemory(image as File);
+          emptyUserProfileImageBloc();
+        },
       );
     } catch (error) {
       print('Ошибка получения изображения от провайдета $error');
@@ -33,17 +25,29 @@ class UserProfileImageBloc {
     }
   }
 
+  void emptyUserProfileImageBloc() async {
+    _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
 
+    await UserProfileProvider().readPhotoFromMemory().then(
+      (imageFromMemory) {
+        _streamController.sink
+            .add(UserProfileImageBlocState.loadedPickImage(imageFromMemory));
+      },
+    ).catchError(
+      (e) {
+        _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
+      },
+    );
+  }
 
-  // void writePhotoInMemoryBloc(File photo) async {
-  //   _streamController.sink.add(UserProfileImageBlocState.loadingPickImage());
-  //   await UserProfileProvider().writePhotoInMemory(photo).then(
-  //         (value) {},
-  //       );
-  // }
+  void deleteUserProfileImageBloc() async {
+    _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
 
-  void disposeImageStream() {
-    _streamControllerForDrawer.close();
+    await UserProfileProvider().deletePhotoFromMemory().catchError(
+          (e) {
+        _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
+      },
+    );
   }
 
   void dispose() {

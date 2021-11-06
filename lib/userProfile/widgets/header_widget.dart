@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc.dart';
 import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc_state.dart';
+import 'package:event_on_map/userProfile/services/user_profile__image_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,7 +22,121 @@ class UserProfileHeaderWidget extends StatefulWidget {
 
 class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
   late UserProfileImageBloc _bloc;
-  List<File> userProfileImageList = [];
+
+   bool _showActionsInPhoto = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = UserProfileImageBloc();
+    _bloc.emptyUserProfileImageBloc();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: _bloc.streamPersonalData,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return _bodyHeaderWidget(snapshot.data);
+      },
+    );
+  }
+
+  /// Тело виджета
+  Stack _bodyHeaderWidget(data) {
+    File image = File('');
+    if (data is LoadedImageUserProfile){
+      final _data = data as LoadedImageUserProfile;
+      image = _data.image as File;
+      _showActionsInPhoto = false;
+    }
+    const textStyle = const TextStyle(
+        fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold);
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Container(
+                height: 160,
+                width: 160,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border:
+                  Border.all(color: Colors.black.withOpacity(0.2)),
+                  borderRadius: BorderRadius.all(Radius.circular(90)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black,
+                        blurRadius: 8,
+                        offset: Offset(0, 2))
+                  ],
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Stack(
+                  children: [
+                    (data is EmptyImageUserProfile) ? FlutterLogo(size: 160) : SizedBox.shrink(),
+                    (data is LoadingImageUserProfile) ? Stack(
+                      children: [
+                        FlutterLogo(size: 160),
+                        CircularProgressIndicator(),
+                      ],
+                    ) : SizedBox.shrink(),
+                    (data is LoadedImageUserProfile) ? ClipOval(
+                      child: Image.file(
+                        image,
+                        height: 160,
+                        width: 160,
+                        fit: BoxFit.cover,
+                      ),
+                    ) : SizedBox.shrink(),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(90)),
+                          splashColor: Colors.grey[1],
+                          onTap: () {
+                            (_showActionsInPhoto)
+                                ? _showImagesSource(context)
+                                : _showActions(context);
+                          } //_showActions(context, index),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              Column(
+                children: [
+                  Text(
+                    S.of(context).name + ' ' + S.of(context).surname,
+                    style: const TextStyle(
+                        fontSize: 22,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    S.of(context).status,
+                    style: textStyle,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
   /// Выбор аватарки: камера, галерея
   _showImagesSource(BuildContext context) async {
@@ -99,8 +214,7 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
-                userProfileImageList.clear();
-                _bloc.emptyUserProfileImageBloc();
+                _bloc.deleteUserProfileImageBloc();
                 Navigator.of(context).pop();
               },
               child: Row(
@@ -128,8 +242,7 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
               leading: Icon(Icons.delete_outline),
               title: Text('Удалить'),
               onTap: () {
-                userProfileImageList.clear();
-                _bloc.emptyUserProfileImageBloc();
+                _bloc.deleteUserProfileImageBloc();
                 Navigator.of(context).pop();
               },
             ),
@@ -138,129 +251,4 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
       );
     }
   }
-
-  /// Выводит виджет с аватаркой
-  Container userProfileImage(AsyncSnapshot<dynamic> snapshot) {
-    return Container(
-      child: (snapshot.data is LoadedImageUserProfile)
-          ? ClipOval(
-        child: Image.file(
-          userProfileImageList.first,
-          height: 160,
-          width: 160,
-          fit: BoxFit.cover,
-        ),
-      )
-          : FlutterLogo(
-        size: 160,
-      ),
-    );
-  }
-
-
-  @override
-  void initState() {
-    super.initState();
-    _bloc = UserProfileImageBloc();
-    _bloc.emptyUserProfileImageBloc();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _bloc.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _bloc.streamPersonalData,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.data is EmptyImageUserProfile ||
-            snapshot.data is LoadingImageUserProfile ||
-            snapshot.data is LoadedImageUserProfile) {
-          if (snapshot.data is LoadedImageUserProfile) {
-            LoadedImageUserProfile _data =
-                snapshot.data as LoadedImageUserProfile;
-            final _imageUserProfile = _data.image;
-            _imageUserProfile != null
-                ? userProfileImageList.add(_imageUserProfile)
-                : userProfileImageList;
-          }
-          const textStyle = const TextStyle(
-              fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold);
-          return Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 160,
-                      width: 160,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border:
-                            Border.all(color: Colors.black.withOpacity(0.2)),
-                        borderRadius: BorderRadius.all(Radius.circular(90)),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black,
-                              blurRadius: 8,
-                              offset: Offset(0, 2))
-                        ],
-                      ),
-                      clipBehavior: Clip.hardEdge,
-                      child: Stack(
-                        children: [
-                          userProfileImage(snapshot),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(90)),
-                                splashColor: Colors.grey[1],
-                                onTap: () {
-                                  (userProfileImageList.isEmpty)
-                                      ? _showImagesSource(context)
-                                      : _showActions(context);
-                                } //_showActions(context, index),
-                                ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          S.of(context).name + ' ' + S.of(context).surname,
-                          style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          S.of(context).status,
-                          style: textStyle,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              snapshot.data is LoadingImageUserProfile
-                  ? Center(child: CircularProgressIndicator())
-                  : SizedBox.shrink(),
-            ],
-          );
-        }
-        return Center(child: CircularProgressIndicator());
-      },
-    );
-  }
-
-
 }

@@ -1,4 +1,5 @@
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class PostEventRepository {
@@ -14,4 +15,14 @@ class PostEventRepository {
             headers: {'Authorization': 'Bearer ' + _accessToken},
           );
   }
+
+
+  /// Определение местоположения
+  static Future<Position> determinePositionGPS () async {
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+
+
 }

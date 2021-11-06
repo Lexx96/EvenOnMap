@@ -4,6 +4,8 @@ import 'package:event_on_map/news_page/news_pages.dart';
 import 'package:event_on_map/userProfile/user_profile_page.dart';
 import 'package:flutter/material.dart';
 
+import '../custom_icons_icons.dart';
+
 /*
 Сделать скрол по страницам
 
@@ -95,15 +97,15 @@ class _MainScreenState extends State<MainScreen> {
           items: [
             BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.event_sharp,
+                  CustomIcons.home,
                 ),
                 label: S.of(context).news),
             BottomNavigationBarItem(
-              icon: Icon(Icons.location_on_outlined),
+              icon: Icon(CustomIcons.map_marker),
               label: S.of(context).map,
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.supervised_user_circle_rounded),
+                icon: Icon(CustomIcons.user_2),
                 label: S.of(context).profile),
           ],
           onTap: onSelectTab,

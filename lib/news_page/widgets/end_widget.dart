@@ -28,7 +28,7 @@ class EndWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Icon(
-                          CustomIcons.favorite,
+                          CustomIcons.heart_1,
                           color: Colors.blue,  // в блоке сделать метод, по выполнению которго будет меняться цвет иконки тернарной операцией
                         ),
                       ),

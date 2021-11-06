@@ -76,12 +76,9 @@ class _NewsPageState extends State<NewsPage> {
       body: StreamBuilder(
         stream: _bloc.newsStreamController,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data is NewsLoadedState ||
-              snapshot.data is NewsEmptyState) {
-            print(snapshot.data);
-            var newsResponseData = snapshot.data as NewsLoadedState;
-            return SmartRefresher(
-              // https://pub.dev/packages/pull_to_refresh
+          if (snapshot.data is NewsLoadedState) {
+            NewsLoadedState newsResponseData = snapshot.data as NewsLoadedState;
+            return SmartRefresher(// https://pub.dev/packages/pull_to_refresh
               controller: _refreshController,
               enablePullDown: true,
               enablePullUp: true,
@@ -127,7 +124,8 @@ class _NewsPageState extends State<NewsPage> {
               ),
             );
           }
-          if (snapshot.data is NewsLoadingState) {
+          if (snapshot.data is NewsLoadingState ||
+              snapshot.data is NewsEmptyState) {
             return SkeletonWidget();
           }
           return Center(child: CircularProgressIndicator());

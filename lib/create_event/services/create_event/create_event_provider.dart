@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
 import 'package:event_on_map/create_event/models/post_event_model.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 
 import 'create_event_repository.dart';
@@ -44,5 +45,34 @@ class PostNewEventProvider {
     } else{
         return newEventModel;
     }
+  }
+
+   /// Проверка доступа к GPS модулю и определение местоположения
+  static Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Проверка включено ли определение местоположения
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Геолокация отключена');
+    }
+
+    // Запрос на доступ к геолокации
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    // Если доступ на получение геолокации не предоставлен
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Доступ на получение геолокации не предоставлен');
+    }
+
+    // Если все разрешения предоставленны, получает местоположение
+    return await PostEventRepository.determinePositionGPS();
   }
 }

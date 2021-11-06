@@ -1,27 +1,34 @@
 
 import 'package:event_on_map/create_event/models/post_event_model.dart';
+import 'package:geolocator/geolocator.dart';
 
 class NewEventBlocState {
   NewEventBlocState();
-  factory NewEventBlocState.emptyEvent() = EventEmptyBloc;
-  factory NewEventBlocState.loadingEvent() = EventLoadingBloc;
-  factory NewEventBlocState.loadedEvent(NewEventModel newEventModel) = EventLoadedBloc;
-  factory NewEventBlocState.getLatLng() = GetLatLng;
-  factory NewEventBlocState.postEvenErrorSendingServer() = PostEvenErrorSendingServer;
-  factory NewEventBlocState.postEventNotRegisteredSendingServer() = PostEventNotRegisteredSendingServer;
+  factory NewEventBlocState.emptyEvent() = EventEmptyBlocState;
+  factory NewEventBlocState.loadingEvent() = EventLoadingBlocState;
+  factory NewEventBlocState.loadedEvent(NewEventModel newEventModel) = EventLoadedBlocState;
+  factory NewEventBlocState.getLatLngLoading() = GetLatLngLoadingState;
+  factory NewEventBlocState.getLatLngLoaded(Position getPosition) = GetLatLngLoadedState;
+  factory NewEventBlocState.postEvenErrorSendingServer() = PostEvenErrorSendingServerState;
+  factory NewEventBlocState.postEventNotRegisteredSendingServer() = PostEventNotRegisteredSendingServerState;
 }
 
-class EventEmptyBloc extends NewEventBlocState {}
+class EventEmptyBlocState extends NewEventBlocState {}
 
-class EventLoadingBloc extends NewEventBlocState {}
+class EventLoadingBlocState extends NewEventBlocState {}
 
-class EventLoadedBloc extends NewEventBlocState {
-  NewEventModel newEventModel;
-  EventLoadedBloc(this.newEventModel);
+class EventLoadedBlocState extends NewEventBlocState {
+  NewEventModel newsEventModel;
+  EventLoadedBlocState(this.newsEventModel);
 }
 
-class GetLatLng extends NewEventBlocState {}
+class GetLatLngLoadingState extends NewEventBlocState {}
 
-class PostEvenErrorSendingServer extends NewEventBlocState {}
+class GetLatLngLoadedState extends NewEventBlocState {
+  late Position getPosition;
+  GetLatLngLoadedState(this.getPosition);
+}
 
-class PostEventNotRegisteredSendingServer extends NewEventBlocState {}
+class PostEvenErrorSendingServerState extends NewEventBlocState {}
+
+class PostEventNotRegisteredSendingServerState extends NewEventBlocState {}

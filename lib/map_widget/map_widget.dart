@@ -1,4 +1,4 @@
-
+import 'package:event_on_map/create_event/services/create_event/create_event_provider.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ import '../custom_icons_icons.dart';
  It is larger than the device screen size: [1080, 2156].
  */
 
-
 class MapWidget extends StatefulWidget {
   const MapWidget({Key? key}) : super(key: key);
 
@@ -19,16 +18,37 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-
-  final _myLocation = LatLng(53.769997, 87.137535);
+  LatLng _myLocation = LatLng(53.769997, 87.137535);
 
   late GoogleMapController _googleMapController;
 
+  void _getPosition() {
+    PostNewEventProvider.determinePosition().then((position) {
+      _myLocation = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+  List<Marker> markers = [];
+
+  void a() {
+    final newp = Marker(
+      markerId: MarkerId('sdscdscdsc'), // Название
+      infoWindow: InfoWindow(title: 'Привет', snippet: 'Здарова'),
+      position: _myLocation,
+    );
+    setState(
+      () {
+        markers.add(newp);
+      },
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     GoogleMapController _googleMapController;
+    _getPosition();
+    a();
   }
 
   @override
@@ -39,25 +59,26 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        body: Stack(
-      children: [
-        GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: _myLocation,
-            zoom: 16,
+      body: Stack(
+        children: [
+          GoogleMap(
+            markers: markers.toSet(),
+            initialCameraPosition: CameraPosition(
+              target: _myLocation,
+              zoom: 16,
+            ),
           ),
-        ),
-      ],),
+        ],
+      ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(
-            onPressed: () =>
-                Navigator.of(context).pushNamedAndRemoveUntil(MainNavigationRouteName.createAnEventWidget, (route) => false),
+            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                MainNavigationRouteName.createAnEventWidget, (route) => false),
             child: Icon(
-              Icons.add_rounded,
+              Icons.add,
               size: 30,
             ),
             style: ButtonStyle(
@@ -70,13 +91,13 @@ class _MapWidgetState extends State<MapWidget> {
               minimumSize: MaterialStateProperty.all(Size(45, 45)),
               // минимальный размер кнопки
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                // скругление краев кнопки
+                  // скругление краев кнопки
                   borderRadius: BorderRadius.circular(60),
                   side: const BorderSide(
                     color: Colors.blueAccent,
                     width: 2,
                   ) // цвет бордера
-              )),
+                  )),
             ),
           ),
           const SizedBox(
@@ -85,7 +106,7 @@ class _MapWidgetState extends State<MapWidget> {
           TextButton(
             onPressed: () {},
             child: const Icon(
-              CustomIcons.direction,
+              CustomIcons.map_marker,
               size: 30,
             ),
             style: ButtonStyle(
@@ -100,7 +121,7 @@ class _MapWidgetState extends State<MapWidget> {
                     color: Colors.blue,
                     width: 2,
                   ) // цвет бордера
-              )),
+                  )),
             ),
           ),
         ],

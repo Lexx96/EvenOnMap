@@ -36,9 +36,11 @@ class ServiceNewEventBloc {
     ).catchError(
       (exception) {
         if (exception is PostEvenErrorSendingServerException) {
-          _streamController.sink.add(NewEventBlocState.postEvenErrorSendingServer());
+          _streamController.sink
+              .add(NewEventBlocState.postEvenErrorSendingServer());
         } else if (exception is PostEventNotRegisteredSendingServerException) {
-          _streamController.sink.add(NewEventBlocState.postEventNotRegisteredSendingServer());
+          _streamController.sink
+              .add(NewEventBlocState.postEventNotRegisteredSendingServer());
         } else {
           print('Ошибка выполнения запроса регистрации');
           _streamController.sink.add(NewEventBlocState.emptyEvent());
@@ -47,8 +49,15 @@ class ServiceNewEventBloc {
     );
   }
 
+  /// Получение данных о местоположении
   void getLatLngOnMap() {
-    _streamController.sink.add(NewEventBlocState.getLatLng());
+    _streamController.sink.add(NewEventBlocState.getLatLngLoading());
+    PostNewEventProvider.determinePosition().then(
+      (getPosition) {
+        _streamController.sink
+            .add(NewEventBlocState.getLatLngLoaded(getPosition));
+      },
+    );
   }
 
   void dispose() {
