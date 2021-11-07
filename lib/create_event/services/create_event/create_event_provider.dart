@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
 import 'package:event_on_map/create_event/models/post_event_model.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 
@@ -37,6 +38,7 @@ class PostNewEventProvider {
         print('Ошибка запроса на размещение события $error');
         return newEventModel;
       }
+
       /// вынести классы ошибок в отдельный файл
     } else if(response.statusCode == 400){
       throw PostEvenErrorSendingServerException;
@@ -47,7 +49,8 @@ class PostNewEventProvider {
     }
   }
 
-   /// Проверка доступа к GPS модулю и определение местоположения
+  // Разбить на методы
+   /// Проверка доступа к GPS модулю и определение координат
   static Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -63,7 +66,7 @@ class PostNewEventProvider {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+        return Future.error('Разрешение на определение местоположения не предоставленно');
       }
     }
 
@@ -74,5 +77,16 @@ class PostNewEventProvider {
 
     // Если все разрешения предоставленны, получает местоположение
     return await PostEventRepository.determinePositionGPS();
+  }
+
+  /// Определение адреса по координатам
+  static Future<List<Placemark>> getAddressFromLatLongGPS (Position position) async {
+    try{
+      var a = await PostEventRepository.getAddressFromLatLong(position);
+      return a;
+    }catch(e){
+      throw Exception(e);
+    }
+
   }
 }

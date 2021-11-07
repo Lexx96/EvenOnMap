@@ -48,10 +48,6 @@ with SingleTickerProviderStateMixin {
 }
 )
 
-
-
-карточку в ленту новостей
-и скролл в ленте
 ListPage при первом входе
  */
 class MainScreen extends StatefulWidget {
@@ -71,6 +67,10 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

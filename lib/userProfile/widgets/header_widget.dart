@@ -23,8 +23,6 @@ class UserProfileHeaderWidget extends StatefulWidget {
 class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
   late UserProfileImageBloc _bloc;
 
-   bool _showActionsInPhoto = true;
-
   @override
   void initState() {
     super.initState();
@@ -54,7 +52,6 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
     if (data is LoadedImageUserProfile){
       final _data = data as LoadedImageUserProfile;
       image = _data.image as File;
-      _showActionsInPhoto = false;
     }
     const textStyle = const TextStyle(
         fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold);
@@ -104,7 +101,7 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
                           BorderRadius.all(Radius.circular(90)),
                           splashColor: Colors.grey[1],
                           onTap: () {
-                            (_showActionsInPhoto)
+                            (data is EmptyImageUserProfile)
                                 ? _showImagesSource(context)
                                 : _showActions(context);
                           } //_showActions(context, index),

@@ -101,7 +101,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               snapshot.data is EventLoadingBlocState ||
               snapshot.data is EventLoadedBlocState ||
               snapshot.data is PostEvenErrorSendingServerState ||
-              snapshot.data is PostEventNotRegisteredSendingServerState) {
+              snapshot.data is PostEventNotRegisteredSendingServerState || snapshot.data is GetLatLngLoadedState) {
             return Stack(
               children: [
                 ListView(
