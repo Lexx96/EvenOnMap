@@ -38,6 +38,7 @@ dependencies:
   flutter_spinkit: ^5.1.0
   geolocator:
   geocoding:
+  flutter_geocoder: ^0.2.2-nullsafety
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
 import 'package:event_on_map/create_event/models/post_event_model.dart';
+import 'package:flutter_geocoder/model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 
 import 'create_event_repository.dart';
@@ -79,14 +81,38 @@ class PostNewEventProvider {
     return await PostEventRepository.determinePositionGPS();
   }
 
-  /// Определение адреса по координатам
+  /// Определение адреса по Position [package:geolocator]
   static Future<List<Placemark>> getAddressFromLatLongGPS (Position position) async {
     try{
-      var a = await PostEventRepository.getAddressFromLatLong(position);
-      return a;
+      return await PostEventRepository.getAddressFromLatLong(position);
     }catch(e){
       throw Exception(e);
     }
-
   }
+
+  /// Определение адреса по LatLng [package:geolocator]
+  static Future<Address> getAddressFromCoordinates (LatLng onTabLatLng) async {
+    try{
+      List<Address> addresses = await PostEventRepository.getAddress(onTabLatLng);
+      Address addressesInOnTab = addresses.first;
+      return addressesInOnTab;
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+
+
+
+
+  // перенести методы в папку с картой блять!
+
+
+
+  /// Обновление Set<Marker> для обновления маркеров на карте
+  static Set<Marker> refreshSetProvider ({required Set<Marker> set, required Marker marker}) {
+    set.add(marker);
+    return set;
+  }
+
 }
