@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../custom_icons_icons.dart';
 import 'bloc/map_bloc.dart';
 import 'bloc/map_bloc_state.dart';
+import 'service/map_provider.dart';
 
 /*
 сделать появление маркера по нажатию на карту
@@ -85,8 +86,8 @@ class _MapWidgetState extends State<MapWidget> {
 
   /// Тело страницы
   Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
-    if (snapshot.data is LoadedLatLng) {
-      final _data = snapshot.data as LoadedLatLng;
+    if (snapshot.data is LoadedLatLngAndAddress) {
+      final _data = snapshot.data as LoadedLatLngAndAddress;
       _myPosition = LatLng(_data.position.latitude, _data.position.longitude);
       _placemark = _data.placemark;
       _getMyMarker(_myPosition, _placemark);
@@ -109,13 +110,12 @@ class _MapWidgetState extends State<MapWidget> {
         children: [
           GoogleMap(
             onMapCreated: _onMapCreated,
-            markers: (snapshot.data is LoadedLatLng) ? _setUserMarkers : _setOnTabMarkers,
+            markers: (snapshot.data is LoadedAddressFromCoordinates) ? _setOnTabMarkers : _setUserMarkers,
             initialCameraPosition: CameraPosition(
               target: _myPosition,
               zoom: 16,
             ),
-            onTap: (LatLng onTabLatLng) => _bloc.getAddressOnTab(
-                onTabLatLng), // получение LatLng по нажатию на карту
+            onTap: (LatLng onTabLatLng) => _bloc.getAddressOnTab(onTabLatLng), // получение LatLng по нажатию на карту
           ),
         ],
       ),
@@ -149,6 +149,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   /// Создание маркера при получении местоположения пользователя
   void _getMyMarker(LatLng _myPosition, List<Placemark> placemark) {
+
     final _userMarker = Marker(
       markerId: MarkerId(''),
       infoWindow: InfoWindow(
@@ -158,7 +159,8 @@ class _MapWidgetState extends State<MapWidget> {
       icon: BitmapDescriptor.defaultMarkerWithHue(
           BitmapDescriptor.hueGreen), // изминение маркера
     );
-    _setUserMarkers.add(_userMarker);
+    _setUserMarkers = MapProvider.refreshSetProvider(set: _setUserMarkers, marker: _userMarker);
+    print(_userMarker);
     _onMapCreated(_googleMapController);
   }
 
@@ -176,6 +178,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   /// Создание маркера по нажатию на карту
   void _onTabMarker(Address address, LatLng _onTabLatLng) async {
+
     final _onTabMarker = Marker(
       markerId: MarkerId(''),
       infoWindow: InfoWindow(
@@ -183,10 +186,9 @@ class _MapWidgetState extends State<MapWidget> {
           snippet: 'Создание'), // Тело
       position: _onTabLatLng,
     );
-    setState(
-      () {
-        _setOnTabMarkers.add(_onTabMarker);
-      },
-    );
+
+    _setOnTabMarkers =  MapProvider.refreshSetProvider(set: _setOnTabMarkers, marker: _onTabMarker);
+    print('111111111111111111111');
+    print(_onTabMarker);
   }
 }

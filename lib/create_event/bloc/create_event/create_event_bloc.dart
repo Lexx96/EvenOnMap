@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:event_on_map/create_event/services/create_event/create_event_provider.dart';
+import 'package:event_on_map/map_widget/service/map_provider.dart';
 import 'create_event_bloc_state.dart';
 
 class ServiceNewEventBloc {
@@ -49,10 +50,10 @@ class ServiceNewEventBloc {
     );
   }
 
-  /// Получение данных о местоположении
+  /// Проверка доступа к GPS модулю и определение Position
   void getLatLngOnMap() {
     _streamController.sink.add(NewEventBlocState.getLatLngLoading());
-    PostNewEventProvider.determinePosition().then(
+    MapProvider.determinePosition().then(
       (getPosition) {
         _streamController.sink
             .add(NewEventBlocState.getLatLngLoaded(getPosition));

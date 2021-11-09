@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:event_on_map/create_event/services/create_event/create_event_provider.dart';
+import 'package:event_on_map/map_widget/service/map_provider.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -13,11 +12,11 @@ class GoogleMapBloc {
 
   /// Получение LatLng и адресса местоположения пользователя
   void getLatLngAndAddressUserPosition() async {
-    _streamController.sink.add(MapBlocState.loadingLatLng());
-    await PostNewEventProvider.determinePosition().then(
+    _streamController.sink.add(MapBlocState.emptyLatLng());
+    await MapProvider.determinePosition().then(
       (getPositionFromGPS) async {
         List<Placemark> _placemark =
-            await PostNewEventProvider.getAddressFromLatLongGPS(
+            await MapProvider.getAddressFromLatLongGPS(
                 getPositionFromGPS);
         _streamController.sink.add(MapBlocState.loadedLatLngAndAddress(
             getPositionFromGPS, _placemark));
@@ -25,9 +24,9 @@ class GoogleMapBloc {
     );
   }
 
-  /// Определение адреса по LatLng [package:geolocator]
+  /// Определение адреса по LatLng [package:geocoder]
   void getAddressOnTab(LatLng onTabLatLng) async {
-    await PostNewEventProvider.getAddressFromCoordinates(onTabLatLng).then(
+    await MapProvider.getAddressFromCoordinates(onTabLatLng).then(
       (addressesInOnTab) {
         _streamController.sink.add(MapBlocState.loadedAddressFromCoordinates(addressesInOnTab, onTabLatLng));
       },
@@ -35,7 +34,7 @@ class GoogleMapBloc {
   }
 
   void refreshSet ({required Set<Marker> set, required Marker marker}) {
-    Set<Marker> refreshedSet = PostNewEventProvider.refreshSetProvider(set: set, marker: marker);
+    Set<Marker> refreshedSet = MapProvider.refreshSetProvider(set: set, marker: marker);
 
   }
 

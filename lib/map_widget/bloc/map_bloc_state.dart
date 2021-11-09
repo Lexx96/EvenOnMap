@@ -6,19 +6,19 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapBlocState {
   MapBlocState();
-  factory MapBlocState.loadingLatLng() = LoadingLatLng;
-  factory MapBlocState.loadedLatLngAndAddress( Position position, List<Placemark> placemark) = LoadedLatLng;
+  factory MapBlocState.emptyLatLng() = EmptyGoogleMap;
+  factory MapBlocState.loadedLatLngAndAddress( Position position, List<Placemark> placemark) = LoadedLatLngAndAddress;
   factory MapBlocState.loadedAddressFromCoordinates(Address addresses, LatLng onTabLatLng) = LoadedAddressFromCoordinates;
 }
 
 
 
-class LoadingLatLng extends MapBlocState {}
+class EmptyGoogleMap extends MapBlocState {}
 
-class LoadedLatLng extends MapBlocState {
+class LoadedLatLngAndAddress extends MapBlocState {
   Position position;
   List<Placemark> placemark;
-  LoadedLatLng(this.position, this.placemark);
+  LoadedLatLngAndAddress(this.position, this.placemark);
 }
 
 class LoadedAddressFromCoordinates extends MapBlocState {
