@@ -16,10 +16,10 @@ class GoogleMapBloc {
     await MapProvider.determinePosition().then(
       (getPositionFromGPS) async {
         List<Placemark> _placemark =
-            await MapProvider.getAddressFromLatLongGPS(
-                getPositionFromGPS);
+            await MapProvider.getAddressFromLatLongGPS(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
+        LatLng position = LatLng(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
         _streamController.sink.add(MapBlocState.loadedLatLngAndAddress(
-            getPositionFromGPS, _placemark));
+            position, _placemark));
       },
     );
   }
@@ -27,15 +27,13 @@ class GoogleMapBloc {
   /// Определение адреса по LatLng [package:geocoder]
   void getAddressOnTab(LatLng onTabLatLng) async {
     await MapProvider.getAddressFromCoordinates(onTabLatLng).then(
-      (addressesInOnTab) {
-        _streamController.sink.add(MapBlocState.loadedAddressFromCoordinates(addressesInOnTab, onTabLatLng));
+      (addressesInOnTab) async {
+        List<Placemark> _placemark =
+            await MapProvider.getAddressFromLatLongGPS(onTabLatLng.latitude, onTabLatLng.longitude);
+        _streamController.sink.add(MapBlocState.loadedLatLngAndAddress(
+            onTabLatLng, _placemark));
       },
     );
-  }
-
-  void refreshSet ({required Set<Marker> set, required Marker marker}) {
-    Set<Marker> refreshedSet = MapProvider.refreshSetProvider(set: set, marker: marker);
-
   }
 
   void dispose() {

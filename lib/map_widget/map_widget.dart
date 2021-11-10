@@ -86,8 +86,8 @@ class _MapWidgetState extends State<MapWidget> {
 
   /// Тело страницы
   Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
-    if (snapshot.data is LoadedLatLngAndAddress) {
-      final _data = snapshot.data as LoadedLatLngAndAddress;
+    if (snapshot.data is LoadedLatLngAndAddressState) {
+      final _data = snapshot.data as LoadedLatLngAndAddressState;
       _myPosition = LatLng(_data.position.latitude, _data.position.longitude);
       _placemark = _data.placemark;
       _getMyMarker(_myPosition, _placemark);
@@ -98,8 +98,8 @@ class _MapWidgetState extends State<MapWidget> {
       // Изначальное положение маркера в формате LatLng
       _myPosition = LatLng(0.0, 0.0);
     }
-    if (snapshot.data is LoadedAddressFromCoordinates) {
-      final _data = snapshot.data as LoadedAddressFromCoordinates;
+    if (snapshot.data is LoadedAddressFromCoordinatesState) {
+      final _data = snapshot.data as LoadedAddressFromCoordinatesState;
       final _address = _data.addresses;
       final _onTabLatLng = _data.onTabLatLng;
       _onTabMarker(_address, _onTabLatLng);
@@ -109,18 +109,20 @@ class _MapWidgetState extends State<MapWidget> {
       body: Stack(
         children: [
           GoogleMap(
+            mapToolbarEnabled: false,
+            zoomControlsEnabled: false,
             onMapCreated: _onMapCreated,
-            markers: (snapshot.data is LoadedAddressFromCoordinates) ? _setOnTabMarkers : _setUserMarkers,
+            markers: (snapshot.data is LoadedAddressFromCoordinatesState) ? _setOnTabMarkers : _setUserMarkers,
             initialCameraPosition: CameraPosition(
               target: _myPosition,
               zoom: 16,
             ),
-            onTap: (LatLng onTabLatLng) => _bloc.getAddressOnTab(onTabLatLng), // получение LatLng по нажатию на карту
+            onTap: (LatLng _onTabLatLng) => _bloc.getAddressOnTab(_onTabLatLng), // получение LatLng по нажатию на карту
           ),
         ],
       ),
       floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
             onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
@@ -149,7 +151,6 @@ class _MapWidgetState extends State<MapWidget> {
 
   /// Создание маркера при получении местоположения пользователя
   void _getMyMarker(LatLng _myPosition, List<Placemark> placemark) {
-
     final _userMarker = Marker(
       markerId: MarkerId(''),
       infoWindow: InfoWindow(
@@ -160,7 +161,6 @@ class _MapWidgetState extends State<MapWidget> {
           BitmapDescriptor.hueGreen), // изминение маркера
     );
     _setUserMarkers = MapProvider.refreshSetProvider(set: _setUserMarkers, marker: _userMarker);
-    print(_userMarker);
     _onMapCreated(_googleMapController);
   }
 
@@ -178,7 +178,6 @@ class _MapWidgetState extends State<MapWidget> {
 
   /// Создание маркера по нажатию на карту
   void _onTabMarker(Address address, LatLng _onTabLatLng) async {
-
     final _onTabMarker = Marker(
       markerId: MarkerId(''),
       infoWindow: InfoWindow(
@@ -186,9 +185,6 @@ class _MapWidgetState extends State<MapWidget> {
           snippet: 'Создание'), // Тело
       position: _onTabLatLng,
     );
-
     _setOnTabMarkers =  MapProvider.refreshSetProvider(set: _setOnTabMarkers, marker: _onTabMarker);
-    print('111111111111111111111');
-    print(_onTabMarker);
   }
 }

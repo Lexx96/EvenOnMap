@@ -1,5 +1,9 @@
 
+import 'package:event_on_map/map_widget/bloc/map_bloc.dart';
+import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../custom_icons_icons.dart';
 import 'widgets/images_widget.dart';
 import 'bloc/create_event/create_event_bloc_state.dart';
@@ -22,7 +26,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   void initState() {
     super.initState();
     _bloc = ServiceNewEventBloc();
-    _bloc.emptyEventBloc();
+    _bloc.getLatLngAndAddressUserPosition();
   }
 
   @override
@@ -45,6 +49,26 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   /// Тело экрана
   Stack _bodyCreateEvent(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+    print('1111111111111111111111111111111111111');
+    print(snapshot.data);
+    List<Placemark> _placemark = [Placemark(street: '', subThoroughfare: '')];
+    LatLng _initialLatLng = LatLng(0.0, 0.00);
+
+
+    if(snapshot.data is GetLatLngInitialState ) {
+      final _data = snapshot.data as GetLatLngInitialState;
+      _placemark = _data.placemark;
+      _initialLatLng = LatLng(_data.initialLatLng.latitude, _data.initialLatLng.longitude);
+      _showAddress(context,_placemark);
+    }
+    LatLng _onTabLatLng = LatLng(0.0, 0.00);
+    List<Placemark> _placemarkFromMap = [Placemark(street: '', subThoroughfare: '')];
+    if(snapshot.data is GetLatLngFromMapState ) {
+      final _data = snapshot.data as GetLatLngFromMapState;
+      _placemarkFromMap = _data.placemark;
+      LatLng _onTabLatLng = LatLng(_data.onTabLatLng.latitude, _data.onTabLatLng.longitude);
+        _showAddress(context,_placemarkFromMap);
+    }
     return Stack(
           children: [
             ListView(
@@ -100,13 +124,15 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Укажите место',
+                        'Укажите адрес',
                         style: const TextStyle(fontSize: 16),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: TextButton(
-                          onPressed: () => _bloc.getLatLngOnMap(),
+                          onPressed: (){
+                            Navigator.of(context).pushNamed(MainNavigationRouteName.createEventMapWidget);
+                          },
                           child: Icon(
                             CustomIcons.map_marker,
                             color: Colors.blue,
@@ -130,6 +156,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     ],
                   ),
                 ),
+                _showAddress(context, _placemark),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -153,6 +180,58 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             snapshot.data is EventLoadingBlocState ? Center(child: CircularProgressIndicator()) : SizedBox.shrink()
           ],
         );
+  }
+
+  Center _showAddress(BuildContext context, List<Placemark> _placemark) {
+    return Center(
+                child: Container(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Область/Край'),
+                              Text('${_placemark.first.administrativeArea}'),
+                            ],
+                          ),
+                          Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Город'),
+                              Text('${_placemark.first.locality}'),
+                            ],
+                          ),
+                          Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Улица/Проспект'),
+                              Text('${_placemark.first.street}'),
+                            ],
+                          ),
+                          Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Дом №'),
+                              Text('${_placemark.first.subThoroughfare}'),
+                            ],
+                          ),
+                          Divider(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
   }
 
   /// Стиль декорации для TextField
@@ -182,7 +261,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                         );
   }
 
-  /// Показывает уведомления пользователю в AlertDialog
+  /// Показ уведомлений пользователю в AlertDialog
   Widget _showException(AsyncSnapshot snapshot) {
     if (snapshot.data is EventLoadedBlocState) {
       return AlertDialog(

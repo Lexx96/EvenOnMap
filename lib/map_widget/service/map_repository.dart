@@ -14,10 +14,10 @@ class MapRepository {
 
   /// Определение адреса по Position [package:geolocator]
   static Future<List<Placemark>> getAddressFromLatLong(
-      Position position) async {
+      Lat, Lng) async {
     try {
       List<Placemark> placemark =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
+          await placemarkFromCoordinates(Lat, Lng);
       return placemark;
     } catch (e) {
       throw Exception('Не удалось получить адресс');
@@ -28,10 +28,8 @@ class MapRepository {
   static Future<List<Address>> getAddress(LatLng onTabLatLng) async {
     // для обновления https://flutter.dev/docs/development/packages-and-plugins/plugin-api-migration#basic-plugin
     try {
-      // Получение Coordinates по LatLng
       Coordinates coordinatesOnTab =
           Coordinates(onTabLatLng.latitude, onTabLatLng.longitude);
-      // Получение адреса по Coordinates
       List<Address> addresses =
           await Geocoder.local.findAddressesFromCoordinates(coordinatesOnTab);
       return addresses;

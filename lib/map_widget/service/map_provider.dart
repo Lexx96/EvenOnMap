@@ -37,9 +37,9 @@ class MapProvider {
 
   /// Определение адреса по Position [package:geocoding]
   static Future<List<Placemark>> getAddressFromLatLongGPS(
-      Position position) async {
+      Lat, Lng) async {
     try {
-      return await MapRepository.getAddressFromLatLong(position);
+      return await MapRepository.getAddressFromLatLong(Lat, Lng);
     } catch (e) {
       throw Exception(e);
     }
@@ -56,8 +56,6 @@ class MapProvider {
       throw Exception(e);
     }
   }
-
-// перенести методы в папку с картой блять!
 
   /// Обновление Set<Marker> для обновления маркеров на карте
   static Set<Marker> refreshSetProvider(

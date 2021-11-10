@@ -1,16 +1,17 @@
-
 import 'package:event_on_map/create_event/models/post_event_model.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NewEventBlocState {
   NewEventBlocState();
   factory NewEventBlocState.emptyEvent() = EventEmptyBlocState;
   factory NewEventBlocState.loadingEvent() = EventLoadingBlocState;
   factory NewEventBlocState.loadedEvent(NewEventModel newEventModel) = EventLoadedBlocState;
-  factory NewEventBlocState.getLatLngLoading() = GetLatLngLoadingState;
-  factory NewEventBlocState.getLatLngLoaded(Position getPosition) = GetLatLngLoadedState;
   factory NewEventBlocState.postEvenErrorSendingServer() = PostEvenErrorSendingServerState;
   factory NewEventBlocState.postEventNotRegisteredSendingServer() = PostEventNotRegisteredSendingServerState;
+  factory NewEventBlocState.getLatLngInitialState(List<Placemark> placemark, LatLng initialLatLng) = GetLatLngInitialState;
+  factory NewEventBlocState.getLatLngFromMapState(List<Placemark> placemark, LatLng onTabLatLng) = GetLatLngFromMapState;
 }
 
 class EventEmptyBlocState extends NewEventBlocState {}
@@ -32,3 +33,15 @@ class GetLatLngLoadedState extends NewEventBlocState {
 class PostEvenErrorSendingServerState extends NewEventBlocState {}
 
 class PostEventNotRegisteredSendingServerState extends NewEventBlocState {}
+
+class GetLatLngInitialState extends NewEventBlocState {
+  List<Placemark> placemark;
+  LatLng initialLatLng;
+  GetLatLngInitialState(this.placemark, this.initialLatLng);
+}
+
+class GetLatLngFromMapState extends NewEventBlocState {
+  List<Placemark> placemark;
+  LatLng onTabLatLng;
+  GetLatLngFromMapState(this.placemark, this.onTabLatLng);
+}
