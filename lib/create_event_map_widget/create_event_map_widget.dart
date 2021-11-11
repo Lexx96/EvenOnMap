@@ -1,6 +1,5 @@
 import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
-import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -67,6 +66,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   Stack _body(AsyncSnapshot snapshot, BuildContext context) {
     LatLng _position = LatLng(0.0, 0.0);
     List<Placemark> _placemark = [Placemark(street: '', subThoroughfare: '')];
+
     if (snapshot.data is LoadedAddressFromCoordinatesState) {
       final _data = snapshot.data as LoadedAddressFromCoordinatesState;
       _placemark = _data.placemark;
@@ -85,8 +85,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
               target: _myPosition,
               zoom: 16,
             ),
-            onTap: (LatLng _onTabLatLng) => _bloc.getAddressOnTab(
-                _onTabLatLng) // получение LatLng по нажатию на карту
+            onTap: (LatLng _onTabLatLng) => _bloc.getAddressOnTab(_onTabLatLng) // получение LatLng по нажатию на карту
             ),
         _showAddress(context, _placemark, _position),
         Column(
@@ -169,10 +168,11 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            TextButton(onPressed: (){
+                            TextButton(
+                                onPressed: (){
                               ServiceNewEventBloc().getLatLngFromMap(_position);
-                              Navigator.of(context).pushNamed(MainNavigationRouteName.createAnEventWidget);
-                            }, child: Text('Выбрать')),
+                              Navigator.of(context).pop();
+                            }, child: Text('Выбрать'),),
                           ],
                         )
                       ],

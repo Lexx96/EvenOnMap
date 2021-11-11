@@ -6,14 +6,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'create_event_bloc_state.dart';
 
 class ServiceNewEventBloc {
+
   final _streamController = StreamController<NewEventBlocState>();
 
   Stream<NewEventBlocState> get streamEventController =>
       _streamController.stream;
 
-  void emptyEventBloc() {
-    _streamController.sink.add(NewEventBlocState.emptyEvent());
-  }
 
   /// Размещение нового события на сервер и получение данных
   Future<void> loadingPostEventBloc({
@@ -46,7 +44,6 @@ class ServiceNewEventBloc {
               .add(NewEventBlocState.postEventNotRegisteredSendingServer());
         } else {
           print('Ошибка выполнения запроса регистрации');
-          _streamController.sink.add(NewEventBlocState.emptyEvent());
         }
       },
     );
@@ -54,7 +51,6 @@ class ServiceNewEventBloc {
 
   /// Получение адресса местоположения пользователя
   void getLatLngAndAddressUserPosition() async {
-    _streamController.sink.add(NewEventBlocState.emptyEvent());
     await MapProvider.determinePosition().then(
           (getPositionFromGPS) async {
             LatLng initialLatLng = LatLng(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
@@ -65,17 +61,16 @@ class ServiceNewEventBloc {
     );
   }
 
-
   /// Определение адреса по LatLng [package:geocoder]
   void getLatLngFromMap(LatLng onTabLatLng) async {
     await MapProvider.getAddressFromCoordinates(onTabLatLng).then(
       (addressesInOnTab) async {
         List<Placemark> _placemark = await MapProvider.getAddressFromLatLongGPS(
             onTabLatLng.latitude, onTabLatLng.longitude);
-        print(_placemark);
         _streamController.sink.add(
-          NewEventBlocState.getLatLngFromMapState(_placemark, onTabLatLng),
+          NewEventBlocState.getLatLngFromMapState(placemark: _placemark, onTabLatLng: onTabLatLng),
         );
+        getLatLngAndAddressUserPosition();
       },
     );
   }

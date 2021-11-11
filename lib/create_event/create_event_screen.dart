@@ -1,5 +1,4 @@
 
-import 'package:event_on_map/map_widget/bloc/map_bloc.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -51,19 +50,22 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   Stack _bodyCreateEvent(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
     print('1111111111111111111111111111111111111');
     print(snapshot.data);
-    List<Placemark> _placemark = [Placemark(street: '', subThoroughfare: '')];
+    List<Placemark> _placemark = [Placemark(street: '', subThoroughfare: ''),];
     LatLng _initialLatLng = LatLng(0.0, 0.00);
 
-
-    if(snapshot.data is GetLatLngInitialState ) {
+    if(snapshot.data is GetLatLngInitialState) {
       final _data = snapshot.data as GetLatLngInitialState;
       _placemark = _data.placemark;
       _initialLatLng = LatLng(_data.initialLatLng.latitude, _data.initialLatLng.longitude);
       _showAddress(context,_placemark);
     }
+
     LatLng _onTabLatLng = LatLng(0.0, 0.00);
-    List<Placemark> _placemarkFromMap = [Placemark(street: '', subThoroughfare: '')];
+    List<Placemark> _placemarkFromMap = [Placemark(street: '', subThoroughfare: ''),];
+
     if(snapshot.data is GetLatLngFromMapState ) {
+      print('2222222222222222222222222222');
+      print(snapshot.data);
       final _data = snapshot.data as GetLatLngFromMapState;
       _placemarkFromMap = _data.placemark;
       LatLng _onTabLatLng = LatLng(_data.onTabLatLng.latitude, _data.onTabLatLng.longitude);
@@ -165,8 +167,8 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                         backgroundColor:
                         MaterialStateProperty.all(Colors.grey[100]),
                       ),
-                      onPressed: () => _postNewEventInServer(),
                       child: Text('Создать'),
+                      onPressed: () => _postNewEventInServer(),
                     ),
                     SizedBox(width: 28),
                   ],
@@ -176,12 +178,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             snapshot.data is EventLoadingBlocState
                 ? Center(child: CircularProgressIndicator())
                 : SizedBox.shrink(),
-            _showException(snapshot),
-            snapshot.data is EventLoadingBlocState ? Center(child: CircularProgressIndicator()) : SizedBox.shrink()
+            snapshot.data is GetLatLngInitialState ? _showException(snapshot) :  SizedBox.shrink(),
           ],
         );
   }
 
+  /// Вывод адреса события
   Center _showAddress(BuildContext context, List<Placemark> _placemark) {
     return Center(
                 child: Container(
@@ -271,7 +273,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             )),
         actions: [
           TextButton(
-            onPressed: () => _bloc.emptyEventBloc(),
+            onPressed: () => Navigator.of(context).pop(),
             child: Text('OK'),
           ),
         ],
@@ -284,7 +286,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             )),
         actions: [
           TextButton(
-            onPressed: () => _bloc.emptyEventBloc(),
+            onPressed: () => Navigator.of(context).pop(),
             child: Text('OK'),
           ),
         ],
@@ -297,7 +299,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             )),
         actions: [
           TextButton(
-            onPressed: () => _bloc.emptyEventBloc(),
+            onPressed: () => Navigator.of(context).pop(),
             child: Text('OK'),
           )
         ],

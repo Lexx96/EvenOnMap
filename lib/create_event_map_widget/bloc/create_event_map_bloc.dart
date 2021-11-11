@@ -13,7 +13,7 @@ class CreateEventMapBloc {
   Stream<CreateEventMapState> get streamCreateEventMapController => _streamCreateEventController.stream;
 
 
-  /// Получение LatLng и адресса местоположения пользователя при выборе адреса события
+  /// Получение LatLng и адресса местоположения пользователя при инициализации экрана выбора адреса события
   void createEventGetLatLngAndAddressUserPosition() async {
     await MapProvider.determinePosition().then(
           (getPositionFromGPS) async {

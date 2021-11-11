@@ -5,16 +5,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NewEventBlocState {
   NewEventBlocState();
-  factory NewEventBlocState.emptyEvent() = EventEmptyBlocState;
   factory NewEventBlocState.loadingEvent() = EventLoadingBlocState;
   factory NewEventBlocState.loadedEvent(NewEventModel newEventModel) = EventLoadedBlocState;
   factory NewEventBlocState.postEvenErrorSendingServer() = PostEvenErrorSendingServerState;
   factory NewEventBlocState.postEventNotRegisteredSendingServer() = PostEventNotRegisteredSendingServerState;
   factory NewEventBlocState.getLatLngInitialState(List<Placemark> placemark, LatLng initialLatLng) = GetLatLngInitialState;
-  factory NewEventBlocState.getLatLngFromMapState(List<Placemark> placemark, LatLng onTabLatLng) = GetLatLngFromMapState;
+  factory NewEventBlocState.getLatLngFromMapState({required List<Placemark> placemark, required LatLng onTabLatLng}) = GetLatLngFromMapState;
 }
-
-class EventEmptyBlocState extends NewEventBlocState {}
 
 class EventLoadingBlocState extends NewEventBlocState {}
 
@@ -43,5 +40,5 @@ class GetLatLngInitialState extends NewEventBlocState {
 class GetLatLngFromMapState extends NewEventBlocState {
   List<Placemark> placemark;
   LatLng onTabLatLng;
-  GetLatLngFromMapState(this.placemark, this.onTabLatLng);
+  GetLatLngFromMapState({required this.placemark, required this.onTabLatLng});
 }
