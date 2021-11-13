@@ -5,7 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'create_event_bloc_state.dart';
 
-class ServiceNewEventBloc {
+class CreateEventBloc {
 
   final _streamController = StreamController<NewEventBlocState>();
 
@@ -53,26 +53,30 @@ class ServiceNewEventBloc {
   void getLatLngAndAddressUserPosition() async {
     await MapProvider.determinePosition().then(
           (getPositionFromGPS) async {
-            LatLng initialLatLng = LatLng(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
+            LatLng _initialLatLng = LatLng(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
         List<Placemark> _placemark =
         await MapProvider.getAddressFromLatLongGPS(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
-        _streamController.sink.add(NewEventBlocState.getLatLngInitialState(_placemark, initialLatLng));
+        _streamController.sink.add(NewEventBlocState.getLatLngAndAddressState(placemark: _placemark, initialLatLng: _initialLatLng),
+        );
       },
     );
   }
 
   /// Определение адреса по LatLng [package:geocoder]
-  void getLatLngFromMap(LatLng onTabLatLng) async {
-    await MapProvider.getAddressFromCoordinates(onTabLatLng).then(
-      (addressesInOnTab) async {
-        List<Placemark> _placemark = await MapProvider.getAddressFromLatLongGPS(
-            onTabLatLng.latitude, onTabLatLng.longitude);
-        _streamController.sink.add(
-          NewEventBlocState.getLatLngFromMapState(placemark: _placemark, onTabLatLng: onTabLatLng),
-        );
-        getLatLngAndAddressUserPosition();
-      },
-    );
+  void getLatLngAndAddressFromMap(LatLng _onTabLatLng) async {
+    try{
+      List<Placemark> _placemark = await MapProvider.getAddressFromLatLongGPS(
+          _onTabLatLng.latitude, _onTabLatLng.longitude);
+      _streamController.sink.add(
+        NewEventBlocState.getLatLngAndAddressState(placemark: _placemark, initialLatLng: _onTabLatLng),
+      );
+    }catch(e){
+      print(e);
+    }
+  }
+
+  void openGoogleMapState () {
+    _streamController.add(NewEventBlocState.openGoogleMapState());
   }
 
   void dispose() {

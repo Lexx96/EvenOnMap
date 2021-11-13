@@ -50,6 +50,6 @@ class MainNavigation {
     MainNavigationRouteName.feedbackPage: (context) => const FeedbackPage(),
     MainNavigationRouteName.aboutDeveloper: (context) => const AboutDeveloper(),
     MainNavigationRouteName.decorationPage: (context) => const DecorationPage(),
-    MainNavigationRouteName.createEventMapWidget: (context) => const CreateEventMapWidget(),
+    // MainNavigationRouteName.createEventMapWidget: (context) => const CreateEventMapWidget(),
   };
 }

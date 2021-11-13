@@ -6,11 +6,11 @@ import 'package:geolocator/geolocator.dart';
 class GetLatLngWidget extends StatefulWidget {
   const GetLatLngWidget({
     Key? key,
-    required ServiceNewEventBloc bloc,
+    required CreateEventBloc bloc,
   })  : _bloc = bloc,
         super(key: key);
 
-  final ServiceNewEventBloc _bloc;
+  final CreateEventBloc _bloc;
 
   @override
   State<GetLatLngWidget> createState() => _GetLatLngWidgetState();

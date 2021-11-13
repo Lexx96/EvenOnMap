@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:event_on_map/create_event/bloc/pick_image/pick_image_bloc_state.dart';
@@ -11,29 +9,31 @@ class PickImageBloc {
 
   Stream<PickImageBlocState> get streamPickImage => _streamController.stream;
 
-  void notSelectedPickImage(){
+  void notSelectedPickImage() {
     _streamController.sink.add(PickImageBlocState.notSelectedPickImage());
   }
 
-  void addPickImageBloc(ImageSource source){
+  void addPickImageBloc(ImageSource source) {
     _streamController.sink.add(PickImageBlocState.loadingPickImage());
-    try{
-      PickImageProvider().getImageFile(source).then((image) {
-        if(image != null) {
-          _streamController.sink.add(PickImageBlocState.loadedPickImage(image));
-        }
-        else {
-          _streamController.sink.add(PickImageBlocState.notSelectedPickImage());
-        }
-      });
-    }
-    catch(error){
+    try {
+      PickImageProvider().getImageFile(source).then(
+        (image) {
+          if (image != null) {
+            _streamController.sink
+                .add(PickImageBlocState.loadedPickImage(image));
+          } else {
+            _streamController.sink
+                .add(PickImageBlocState.notSelectedPickImage());
+          }
+        },
+      );
+    } catch (error) {
       print('Ошибка получения изображения от провайдета $error');
       _streamController.sink.add(PickImageBlocState.notSelectedPickImage());
     }
   }
 
-  void dispose(){
+  void dispose() {
     _streamController.close();
   }
 }

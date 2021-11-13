@@ -14,10 +14,10 @@ class MapRepository {
 
   /// Определение адреса по Position [package:geolocator]
   static Future<List<Placemark>> getAddressFromLatLong(
-      Lat, Lng) async {
+      double lat, double lng) async {
     try {
       List<Placemark> placemark =
-          await placemarkFromCoordinates(Lat, Lng);
+          await placemarkFromCoordinates(lat, lng);
       return placemark;
     } catch (e) {
       throw Exception('Не удалось получить адресс');

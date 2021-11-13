@@ -1,7 +1,10 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
+import 'package:event_on_map/create_event_map_widget/create_event_map_widget.dart';
 import 'package:event_on_map/themes/my_dark_theme.dart';
 import 'package:event_on_map/themes/my_light_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../generated/l10n.dart';
@@ -18,7 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // говорит о там что инициализацию приложения проводить тут
   runApp(
     Home(
-      savedThemeMode: await AdaptiveTheme.getThemeMode(), // что за текущий режим?
+      savedThemeMode: await AdaptiveTheme.getThemeMode(),
     ),
   );
 }
@@ -41,7 +44,6 @@ class Home extends StatelessWidget {
         //enableScrollWhenRefreshCompleted: true, // панель вкладок влево и вправо
         enableLoadingWhenFailed : true, //В случае сбоя загрузки пользователи по-прежнему могут запускать дополнительные нагрузки, подтягивая их жестом.
         child: MaterialApp(
-        //splashFactory: InkRipple.splashFactory,
         theme: light,
         darkTheme: dark,
         localizationsDelegates: const [

@@ -37,9 +37,9 @@ class MapProvider {
 
   /// Определение адреса по Position [package:geocoding]
   static Future<List<Placemark>> getAddressFromLatLongGPS(
-      Lat, Lng) async {
+      double lat, double lng) async {
     try {
-      return await MapRepository.getAddressFromLatLong(Lat, Lng);
+      return await MapRepository.getAddressFromLatLong(lat, lng);
     } catch (e) {
       throw Exception(e);
     }
