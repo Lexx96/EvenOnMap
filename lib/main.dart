@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../generated/l10n.dart';
-import '../navigation/main_navigation.dart';
+import 'generated/l10n.dart';
+import 'navigation/main_navigation.dart';
 /*
 
 получение лат и лнг с карты

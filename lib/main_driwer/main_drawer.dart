@@ -26,8 +26,6 @@ class _MainDrawerState extends State<MainDrawer> {
     super.initState();
     _bloc = MainDrawerBloc();
     _bloc.emptyMainDrawerState();
-    // _bloc = UserProfileImageBloc();   // блок от профиля там свой геттер
-    // _bloc.emptyDrawerImageBloc();
   }
 
   @override
@@ -99,8 +97,7 @@ class _MainDrawerState extends State<MainDrawer> {
                           S.of(context).name +
                               ' ' +
                               S.of(context).surname,
-                          style: TextStyle(
-                              color: Colors.black, fontSize: 19),
+                          style: TextStyle(fontSize: 19,),
                         ),
                       ),
                     ),
@@ -128,7 +125,7 @@ class _MainDrawerState extends State<MainDrawer> {
           ListTile(
             title: Row(
               children: [
-                Icon(CustomIcons.user_2),
+                Icon(CustomIcons.user_2,),
                 SizedBox(width: 10),
                 Text(S.of(context).profile),
               ],

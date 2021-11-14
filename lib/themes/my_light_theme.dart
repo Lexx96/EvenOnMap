@@ -1,16 +1,124 @@
 import 'package:flutter/material.dart';
+
 // AdaptiveTheme.of(context).toggleThemeMode(); метод для смены темы просто на onPreset
 // AdaptiveTheme.of(context).reset(); сброс темы на тему по умолчанию
+abstract class ColorsLightTheme {
+  /*
+  Hexadecimal opacity values
+100% — FF
+
+95% — F2
+
+90% — E6
+
+85% — D9
+
+80% — CC
+
+75% — BF
+
+70% — B3
+
+65% — A6
+
+60% — 99
+
+55% — 8C
+
+50% — 80
+
+45% — 73
+
+40% — 66
+
+35% — 59
+
+30% — 4D
+
+25% — 40
+
+20% — 33
+
+15% — 26
+   */
+  //#b74093
+  static const Color color1 = Color(0xFF0DCEDA);
+  static const Color color2 = Color(0xFF6EF3D6);
+  static const Color color3 = Color(0xFFC6FCE5);
+  static const Color color4 = Color(0xFFEBFFFA);
+// static const main = Color(0xffb74093);
+// static const mainTWo = Color.fromRGBO(32, 32, 30, 1);
+// static const mainTextColor = Color.fromRGBO(130, 133, 136, 1);
+}
+
 final myLightTheme = ThemeData.light().copyWith(
-    appBarTheme: AppBarTheme(color: Colors.amberAccent),
-  splashColor: Colors.red,
-  dividerColor: Colors.red,
-  buttonTheme: ButtonThemeData(),
-  visualDensity: VisualDensity()  ,// макс и мин плотность между виджетами
-  textTheme: TextTheme(),
-  primaryColorLight: Color(0xFF42A5F5),
-  //https://vc.ru/design/199498-kak-sozdat-kachestvennuyu-cvetovuyu-palitru-dlya-ui
+  primaryColor: ColorsLightTheme.color1,
+
+  // floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.black),
 
 
+  //dialogBackgroundColor: Для алертдиалог?
+  // hoverColor: для подсказок в тексфилдах?
+  // hintColor:
+  // splashFactory:
+  // bottomAppBarColor: Colors.black,
+  // primaryColorLight: ColorsLightTheme.color1, // главный цвет например контейнеров, если цвет не задан???
+  // primaryTextTheme: Typography.blackCupertino,  // настройка стиля текста если он не задан явно
+
+  // shadowColor: Colors.blue, // цвет тени
+  // buttonTheme: ButtonThemeData(buttonColor: Colors.red),
+  // visualDensity: VisualDensity()  ,// макс и мин плотность между виджетами
+  // // //https://vc.ru/design/199498-kak-sozdat-kachestvennuyu-cvetovuyu-palitru-dlya-ui
+
+
+
+  // Работает
+
+    progressIndicatorTheme: ProgressIndicatorThemeData(linearTrackColor: Colors.red),
+
+  checkboxTheme: CheckboxThemeData(), // если он будет, то настроить
+
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+
+    backgroundColor: ColorsLightTheme.color1,
+
+    // либо
+    selectedItemColor: ColorsLightTheme.color4,
+    unselectedItemColor: ColorsLightTheme.color3,
+    // либо
+    selectedIconTheme: IconThemeData(color: ColorsLightTheme.color4,),
+    unselectedIconTheme: IconThemeData(color: ColorsLightTheme.color3,),
+
+    selectedLabelStyle: TextStyle(fontSize: 12),
+    unselectedLabelStyle: TextStyle(fontSize: 12),
+
+  ),
+
+  canvasColor: ColorsLightTheme.color4, // цвет Driwer + всплывающее меню
+
+  splashColor: Colors.grey,
+  dividerColor: ColorsLightTheme.color1, // цвет divider
+
+  iconTheme: IconThemeData(color: ColorsLightTheme.color1,),
+
+  textTheme: TextTheme(
+    bodyText1: TextStyle(color: ColorsLightTheme.color1),
+    bodyText2: TextStyle(color: ColorsLightTheme.color2),
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      textStyle: MaterialStateProperty.all(
+        const TextStyle(
+          color: ColorsLightTheme.color1,
+        ),
+      ),
+    ),
+  ),
+
+  appBarTheme: AppBarTheme(
+    backgroundColor: ColorsLightTheme.color1,
+  ),
+  //AppBarTheme
   splashFactory: InkRipple.splashFactory,
 ); //copyWith - позволяет переопределить цвета

@@ -83,16 +83,11 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       bottomNavigationBar: SizedBox(
-        height: 65,
+        height: 60,
         child: BottomNavigationBar(
-          backgroundColor: Colors.grey[200],
           selectedIconTheme: IconThemeData(
             size: 30,
-            color: Colors.blue,
           ),
-          unselectedIconTheme: IconThemeData(color: Colors.grey),
-          selectedLabelStyle: TextStyle(fontSize: 12),
-          unselectedLabelStyle: TextStyle(fontSize: 12),
           currentIndex: _selectedTab,
           items: [
             BottomNavigationBarItem(

@@ -135,7 +135,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   children: [
                     const Text(
                       '  На карте',
-                      style: const TextStyle(fontSize: 16),
                     ),
                     TextButton(
                       onPressed: () {
@@ -146,10 +145,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                         color: Colors.blue,
                       ),
                       style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.transparent),
                         overlayColor: MaterialStateProperty.all(Colors.grey),
-                        elevation: MaterialStateProperty.all(0),
                         minimumSize: MaterialStateProperty.all(Size(60, 30)),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
@@ -496,7 +492,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Область/Край'),
+                        Text('Область/Край', style: TextStyle(color: Colors.black),),
                         Text('${_placemark.first.administrativeArea}'),
                       ],
                     ),
