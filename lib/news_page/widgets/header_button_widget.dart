@@ -1,6 +1,5 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
-
 import '../../custom_icons_icons.dart';
 
 class HeaderButtonWidget extends StatelessWidget {
@@ -14,7 +13,6 @@ class HeaderButtonWidget extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {},
-          splashColor: Colors.grey,
           borderRadius: BorderRadius.all(Radius.circular(25)),
           child: Row(
             children: [
@@ -28,17 +26,16 @@ class HeaderButtonWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(S.of(context).userNickname,
+                  Text(S.of(context).userNickname,                   // избежать оверфлоу
                     style: TextStyle(
                         fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                        fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     '48 ' + S.of(context).minutesAgo,
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(fontSize: 12),
                   ),
                 ],
               )
@@ -67,4 +64,13 @@ class HeaderButtonWidget extends StatelessWidget {
       ],
     );
   }
+  // /// Получение информации о ранее выбранной теме и в зависимости от этого выбор цвета иконки
+  // static Future<bool> _choiceTheme() async {
+  //   final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  //   if (savedThemeMode == AdaptiveThemeMode.light) {
+  //     return true;
+  //   }else {
+  //     return false;
+  //   }
+  // }
 }

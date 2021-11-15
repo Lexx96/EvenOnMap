@@ -25,13 +25,157 @@ class _AuthWidgetState extends State<AuthWidget> {
   _AuthWidgetState(this._repository, this._authLogInRepository);
 
   late ServiceAuthBloc _bloc;
-
   late final UserRegistrationRepository _repository;
   late final UserLogInRepository _authLogInRepository;
+  final _textStyle = TextStyle(fontSize: 16);
+  final _spinkit = SpinKitWave(
+    itemBuilder: (BuildContext context, int index) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: index.isEven ? Colors.lightBlue : Colors.white,
+        ),
+      );
+    },
+  );
 
   final _numberController = TextEditingController(text: '9134322000');
   final _passwordController = TextEditingController(text: 'Sex12345LK');
-  final _textStyle = TextStyle(fontSize: 16, color: Colors.white);
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = ServiceAuthBloc(
+      _repository,
+      _authLogInRepository,
+    );
+    _bloc.emptyState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _height = MediaQuery.of(context).size.height;
+    return Scaffold(
+      body: MainScreenDecoration(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: StreamBuilder(
+            stream: _bloc.streamController,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.data is AuthLogInLoadedState) {
+                Future.delayed(
+                  Duration.zero,
+                  () => Navigator.of(context)
+                      .pushNamed(MainNavigationRouteName.mainScreen),
+                );
+              }
+
+              InputDecoration _inputDecorationPhoneNumber = InputDecoration(
+                prefix: const Text('+7'),
+                prefixStyle: const TextStyle(fontSize: 16),
+                prefixIcon: const Icon(
+                  Icons.phone,
+                ),
+                hintText: S.of(context).phoneNumber,
+              );
+              InputDecoration _inputDecorationPassword = InputDecoration(
+                prefixStyle: const TextStyle(fontSize: 16),
+                prefixIcon: const Icon(
+                  Icons.lock,
+                ),
+                suffixIcon: IconButton(
+                  onPressed: () => (snapshot.data is ShowPassword)
+                      ? _bloc.closePasswordBloc()
+                      : _bloc.showPasswordBloc(),
+                  icon: (snapshot.data is ShowPassword)
+                      ? Icon(CustomIcons.eye)
+                      : Icon(CustomIcons.eye_off),
+                ),
+                contentPadding: const EdgeInsets.all(15),
+                hintText: '     ' + S.of(context).password,
+              );
+
+              return Stack(
+                children: [
+                  ListView(
+                    children: [
+                      const AuthHeaderWidget(),
+                      const AuthMainImage(),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: _height * 0.01, bottom: _height * 0.01),
+                            child: _showNumberText(snapshot),
+                          ),
+                          TextField(
+                            decoration: _inputDecorationPhoneNumber,
+                            controller: _numberController,
+                            keyboardType: TextInputType.number,
+                          ),
+                          SizedBox(height: _height * 0.02),
+                          _showPasswordText(snapshot),
+                          SizedBox(height: _height * 0.01),
+                          TextField(
+                            decoration: _inputDecorationPassword,
+                            obscureText:
+                                (snapshot.data is ShowPassword) ? false : true,
+                            obscuringCharacter: '*',
+                            controller: _passwordController,
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: Center(
+                          child: Text(
+                              S.of(context).logInToYourAccountOrRegister,
+                              style: const TextStyle(
+                                  fontSize: 13, color: Colors.grey)),
+                        ),
+                      ),
+                      TextButton(
+                        child: Text(
+                          S.of(context).enter,
+                        ),
+                        onPressed: () => _goLogIn(),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01),
+                      TextButton(
+                        child: Expanded(
+                          child: Text(
+                            S.of(context).registration,
+                          ),
+                        ),
+                        onPressed: () => _goRegistration(),
+                      ),
+                    ],
+                  ),
+                  (snapshot.data is RegistrationLoadingState ||
+                          snapshot.data is AuthLogInLoadingState)
+                      ? Center(child: _spinkit)
+                      : SizedBox.shrink(),
+                  _showException(snapshot),
+                  (snapshot.data is RegistrationLoadedState)
+                      ? Padding(
+                          padding: const EdgeInsets.all(25.0),
+                          child: LicenseAgreement(),
+                        )
+                      : SizedBox.shrink(),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
 
   /// Вход уже зарегистрированного пользователя
   void _goLogIn() {
@@ -145,239 +289,5 @@ class _AuthWidgetState extends State<AuthWidget> {
     } else {
       return SizedBox.shrink();
     }
-  }
-
-  final spinkit = SpinKitWave(
-    itemBuilder: (BuildContext context, int index) {
-      return DecoratedBox(
-        decoration: BoxDecoration(
-          color: index.isEven ? Colors.lightBlue : Colors.white,
-        ),
-      );
-    },
-  ); // сделать глобальным
-
-  @override
-  void initState() {
-    super.initState();
-    _bloc = ServiceAuthBloc(
-      _repository,
-      _authLogInRepository,
-    );
-    _bloc.emptyState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _bloc.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final _height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: MainScreenDecoration(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: StreamBuilder(
-            stream: _bloc.streamController,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (//snapshot.data is EmptyBlocState ||
-                  snapshot.data is RegistrationLoadingState ||
-                  snapshot.data is AuthLogInLoadingState ||
-                  snapshot.data is ErrorLengthNumber ||
-                  snapshot.data is ErrorLengthPassword ||
-                  snapshot.data is ErrorLengthLoginAndPassword ||
-                  snapshot.data is ErrorPassword ||
-                  snapshot.data is NotRegistered ||
-                  snapshot.data is UserAlreadyRegistered ||
-                  snapshot.data is RegistrationLoadedState ||
-                  snapshot.data is ShowPassword ||
-                  snapshot.data is ClosePassword) {
-                return Stack(
-                  children: [
-                    ListView(
-                      children: [
-                        const AuthHeaderWidget(),
-                        const AuthMainImage(),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: _height * 0.01, bottom: _height * 0.01),
-                              child: _showNumberText(snapshot),
-                            ),
-                            TextField(
-                              decoration: InputDecoration(
-                                prefix: const Text('+7'),
-                                prefixStyle: const TextStyle(
-                                    color: Colors.black, fontSize: 16),
-                                prefixIcon: const Icon(
-                                  Icons.phone,
-                                  color: Colors.green,
-                                ),
-                                isCollapsed: true,
-                                contentPadding: const EdgeInsets.all(15),
-                                hintText: S.of(context).phoneNumber,
-                                hintStyle: const TextStyle(color: Colors.green),
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      width: 1.0, color: Colors.white),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 2.0,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              ),
-                              controller: _numberController,
-                              keyboardType: TextInputType.number,
-                            ),
-                            SizedBox(height: _height * 0.02),
-                            _showPasswordText(snapshot),
-                            SizedBox(height: _height * 0.01),
-                            TextField(
-                              decoration: InputDecoration(
-                                prefixStyle: const TextStyle(
-                                    color: Colors.black, fontSize: 16),
-                                prefixIcon: const Icon(
-                                  Icons.lock,
-                                  color: Colors.green,
-                                ),
-                                suffixIcon: IconButton(
-                                  onPressed: () =>
-                                      (snapshot.data is ShowPassword)
-                                          ? _bloc.closePasswordBloc()
-                                          : _bloc.showPasswordBloc(),
-                                  icon: (snapshot.data is ShowPassword)
-                                      ? Icon(CustomIcons.eye)
-                                      : Icon(CustomIcons.eye_off),
-                                ),
-                                isCollapsed: true,
-                                contentPadding: const EdgeInsets.all(15),
-                                hintText: '     ' + S.of(context).password,
-                                hintStyle: const TextStyle(color: Colors.green),
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      width: 1.0, color: Colors.white),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 2.0,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              ),
-                              obscureText: (snapshot.data is ShowPassword)
-                                  ? false
-                                  : true,
-                              obscuringCharacter: '*',
-                              controller: _passwordController,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: Center(
-                            child: Text(
-                                S.of(context).logInToYourAccountOrRegister,
-                                style: const TextStyle(
-                                    fontSize: 13, color: Colors.grey)),
-                          ),
-                        ),
-                        TextButton(
-                          style: ButtonStyle(
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.blue),
-                              overlayColor:
-                                  MaterialStateProperty.all(Colors.grey),
-                              shadowColor:
-                                  MaterialStateProperty.all(Colors.grey),
-                              elevation: MaterialStateProperty.all(5),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ))),
-                          child: Text(
-                            S.of(context).enter,
-                            style: TextStyle(fontSize: 23),
-                          ),
-                          onPressed: () => _goLogIn(),
-                        ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01),
-                        TextButton(
-                          style: ButtonStyle(
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.blue),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              overlayColor:
-                                  MaterialStateProperty.all(Colors.grey),
-                              shadowColor:
-                                  MaterialStateProperty.all(Colors.grey),
-                              elevation: MaterialStateProperty.all(5),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ))),
-                          onPressed: () => _goRegistration(),
-                          child: Expanded(
-                            child: Text(
-                              S.of(context).registration,
-                              style: const TextStyle(fontSize: 23),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    (snapshot.data is RegistrationLoadingState ||
-                            snapshot.data is AuthLogInLoadingState)
-                        ? Center(child: spinkit)
-                        : SizedBox.shrink(),
-                    _showException(snapshot),
-                    (snapshot.data is RegistrationLoadedState)
-                        ? Padding(
-                            padding: const EdgeInsets.all(25.0),
-                            child: LicenseAgreement(),
-                          )
-                        : SizedBox.shrink(),
-                  ],
-                );
-              }
-              if (snapshot.data is EmptyBlocState) { //AuthLogInLoadedState
-                Future.delayed(
-                  Duration.zero,
-                  () => Navigator.of(context)
-                      .pushNamed(MainNavigationRouteName.mainScreen),
-                );
-              }
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Неизвестная ошибка'),
-                    spinkit
-                    // https://www.youtube.com/watch?v=O-rhXZLtpv0 или  flutter_spinkit
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
   }
 }

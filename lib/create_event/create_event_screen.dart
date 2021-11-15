@@ -280,10 +280,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         title: Center(
             child: Text(
           'Новость успешно добавлена!\n \nПосле проверки модератором она будет опубликованна',
-        )),
+        ),),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => _bloc.emptyCreateEvent(),
             child: Text('OK'),
           ),
         ],
@@ -293,10 +293,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         title: Center(
             child: Text(
           'Произошла ошибка \n \nПовторите попытку!',
-        )),
+        ),),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => _bloc.emptyCreateEvent(),
             child: Text('OK'),
           ),
         ],
@@ -306,10 +306,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         title: Center(
             child: Text(
           'Ошибка регистрации при добавлении события \n \nПовторите попытку!',
-        )),
+        ),),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => _bloc.emptyCreateEvent(),
             child: Text('OK'),
           )
         ],

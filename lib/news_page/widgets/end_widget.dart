@@ -29,7 +29,7 @@ class EndWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10),
                         child: Icon(
                           CustomIcons.heart_1,
-                          color: Colors.blue,  // в блоке сделать метод, по выполнению которго будет меняться цвет иконки тернарной операцией
+                          color: Colors.blue,
                         ),
                       ),
                       Text(
@@ -49,20 +49,17 @@ class EndWidget extends StatelessWidget {
               onPressed: () => Share.share('text'),  //https://www.youtube.com/watch?v=-PmUFbbA-Fs
               child: Icon(Icons.share),
               style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),
                 overlayColor: MaterialStateProperty.all(Colors.grey),
                 padding: MaterialStateProperty.all(EdgeInsets.zero),
                 minimumSize: MaterialStateProperty.all(Size(60, 30)),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),)),
+
               ),
             ),
           ],
         ),
-        Divider(
-          height: 1,
-          color: Colors.black,
-        )
+        Divider()
       ],
     );
   }

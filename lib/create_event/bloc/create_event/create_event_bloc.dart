@@ -12,6 +12,10 @@ class CreateEventBloc {
   Stream<NewEventBlocState> get streamEventController =>
       _streamController.stream;
 
+  void emptyCreateEvent() {
+    _streamController.sink.add(NewEventBlocState.emptyCreateEventState());
+  }
+
 
   /// Размещение нового события на сервер и получение данных
   Future<void> loadingPostEventBloc({
@@ -20,7 +24,7 @@ class CreateEventBloc {
     String? lat,
     String? lng,
   }) async {
-    _streamController.sink.add(NewEventBlocState.loadingEvent());
+    _streamController.sink.add(NewEventBlocState.loadingEventState());
 
     PostNewEventProvider()
         .postNewEvent(
@@ -32,16 +36,16 @@ class CreateEventBloc {
         .then(
       (responseModelNewEvent) {
         _streamController.sink
-            .add(NewEventBlocState.loadedEvent(responseModelNewEvent));
+            .add(NewEventBlocState.loadedEventState(responseModelNewEvent));
       },
     ).catchError(
       (exception) {
         if (exception is PostEvenErrorSendingServerException) {
           _streamController.sink
-              .add(NewEventBlocState.postEvenErrorSendingServer());
+              .add(NewEventBlocState.postEvenErrorSendingServerState());
         } else if (exception is PostEventNotRegisteredSendingServerException) {
           _streamController.sink
-              .add(NewEventBlocState.postEventNotRegisteredSendingServer());
+              .add(NewEventBlocState.postEventNotRegisteredSendingServerState());
         } else {
           print('Ошибка выполнения запроса регистрации');
         }

@@ -14,7 +14,7 @@ class AuthHeaderWidget extends StatelessWidget {
           ),
           const Text(
             'EventOnMap',
-            style: TextStyle(fontSize: 45, color: Colors.green),
+            style: TextStyle(fontSize: 45),
           ),
         ],
       ),

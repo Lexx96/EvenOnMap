@@ -4,14 +4,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NewEventBlocState {
   NewEventBlocState();
-  factory NewEventBlocState.loadingEvent() = EventLoadingBlocState;
+  factory NewEventBlocState.emptyCreateEventState() = EmptyCreateEventState;
+  factory NewEventBlocState.loadingEventState() = EventLoadingBlocState;
   factory NewEventBlocState.openGoogleMapState() = OpenGoogleMapState;
-  factory NewEventBlocState.loadedEvent(NewEventModel newEventModel) = EventLoadedBlocState;
-  factory NewEventBlocState.postEvenErrorSendingServer() = PostEvenErrorSendingServerState;
-  factory NewEventBlocState.postEventNotRegisteredSendingServer() = PostEventNotRegisteredSendingServerState;
+  factory NewEventBlocState.loadedEventState(NewEventModel newEventModel) = EventLoadedBlocState;
+  factory NewEventBlocState.postEvenErrorSendingServerState() = PostEvenErrorSendingServerState;
+  factory NewEventBlocState.postEventNotRegisteredSendingServerState() = PostEventNotRegisteredSendingServerState;
   factory NewEventBlocState.getLatLngAndAddressState({required List<Placemark> placemark, required LatLng initialLatLng}) = GetLatLngAndAddressState;
   // factory NewEventBlocState.getLatLngAndAddressFromMapState({required List<Placemark> placemark, required LatLng onTabLatLng}) = GetLatLngFromMapState;
 }
+class EmptyCreateEventState extends NewEventBlocState {}
 
 class OpenGoogleMapState extends NewEventBlocState {}
 

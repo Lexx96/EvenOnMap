@@ -1,4 +1,3 @@
-
 import 'package:event_on_map/news_page/services/news_api_repository.dart';
 import 'package:event_on_map/news_page/widgets/end_widget.dart';
 import 'package:event_on_map/news_page/widgets/header_button_widget.dart';
@@ -10,12 +9,6 @@ import '../main_driwer/main_drawer.dart';
 import 'bloc/news_bloc.dart';
 import 'bloc/news_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-/*
-сделать:
-по нажатию на фото/ видео оно открывалась в проигрователе
-сделать кнопки лайк и репост
-*/
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
@@ -32,27 +25,6 @@ class _NewsPageState extends State<NewsPage> {
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: true);
-
-  void _onRefresh() async {
-    try {
-      await Future.delayed(Duration(milliseconds: 1000));
-      _bloc.onRefresh().then((value) async {
-        _refreshController.refreshCompleted();
-      });
-    } catch (errorOnRefresh) {
-      print('Ошибка обновления страницы $errorOnRefresh');
-      _refreshController.loadFailed();
-    }
-    // сделать что бы циркуляр крутился продолжалась до момента окончания загрузки
-  }
-
-  Future<void> _onLoading() async {
-    await Future.delayed(Duration(milliseconds: 1000));
-    _bloc.onLoading().then((value) {
-      _refreshController.loadComplete();
-    });
-    _refreshController.loadFailed();
-  }
 
   @override
   void initState() {
@@ -76,61 +48,67 @@ class _NewsPageState extends State<NewsPage> {
       body: StreamBuilder(
         stream: _bloc.newsStreamController,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data is NewsLoadedState) {
-            NewsLoadedState newsResponseData = snapshot.data as NewsLoadedState;
-            return SmartRefresher(// https://pub.dev/packages/pull_to_refresh
-              controller: _refreshController,
-              enablePullDown: true,
-              enablePullUp: true,
-              header: WaterDropHeader(),
-              footer: CustomFooter(
-                builder: (BuildContext context, LoadStatus? mode) {
-                  if (mode == LoadStatus.idle) {
-                    Text("pull up load");
-                  } else if (mode == LoadStatus.loading) {
-                    CircularProgressIndicator();
-                  } else if (mode == LoadStatus.failed) {
-                    Text("Load Failed!Click retry!");
-                  } else if (mode == LoadStatus.canLoading) {
-                    Text("release to load more");
-                  } else {
-                    Text("No more Data");
-                  }
-                  return Container();
-                },
-              ),
-              onRefresh: _onRefresh,
-              onLoading: _onLoading,
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: newsResponseData.newsFromServer.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border.symmetric(
-                          vertical: BorderSide.none,
-                        )),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const HeaderButtonWidget(),
-                        TextBodyWidget(newsResponseData.newsFromServer[index]),
-                        const EndWidget(),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            );
-          }
-          if (snapshot.data is NewsLoadingState ||
-              snapshot.data is NewsEmptyState) {
+          if (snapshot.data is NewsLoadingState) {
             return SkeletonWidget();
           }
-          return Center(child: CircularProgressIndicator());
+          NewsLoadedState newsResponseData = snapshot.data as NewsLoadedState;
+          return SmartRefresher(
+            controller: _refreshController,
+            enablePullDown: true,
+            enablePullUp: true,
+            header: WaterDropHeader(),
+            onRefresh: _onRefresh,
+            onLoading: _onLoading,
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: newsResponseData.newsFromServer.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.symmetric(
+                      vertical: BorderSide.none,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const HeaderButtonWidget(),
+                      TextBodyWidget(newsResponseData.newsFromServer[index]),
+                      const EndWidget(),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
         },
       ),
     );
+  }
+
+  /// Метод обновления списка новостей
+  void _onRefresh() async {
+    try {
+      await Future.delayed(Duration(milliseconds: 1000));
+      _bloc.onRefresh().then(
+        (value) async {
+          _refreshController.refreshCompleted();
+        },
+      );
+    } catch (errorOnRefresh) {
+      print('Ошибка обновления страницы $errorOnRefresh');
+      _refreshController.loadFailed();
+    }
+  }
+
+  /// Метод загрузки новых новостей
+  Future<void> _onLoading() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    _bloc.onLoading().then(
+      (value) {
+        _refreshController.loadComplete();
+      },
+    );
+    _refreshController.loadFailed();
   }
 }

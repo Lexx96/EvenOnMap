@@ -48,7 +48,7 @@ class ServiceNewsBloc {
       (jsonNewsModel) {
         _newsStreamController.sink
             .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-        loadingNewsFromServer();
+        // loadingNewsFromServer();
       },
     ).catchError(
       (exception) {
@@ -71,7 +71,7 @@ class ServiceNewsBloc {
       (jsonNewsModel) {
         _newsStreamController.sink
             .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-        loadingNewsFromServer();
+        // loadingNewsFromServer();
       },
     ).catchError(
       (exception) {

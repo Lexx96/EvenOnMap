@@ -1,6 +1,5 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/news_page/models/news.dart';
-
 import 'package:flutter/material.dart';
 
 class TextBodyWidget extends StatefulWidget {
@@ -27,6 +26,7 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
   Widget build(BuildContext context) {
     final _maxThreeLines = 3;
     final _maxLines = DefaultTextStyle.of(context).maxLines;
+
     final Widget _buttonMoreDetails = _maxLinesBool ? TextButton(
       onPressed: () {
         setState(() {
@@ -35,9 +35,12 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
           }else {
             _maxLinesBool = true;
           }
-        });
+        },);
       },
       style: ButtonStyle(
+        elevation: MaterialStateProperty.all(0),
+        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        overlayColor: MaterialStateProperty.all(Colors.grey),
         padding: MaterialStateProperty.all(EdgeInsets.zero),
       ),
       child: Text(S.of(context).inMoreDetail),
