@@ -18,31 +18,27 @@ class CreateEventWidget extends StatefulWidget {
 }
 
 class _CreateEventWidgetState extends State<CreateEventWidget> {
-  late CreateEventBloc _bloc;
 
+  late CreateEventBloc _bloc;
   final _headerTextController = TextEditingController();
   final _bodyTextController = TextEditingController();
-  final ButtonStyle buttonStyle = ButtonStyle(
-    backgroundColor: MaterialStateProperty.all(Colors.white),
+  final ButtonStyle _buttonStyle = ButtonStyle(
     padding: MaterialStateProperty.all(EdgeInsets.zero),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.blue)
-      ),
+          side: BorderSide(color: Colors.blue)),
     ),
   );
-  final BoxDecoration containerDecoration = BoxDecoration(
-    color: Colors.white,
+  final BoxDecoration _containerDecoration = BoxDecoration(
     border: Border.all(color: Colors.black.withOpacity(0.2)),
-    borderRadius: BorderRadius.all(Radius.circular(10)),
-    boxShadow: [BoxShadow(color: Colors.black)],
+    borderRadius: BorderRadius.all(Radius.circular(10),),
   );
-
+  LatLng _latLng = LatLng(0.0, 0.0);
   List<Placemark> _placemark = [
     Placemark(street: '', subThoroughfare: ''),
   ];
-  LatLng _latLng = LatLng(0.0, 0.0);
+
 
   @override
   void initState() {
@@ -72,6 +68,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   /// Тело CreateEventWidget
   Stack _bodyCreateEventWidget(
       BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+
     if (snapshot.data is GetLatLngAndAddressState) {
       final _data = snapshot.data as GetLatLngAndAddressState;
       _placemark = _data.placemark;
@@ -105,7 +102,9 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   TextField(
                     maxLines: 1,
                     maxLength: 50,
-                    decoration: _inputDecorationStyle('Заголовок'),
+                    decoration: InputDecoration(
+                      hintText: 'Заголовок',
+                    ),
                     controller: _headerTextController,
                   ),
                   Padding(padding: const EdgeInsets.symmetric(vertical: 15.0)),
@@ -113,7 +112,9 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     maxLines: DefaultTextStyle.of(context).maxLines,
                     minLines: 10,
                     maxLength: 1500,
-                    decoration: _inputDecorationStyle('Тело события'),
+                    decoration: InputDecoration(
+                      hintText: 'Тело события',
+                    ),
                     controller: _bodyTextController,
                   ),
                   Padding(
@@ -127,36 +128,61 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             ImagesWidget(),
             _showAddress(context, _placemark),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0, right:  8.0, top: 10.0),
-              child: Container(
-                decoration: containerDecoration,
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 10.0),
+              child: TextButton(
+                onPressed: () {
+                  _bloc.openGoogleMapState();
+                },
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      '  На карте',
+                    Text('На карте'),
+                    Icon(
+                      CustomIcons.map_marker,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        _bloc.openGoogleMapState();
-                      },
-                      child: Icon(
-                        CustomIcons.map_marker,
-                        color: Colors.blue,
-                      ),
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.all(Colors.grey),
-                        minimumSize: MaterialStateProperty.all(Size(60, 30)),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ),
-                    )
                   ],
                 ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(13),
+                        side: BorderSide(color: Colors.blueAccent)
+                    ),
+                  ),
+                ),
               ),
+              // Container(
+              //   decoration: containerDecoration,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       const Text(
+              //         '  На карте',
+              //       ),
+              //       TextButton(
+              //         onPressed: () {
+              //           _bloc.openGoogleMapState();
+              //         },
+              //         child: Icon(
+              //           CustomIcons.map_marker,
+              //         ),
+              //         style: ButtonStyle(
+              //           backgroundColor:
+              //               MaterialStateProperty.all(Colors.transparent),
+              //           overlayColor: MaterialStateProperty.all(Colors.grey),
+              //           elevation: MaterialStateProperty.all(0),
+              //           minimumSize: MaterialStateProperty.all(Size(60, 30)),
+              //           shape: MaterialStateProperty.all(
+              //             RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(25),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -164,14 +190,15 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    style: buttonStyle,
-                    child: Text('Создать'),
-                    onPressed: () => _postNewEventInServer(),
+                    style: _buttonStyle,
+                    child: Text('Назад'),
+                    onPressed: () => Navigator.of(context)
+                        .pushNamed(MainNavigationRouteName.mainScreen),
                   ),
                   TextButton(
-                    style: buttonStyle,
-                    child: Text('Назад'),
-                    onPressed: () => Navigator.of(context).pushNamed(MainNavigationRouteName.mainScreen),
+                    style: _buttonStyle,
+                    child: Text('Создать'),
+                    onPressed: () => _postNewEventInServer(),
                   ),
                 ],
               ),
@@ -199,7 +226,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         child: Container(
           height: 130,
           width: MediaQuery.of(context).size.width,
-          decoration: containerDecoration,
+          decoration: _containerDecoration,
           child: Container(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -246,41 +273,15 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     );
   }
 
-  /// Стиль декорации для TextField
-  InputDecoration _inputDecorationStyle(String _hintText) {
-    return InputDecoration(
-      enabled: true,
-      fillColor: Colors.grey[200],
-      filled: true,
-      hintText: _hintText,
-      hintStyle: const TextStyle(color: Colors.grey),
-      isCollapsed: true,
-      contentPadding: const EdgeInsets.all(15),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(
-          width: 1.0,
-          color: Colors.grey,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(
-          width: 2.0,
-          color: Colors.blue,
-        ),
-      ),
-    );
-  }
-
   /// Показ уведомлений пользователю в AlertDialog
   Widget _showException(AsyncSnapshot snapshot) {
     if (snapshot.data is EventLoadedBlocState) {
       return AlertDialog(
         title: Center(
-            child: Text(
-          'Новость успешно добавлена!\n \nПосле проверки модератором она будет опубликованна',
-        ),),
+          child: Text(
+            'Новость успешно добавлена!\n \nПосле проверки модератором она будет опубликованна',
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => _bloc.emptyCreateEvent(),
@@ -291,9 +292,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     } else if (snapshot.data is PostEvenErrorSendingServerException) {
       return AlertDialog(
         title: Center(
-            child: Text(
-          'Произошла ошибка \n \nПовторите попытку!',
-        ),),
+          child: Text(
+            'Произошла ошибка \n \nПовторите попытку!',
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => _bloc.emptyCreateEvent(),
@@ -304,9 +306,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     } else if (snapshot.data is PostEventNotRegisteredSendingServerState) {
       return AlertDialog(
         title: Center(
-            child: Text(
-          'Ошибка регистрации при добавлении события \n \nПовторите попытку!',
-        ),),
+          child: Text(
+            'Ошибка регистрации при добавлении события \n \nПовторите попытку!',
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => _bloc.emptyCreateEvent(),
@@ -339,6 +342,14 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
 
 
+
+
+
+
+
+
+
+
 /// Класс с картор для выбора адреса события (нужно будет перенести в отдельный
 /// файл, он есть. Не получилось передать LatLng в другой блок)
 class CreateEventMapWidget extends StatefulWidget {
@@ -352,13 +363,13 @@ class CreateEventMapWidget extends StatefulWidget {
 
 class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   CreateEventBloc bloc;
-
   _CreateEventMapWidgetState(this.bloc);
 
   late CreateEventMapBloc _createEventMapBloc;
   late GoogleMapController _googleMapController;
   late LatLng _myPosition = LatLng(0.0, 0.0);
   Set<Marker> _setUserMarkers = {};
+
   final ButtonStyle buttonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all(Colors.white),
     overlayColor: MaterialStateProperty.all(Colors.grey),
@@ -374,16 +385,20 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
           ),
     ),
   );
+  final BoxDecoration _containerDecoration = BoxDecoration(
+    color: Colors.white,
+    border: Border.all(color: Colors.black.withOpacity(0.2)),
+    borderRadius: BorderRadius.all(Radius.circular(10),),
+  );
   final ButtonStyle buttonStyleTwo = ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.white),
-        padding: MaterialStateProperty.all(EdgeInsets.zero),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(color: Colors.blue)
-          ),
-        ),
-      );
+    backgroundColor: MaterialStateProperty.all(Colors.white),
+    padding: MaterialStateProperty.all(EdgeInsets.zero),
+    shape: MaterialStateProperty.all(
+      RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Colors.blue)),
+    ),
+  );
 
   @override
   void initState() {
@@ -424,6 +439,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
       _myPosition = LatLng(_position.latitude, _position.longitude);
       _getMyMarker(_myPosition, _placemark);
     }
+
     return Stack(
       children: [
         GoogleMap(
@@ -467,60 +483,57 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   }
 
   /// Вывод на экран выбранного адреса
-  Column _showAddress(BuildContext context, List<Placemark> _placemark, LatLng _onTabLatLng) {
+  Column _showAddress(
+      BuildContext context, List<Placemark> _placemark, LatLng _onTabLatLng) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Padding(
-          padding:
-              const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: Container(
-            height: 130,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black.withOpacity(0.2)),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              boxShadow: [BoxShadow(color: Colors.black)],
-            ),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Center(
             child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Область/Край', style: TextStyle(color: Colors.black),),
-                        Text('${_placemark.first.administrativeArea}'),
-                      ],
-                    ),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Город'),
-                        Text('${_placemark.first.locality}'),
-                      ],
-                    ),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Улица/Проспект'),
-                        Text('${_placemark.first.street}'),
-                      ],
-                    ),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Дом №'),
-                        Text('${_placemark.first.subThoroughfare}'),
-                      ],
-                    ),
-                  ],
+              height: 130,
+              width: MediaQuery.of(context).size.width,
+              decoration: _containerDecoration,
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Область/Край'),
+                          Text('${_placemark.first.administrativeArea}'),
+                        ],
+                      ),
+                      Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Город'),
+                          Text('${_placemark.first.locality}'),
+                        ],
+                      ),
+                      Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Улица/Проспект'),
+                          Text('${_placemark.first.street}'),
+                        ],
+                      ),
+                      Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Дом №'),
+                          Text('${_placemark.first.subThoroughfare}'),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -574,3 +587,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     }
   }
 }
+
+
+

@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
+import 'package:event_on_map/themes/my_light_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geocoder/geocoder.dart';
@@ -9,14 +11,6 @@ import 'bloc/map_bloc.dart';
 import 'bloc/map_bloc_state.dart';
 import 'service/map_provider.dart';
 
-/*
-сделать появление маркера по нажатию на карту
-и перенаправление на этот метод с страницы создания события
-
-потом появление адреса и подтверждение
-
- */
-
 class MapWidget extends StatefulWidget {
   const MapWidget({Key? key}) : super(key: key);
 
@@ -25,36 +19,20 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  // Класс с bloc
+
   late GoogleMapBloc _bloc;
-
-  // контроллер для GoogleMap
   late GoogleMapController _googleMapController;
-
-  // Позиция пользователя получаем данные от репозитория
   late LatLng _myPosition;
-
-  // сохраняются маркер положения пользователя
   Set<Marker> _setUserMarkers = {};
-
-  // сохраняются маркеры нажатия на карту
   Set<Marker> _setOnTabMarkers = {};
-
-  // В _placemark после инициализации приходит адрес местоположения согласно LatLng
   late List<Placemark> _placemark;
-
   ButtonStyle buttonStyle = ButtonStyle(
-    backgroundColor: MaterialStateProperty.all(Colors.white),
-    overlayColor: MaterialStateProperty.all(Colors.grey),
-    padding: MaterialStateProperty.all(EdgeInsets.zero),
+    backgroundColor: MaterialStateProperty.all(ColorsLightTheme.color1),
+    overlayColor: MaterialStateProperty.all(Colors.white),
     minimumSize: MaterialStateProperty.all(Size(45, 45)),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(60),
-          side: const BorderSide(
-            color: Colors.blueAccent,
-            width: 2,
-          ) // цвет бордера
           ),
     ),
   );
@@ -86,23 +64,30 @@ class _MapWidgetState extends State<MapWidget> {
 
   /// Тело страницы
   Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
+
+    _choiceTheme();
+
     if (snapshot.data is LoadedLatLngAndAddressState) {
       final _data = snapshot.data as LoadedLatLngAndAddressState;
       _myPosition = LatLng(_data.position.latitude, _data.position.longitude);
       _placemark = _data.placemark;
       _getMyMarker(_myPosition, _placemark);
     } else {
-      // Инициализировал переменную _placemark
       _placemark = [];
-
-      // Изначальное положение маркера в формате LatLng
       _myPosition = LatLng(0.0, 0.0);
     }
+
     if (snapshot.data is LoadedAddressFromCoordinatesState) {
       final _data = snapshot.data as LoadedAddressFromCoordinatesState;
       final _address = _data.addresses;
       final _onTabLatLng = _data.onTabLatLng;
       _onTabMarker(_address, _onTabLatLng);
+    }
+
+    if (snapshot.data is GetMapThemeState) {
+      final _data = snapshot.data as GetMapThemeState;
+      final _mapStyle = _data.mapStyle;
+      _mapDarkTheme(_mapStyle);
     }
 
     return Scaffold(
@@ -111,7 +96,9 @@ class _MapWidgetState extends State<MapWidget> {
           GoogleMap(
             mapToolbarEnabled: false,
             zoomControlsEnabled: false,
-            onMapCreated: _onMapCreated,
+            onMapCreated: (GoogleMapController _googleMapController) {
+              _onMapCreated(_googleMapController);
+            },
             markers: (snapshot.data is LoadedAddressFromCoordinatesState) ? _setOnTabMarkers : _setUserMarkers,
             initialCameraPosition: CameraPosition(
               target: _myPosition,
@@ -121,29 +108,53 @@ class _MapWidgetState extends State<MapWidget> {
           ),
         ],
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+      floatingActionButton: Stack(
         children: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                MainNavigationRouteName.createAnEventWidget, (route) => false),
-            child: Icon(
-              Icons.add,
-              size: 30,
-            ),
-            style: buttonStyle,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 200,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => _bloc.getLatLngAndAddressUserPosition(),
+                    child: const Icon(
+                      CustomIcons.map_marker,
+                      size: 30,
+                    ),
+                    style: buttonStyle,
+                  ),
+                ],
+              ),
+            ],
           ),
-          const SizedBox(
-            width: 10,
-          ),
-          TextButton(
-            onPressed: () => _bloc.getLatLngAndAddressUserPosition(),
-            child: const Icon(
-              CustomIcons.map_marker,
-              size: 30,
-            ),
-            style: buttonStyle,
-          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                        MainNavigationRouteName.createAnEventWidget, (route) => false),
+                    child:
+                    Text('Создать событие', style: TextStyle(fontSize: 18),),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(ColorsLightTheme.color3),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          )
         ],
       ),
     );
@@ -162,6 +173,31 @@ class _MapWidgetState extends State<MapWidget> {
     );
     _setUserMarkers = MapProvider.refreshSetProvider(set: _setUserMarkers, marker: _userMarker);
     _onMapCreated(_googleMapController);
+  }
+
+  /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
+  Future<void> _choiceTheme() async {
+
+    final savedThemeMode = await AdaptiveTheme.getThemeMode();
+
+    if (savedThemeMode == AdaptiveThemeMode.light) {
+      _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
+    }
+    else if (savedThemeMode == AdaptiveThemeMode.dark) {
+      _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
+    }
+    // как узнать какая системная тема
+    // else if (savedThemeMode == AdaptiveThemeMode.system.isDark) {
+    //   _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
+    // }
+    // else if (savedThemeMode == AdaptiveThemeMode.system) {
+    //   _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
+    // }
+  }
+
+  /// Смена темы карты
+  void _mapDarkTheme (String mapStyle) {
+    _googleMapController.setMapStyle(mapStyle);
   }
 
   /// Возвращает камеру на место положение пользователя

@@ -26,10 +26,9 @@ class HeaderButtonWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(S.of(context).userNickname,                   // избежать оверфлоу
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold),
+                  Text(
+                    S.of(context).userNickname, // избежать оверфлоу
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -52,25 +51,25 @@ class HeaderButtonWidget extends StatelessWidget {
             ),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.transparent),
-              overlayColor: MaterialStateProperty.all(Colors.grey),
               elevation: MaterialStateProperty.all(0),
-              minimumSize: MaterialStateProperty.all(Size(60,30)),
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-              )),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
             ),
           ),
         )
       ],
     );
   }
-  // /// Получение информации о ранее выбранной теме и в зависимости от этого выбор цвета иконки
-  // static Future<bool> _choiceTheme() async {
-  //   final savedThemeMode = await AdaptiveTheme.getThemeMode();
-  //   if (savedThemeMode == AdaptiveThemeMode.light) {
-  //     return true;
-  //   }else {
-  //     return false;
-  //   }
-  // }
+// /// Получение информации о ранее выбранной теме и в зависимости от этого выбор цвета иконки
+// static Future<bool> _choiceTheme() async {
+//   final savedThemeMode = await AdaptiveTheme.getThemeMode();
+//   if (savedThemeMode == AdaptiveThemeMode.light) {
+//     return true;
+//   }else {
+//     return false;
+//   }
+// }
 }

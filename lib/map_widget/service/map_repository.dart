@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_geocoder/geocoder.dart';
 import 'package:flutter_geocoder/model.dart';
 import 'package:geocoding/geocoding.dart';
@@ -36,5 +37,10 @@ class MapRepository {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  /// Получение темы для карты
+  static Future<String> getJsonFile (String path) async{
+    return await rootBundle.loadString(path);
   }
 }

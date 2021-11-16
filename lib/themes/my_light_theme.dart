@@ -54,6 +54,8 @@ abstract class ColorsLightTheme {
 final myLightTheme = ThemeData.light().copyWith(
   primaryColor: ColorsLightTheme.color1,
 
+
+
   // floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.black),
 
   //dialogBackgroundColor: Для алертдиалог?
@@ -71,7 +73,10 @@ final myLightTheme = ThemeData.light().copyWith(
 
   // Работает
 
-
+  dialogTheme: DialogTheme(
+    titleTextStyle: TextStyle(color: Colors.black),
+    contentTextStyle: TextStyle(color: Colors.black),
+  ), // настройка Алертдиалог
 
   progressIndicatorTheme: ProgressIndicatorThemeData(linearTrackColor: Colors.red),
 
@@ -114,12 +119,13 @@ final myLightTheme = ThemeData.light().copyWith(
 
       ), // настройка цвета текста
   inputDecorationTheme: InputDecorationTheme(
+
     filled: true,
     fillColor: Colors.white,
     // цвет фона
     isCollapsed: true,
     contentPadding: const EdgeInsets.all(15),
-    hintStyle: const TextStyle(color: Colors.black),
+    hintStyle: const TextStyle(color: Colors.grey),
 
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
