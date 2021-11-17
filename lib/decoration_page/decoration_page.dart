@@ -52,15 +52,9 @@ class _DecorationPageState extends State<DecorationPage> {
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data is SystemThemeDecorationPageState ||
-                  snapshot.data is LightThemeDecorationPageState ||
-                  snapshot.data is DarkThemeDecorationPageState ||
-                  snapshot.data is EmptyDecorationPageState) {
                 final _system = snapshot.data is SystemThemeDecorationPageState;
                 final _light = snapshot.data is LightThemeDecorationPageState;
                 final _dark = snapshot.data is DarkThemeDecorationPageState;
-                print(snapshot.data);
-                print('11111111111111111111111111111111111111111111111111111');
                 return ListView(
                   children: [
                     SizedBox(height: 30),
@@ -123,8 +117,6 @@ class _DecorationPageState extends State<DecorationPage> {
                     ),
                   ],
                 );
-              }
-              return CircularProgressIndicator();
             },
           ),
         ),

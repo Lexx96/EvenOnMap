@@ -1,14 +1,11 @@
-import 'package:event_on_map/auth/widgets/auth_header_widget.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
-import 'package:event_on_map/auth_sign_in/main_screen_decoration.dart';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../custom_icons_icons.dart';
-import 'widgets/auth_main_image_widget.dart';
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_bloc_state.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -61,12 +58,23 @@ class _AuthWidgetState extends State<AuthWidget> {
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: MainScreenDecoration(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topRight,
+            colors: [
+              Color(0xff5ac18e),
+              Color(0xffffffff),
+            ],
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
+
               if (snapshot.data is AuthLogInLoadedState) {
                 Future.delayed(
                   Duration.zero,
@@ -105,8 +113,27 @@ class _AuthWidgetState extends State<AuthWidget> {
                 children: [
                   ListView(
                     children: [
-                      const AuthHeaderWidget(),
-                      const AuthMainImage(),
+                       Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8.0),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child: const Text(
+                                'EventOnMap',
+                                style: TextStyle(fontSize: 45),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: const Image(
+                          image: NetworkImage('https://static.tildacdn.com/tild3830-6230-4265-a638-393035353836/itinerairepngcartede.png'),
+                        ),
+                      ),
                       Column(
                         children: [
                           Padding(
@@ -149,10 +176,8 @@ class _AuthWidgetState extends State<AuthWidget> {
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.01),
                       TextButton(
-                        child: Expanded(
-                          child: Text(
-                            S.of(context).registration,
-                          ),
+                        child: Text(
+                          S.of(context).registration,
                         ),
                         onPressed: () => _goRegistration(),
                       ),

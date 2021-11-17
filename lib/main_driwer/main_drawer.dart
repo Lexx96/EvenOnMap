@@ -92,13 +92,11 @@ class _MainDrawerState extends State<MainDrawer> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: Center(
-                      child: Expanded(
-                        child: Text(
-                          S.of(context).name +
-                              ' ' +
-                              S.of(context).surname,
-                          style: TextStyle(fontSize: 19,),
-                        ),
+                      child: Text(
+                        S.of(context).name +
+                            ' ' +
+                            S.of(context).surname,
+                        style: TextStyle(fontSize: 19,),
                       ),
                     ),
                   ),

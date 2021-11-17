@@ -1,8 +1,6 @@
 import 'package:event_on_map/license_agreement_screen/bloc/license_agreement_state.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
-
-import '../main_driwer/main_drawer.dart';
 import 'bloc/license_agreement_bloc.dart';
 
 class LicenseAgreement extends StatefulWidget {
@@ -16,17 +14,8 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
   bool? _isAccepted;
   late final LicenseAgreementBloc _bloc;
   final _mainTextStyle =
-      TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black);
+      TextStyle(fontSize: 17, fontWeight: FontWeight.bold,);
   final _secondTextStyle = TextStyle(fontSize: 16,);
-
-  void _agreeTerms (bool? isAccepted) {
-    if(isAccepted == false) {
-      _bloc.emptyState();
-    }
-    else{
-      _bloc.accepted();
-    }
-  }
 
   @override
   void initState() {
@@ -48,8 +37,6 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
       body: StreamBuilder(
         stream: _bloc.streamControllerLicense,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data is EmptyLicenseAgreementState ||
-              snapshot.data is AcceptedLicenseAgreementState){
             final LicenseAgreementState data = snapshot.data;
             return Container(
               color: Colors.transparent,
@@ -178,9 +165,15 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
               ),
             );
           }
-            return CircularProgressIndicator();
-        },
       ),
     );
+  }
+  void _agreeTerms (bool? isAccepted) {
+    if(isAccepted == false) {
+      _bloc.emptyState();
+    }
+    else{
+      _bloc.accepted();
+    }
   }
 }

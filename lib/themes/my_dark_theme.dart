@@ -50,70 +50,70 @@ abstract class ColorsDarkTheme {
 }
 
 
-final myDarkTheme = ThemeData.dark().copyWith(
-  appBarTheme: AppBarTheme(backgroundColor: ColorsDarkTheme.color1),
-
-
-
-
-  textButtonTheme: TextButtonThemeData(
-    style: ButtonStyle(
-      textStyle: MaterialStateProperty.all(
-        const TextStyle(color: Colors.grey),
-      ),
-      shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      shadowColor: MaterialStateProperty.all(Colors.white),
-      elevation: MaterialStateProperty.all(1),
-      foregroundColor: MaterialStateProperty.all(Colors.white),
-      backgroundColor: MaterialStateProperty.all(Colors.grey),
-      overlayColor: MaterialStateProperty.all(Colors.white),
-    ),
-  ),
-
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: ColorsDarkTheme.color1,
-
-    // либо
-    selectedItemColor: ColorsDarkTheme.color2,
-    unselectedItemColor: ColorsDarkTheme.color3,
-    // либо
-    selectedIconTheme: IconThemeData(
-      color: ColorsDarkTheme.color2,
-    ),
-    unselectedIconTheme: IconThemeData(
-      color: ColorsDarkTheme.color3,
-    ),
-
-    selectedLabelStyle: TextStyle(fontSize: 10),
-    unselectedLabelStyle: TextStyle(fontSize: 8),
-  ),// настройка BottomNavigationBarThemeData
-
-  inputDecorationTheme: InputDecorationTheme(
-
-    filled: true,
-    fillColor: ColorsDarkTheme.color3,
-    // цвет фона
-    isCollapsed: true,
-    contentPadding: const EdgeInsets.all(15),
-    hintStyle: const TextStyle(color: Colors.grey),
-
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(width: 1.0, color: Colors.white),
-    ),
-
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(
-        width: 2.0,
-        color: Colors.blue,
-      ),
-    ),
-  ),
+ final myDarkTheme = ThemeData.dark().copyWith(
+//   appBarTheme: AppBarTheme(backgroundColor: ColorsDarkTheme.color1),
+//
+//
+//
+//
+//   textButtonTheme: TextButtonThemeData(
+//     style: ButtonStyle(
+//       textStyle: MaterialStateProperty.all(
+//         const TextStyle(color: Colors.grey),
+//       ),
+//       shape: MaterialStateProperty.all(
+//         RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(15),
+//         ),
+//       ),
+//       shadowColor: MaterialStateProperty.all(Colors.white),
+//       elevation: MaterialStateProperty.all(1),
+//       foregroundColor: MaterialStateProperty.all(Colors.white),
+//       backgroundColor: MaterialStateProperty.all(Colors.grey),
+//       overlayColor: MaterialStateProperty.all(Colors.white),
+//     ),
+//   ),
+//
+//   bottomNavigationBarTheme: BottomNavigationBarThemeData(
+//     backgroundColor: ColorsDarkTheme.color1,
+//
+//     // либо
+//     selectedItemColor: ColorsDarkTheme.color2,
+//     unselectedItemColor: ColorsDarkTheme.color3,
+//     // либо
+//     selectedIconTheme: IconThemeData(
+//       color: ColorsDarkTheme.color2,
+//     ),
+//     unselectedIconTheme: IconThemeData(
+//       color: ColorsDarkTheme.color3,
+//     ),
+//
+//     selectedLabelStyle: TextStyle(fontSize: 10),
+//     unselectedLabelStyle: TextStyle(fontSize: 8),
+//   ),// настройка BottomNavigationBarThemeData
+//
+//   inputDecorationTheme: InputDecorationTheme(
+//
+//     filled: true,
+//     fillColor: ColorsDarkTheme.color3,
+//     // цвет фона
+//     isCollapsed: true,
+//     contentPadding: const EdgeInsets.all(15),
+//     hintStyle: const TextStyle(color: Colors.grey),
+//
+//     border: OutlineInputBorder(
+//       borderRadius: BorderRadius.circular(10),
+//       borderSide: BorderSide(width: 1.0, color: Colors.white),
+//     ),
+//
+//     focusedBorder: OutlineInputBorder(
+//       borderRadius: BorderRadius.circular(10),
+//       borderSide: const BorderSide(
+//         width: 2.0,
+//         color: Colors.blue,
+//       ),
+//     ),
+//   ),
 
   splashFactory: InkRipple.splashFactory,
 ); //copyWith - позволяет переопределить цвета

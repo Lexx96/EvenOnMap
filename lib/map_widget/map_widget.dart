@@ -69,7 +69,7 @@ class _MapWidgetState extends State<MapWidget> {
   /// Тело страницы
   Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
 
-    _choiceTheme();
+    _choiceTheme();  // из за него ошибка
 
     if (snapshot.data is LoadedLatLngAndAddressState) {
       final _data = snapshot.data as LoadedLatLngAndAddressState;
@@ -100,9 +100,7 @@ class _MapWidgetState extends State<MapWidget> {
           GoogleMap(
             mapToolbarEnabled: false,
             zoomControlsEnabled: false,
-            onMapCreated: (GoogleMapController _googleMapController) {
-              _onMapCreated(_googleMapController);
-            },
+            onMapCreated: _onMapCreated,
             markers: (snapshot.data is LoadedAddressFromCoordinatesState) ? _setOnTabMarkers : _setUserMarkers,
             initialCameraPosition: CameraPosition(
               target: _myPosition,
@@ -184,19 +182,19 @@ class _MapWidgetState extends State<MapWidget> {
 
     final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
-    if (savedThemeMode == AdaptiveThemeMode.light) {
+    if (AdaptiveThemeMode.system.isDark) {
+    _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
+    }
+    else if (AdaptiveThemeMode.system.isLight) {
+    _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
+    }
+
+    else if (savedThemeMode == AdaptiveThemeMode.light) {
       _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
     }
     else if (savedThemeMode == AdaptiveThemeMode.dark) {
       _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
     }
-    // как узнать какая системная тема
-    // else if (savedThemeMode == AdaptiveThemeMode.system.isDark) {
-    //   _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
-    // }
-    // else if (savedThemeMode == AdaptiveThemeMode.system) {
-    //   _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
-    // }
   }
 
   /// Смена темы карты
