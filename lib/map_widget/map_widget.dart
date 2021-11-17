@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:event_on_map/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/themes/my_light_theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,11 +55,14 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _bloc.streamMapController,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return _bodyMapWidget(context, snapshot);
-      },
+    return Scaffold(
+      body: StreamBuilder(
+        stream: _bloc.streamMapController,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return _bodyMapWidget(context, snapshot);
+        },
+      ),
+      // bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 

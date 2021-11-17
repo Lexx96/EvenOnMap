@@ -83,6 +83,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                 ),
                 hintText: S.of(context).phoneNumber,
               );
+
               InputDecoration _inputDecorationPassword = InputDecoration(
                 prefixStyle: const TextStyle(fontSize: 16),
                 prefixIcon: const Icon(

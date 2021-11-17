@@ -2,14 +2,10 @@ import 'dart:io';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc.dart';
 import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc_state.dart';
-import 'package:event_on_map/userProfile/services/user_profile__image_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-/*
-добавить возможность редактиования картинки
- */
 class UserProfileHeaderWidget extends StatefulWidget {
   UserProfileHeaderWidget({
     Key? key,
@@ -22,6 +18,9 @@ class UserProfileHeaderWidget extends StatefulWidget {
 
 class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
   late UserProfileImageBloc _bloc;
+
+  TextStyle textStyle = const TextStyle(
+      fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold);
 
   @override
   void initState() {
@@ -53,8 +52,7 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
       final _data = data as LoadedImageUserProfile;
       image = _data.image as File;
     }
-    const textStyle = const TextStyle(
-        fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold);
+
     return Stack(
       children: [
         Padding(
@@ -119,7 +117,6 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
                     S.of(context).name + ' ' + S.of(context).surname,
                     style: const TextStyle(
                         fontSize: 22,
-                        color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(

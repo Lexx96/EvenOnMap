@@ -44,15 +44,35 @@ abstract class ColorsDarkTheme {
   static const Color color2 = Color(0xFF7cacf8);
   static const Color color3 = Color(0xFFc1c2c5);
   // static const Color color4 = Color(0xFFEBFFFA);
-// static const main = Color(0xffb74093);
-// static const mainTWo = Color.fromRGBO(32, 32, 30, 1);
-// static const mainTextColor = Color.fromRGBO(130, 133, 136, 1);
+  // static const main = Color(0xffb74093);
+  // static const mainTWo = Color.fromRGBO(32, 32, 30, 1);
+  // static const mainTextColor = Color.fromRGBO(130, 133, 136, 1);
 }
 
 
 final myDarkTheme = ThemeData.dark().copyWith(
   appBarTheme: AppBarTheme(backgroundColor: ColorsDarkTheme.color1),
 
+
+
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      textStyle: MaterialStateProperty.all(
+        const TextStyle(color: Colors.grey),
+      ),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+      shadowColor: MaterialStateProperty.all(Colors.white),
+      elevation: MaterialStateProperty.all(1),
+      foregroundColor: MaterialStateProperty.all(Colors.white),
+      backgroundColor: MaterialStateProperty.all(Colors.grey),
+      overlayColor: MaterialStateProperty.all(Colors.white),
+    ),
+  ),
 
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: ColorsDarkTheme.color1,

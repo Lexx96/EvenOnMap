@@ -3,53 +3,8 @@ import 'package:event_on_map/map_widget/map_widget.dart';
 import 'package:event_on_map/news_page/news_pages.dart';
 import 'package:event_on_map/userProfile/user_profile_page.dart';
 import 'package:flutter/material.dart';
-
 import '../custom_icons_icons.dart';
 
-/*
-Сделать скрол по страницам
-
-Класс с:
-цветами
-темами
-иконками
-шрифтами
-
-спеш скрин
-
-анимированны иконки
-(  class _CreatePackageViewState extends State<CreatePackageView>
-with SingleTickerProviderStateMixin {
-   bool expanded = true;
-  AnimationController controller;
-  @override
-   void initState() {
-    super.initState();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 400),
-      reverseDuration: Duration(milliseconds: 400),
-    );
-  }
-
-  IconButton(
-        icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_close,
-          progress: controller,
-          semanticLabel: 'Show menu',
-        ),
-        onPressed: () {
-          setState(() {
-            expanded ? controller.forward() : controller.reverse();
-            expanded = !expanded;
-          });
-        }),
-
-}
-)
-
-ListPage при первом входе
- */
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 

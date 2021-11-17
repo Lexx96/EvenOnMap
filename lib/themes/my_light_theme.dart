@@ -56,6 +56,8 @@ final myLightTheme = ThemeData.light().copyWith(
 
 
 
+
+
   // floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.black),
 
   //dialogBackgroundColor: Для алертдиалог?
@@ -147,7 +149,7 @@ final myLightTheme = ThemeData.light().copyWith(
       ),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
       shadowColor: MaterialStateProperty.all(Colors.grey),

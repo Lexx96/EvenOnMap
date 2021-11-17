@@ -152,37 +152,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   ),
                 ),
               ),
-              // Container(
-              //   decoration: containerDecoration,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       const Text(
-              //         '  На карте',
-              //       ),
-              //       TextButton(
-              //         onPressed: () {
-              //           _bloc.openGoogleMapState();
-              //         },
-              //         child: Icon(
-              //           CustomIcons.map_marker,
-              //         ),
-              //         style: ButtonStyle(
-              //           backgroundColor:
-              //               MaterialStateProperty.all(Colors.transparent),
-              //           overlayColor: MaterialStateProperty.all(Colors.grey),
-              //           elevation: MaterialStateProperty.all(0),
-              //           minimumSize: MaterialStateProperty.all(Size(60, 30)),
-              //           shape: MaterialStateProperty.all(
-              //             RoundedRectangleBorder(
-              //               borderRadius: BorderRadius.circular(25),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
