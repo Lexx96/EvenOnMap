@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
+import 'package:event_on_map/themes/my_dark_theme.dart';
 import 'package:event_on_map/themes/my_light_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _MapWidgetState extends State<MapWidget> {
   Set<Marker> _setOnTabMarkers = {};
   late List<Placemark> _placemark;
   ButtonStyle buttonStyle = ButtonStyle(
-    backgroundColor: MaterialStateProperty.all(ColorsLightTheme.color1),
+    backgroundColor: MaterialStateProperty.all(ColorsDarkTheme.second,),
     overlayColor: MaterialStateProperty.all(Colors.white),
     minimumSize: MaterialStateProperty.all(Size(45, 45)),
     shape: MaterialStateProperty.all(
@@ -145,7 +146,6 @@ class _MapWidgetState extends State<MapWidget> {
                     child:
                     Text('Создать событие', style: TextStyle(fontSize: 18),),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(ColorsLightTheme.color3),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

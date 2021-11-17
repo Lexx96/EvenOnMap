@@ -40,10 +40,12 @@ abstract class ColorsDarkTheme {
 15% — 26
    */
   //#b74093
-  static const Color color1 = Color(0xFF2e2f33);
-  static const Color color2 = Color(0xFF7cacf8);
-  static const Color color3 = Color(0xFFc1c2c5);
-  // static const Color color4 = Color(0xFFEBFFFA);
+  static const Color main = Color(0xFF1F2833); // главный
+  static const Color second = Color(0x800B0C10); // второстипенный
+  static const Color second1 = Color(0xFF0B0C10); // второстипенный
+  static const Color text = Color(0xFFC5C6C7); // текст
+  static const Color buttons = Color(0xFF66FCF1); // кнопки
+  static const Color hints = Color(0xFF45A29E); // подсказки
   // static const main = Color(0xffb74093);
   // static const mainTWo = Color.fromRGBO(32, 32, 30, 1);
   // static const mainTextColor = Color.fromRGBO(130, 133, 136, 1);
@@ -74,46 +76,118 @@ abstract class ColorsDarkTheme {
 //     ),
 //   ),
 //
-//   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-//     backgroundColor: ColorsDarkTheme.color1,
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: ColorsDarkTheme.main,
+
+
+    // либо
+    selectedItemColor: ColorsDarkTheme.buttons,
+    unselectedItemColor: ColorsDarkTheme.second,
+    // либо
+    // selectedIconTheme: IconThemeData(
+    //   color: ColorsDarkTheme.color4,
+    // ),
+    // unselectedIconTheme: IconThemeData(
+    //   color: ColorsDarkTheme.color2,
+    // ),
+
+    selectedLabelStyle: TextStyle(fontSize: 10),
+    unselectedLabelStyle: TextStyle(fontSize: 10),
+  ),// настройка BottomNavigationBarThemeData
 //
-//     // либо
-//     selectedItemColor: ColorsDarkTheme.color2,
-//     unselectedItemColor: ColorsDarkTheme.color3,
-//     // либо
-//     selectedIconTheme: IconThemeData(
-//       color: ColorsDarkTheme.color2,
-//     ),
-//     unselectedIconTheme: IconThemeData(
-//       color: ColorsDarkTheme.color3,
-//     ),
-//
-//     selectedLabelStyle: TextStyle(fontSize: 10),
-//     unselectedLabelStyle: TextStyle(fontSize: 8),
-//   ),// настройка BottomNavigationBarThemeData
-//
-//   inputDecorationTheme: InputDecorationTheme(
-//
-//     filled: true,
-//     fillColor: ColorsDarkTheme.color3,
-//     // цвет фона
-//     isCollapsed: true,
-//     contentPadding: const EdgeInsets.all(15),
-//     hintStyle: const TextStyle(color: Colors.grey),
-//
-//     border: OutlineInputBorder(
-//       borderRadius: BorderRadius.circular(10),
-//       borderSide: BorderSide(width: 1.0, color: Colors.white),
-//     ),
-//
-//     focusedBorder: OutlineInputBorder(
-//       borderRadius: BorderRadius.circular(10),
-//       borderSide: const BorderSide(
-//         width: 2.0,
-//         color: Colors.blue,
-//       ),
-//     ),
-//   ),
+  inputDecorationTheme: InputDecorationTheme(
+
+    filled: true,
+    fillColor: ColorsDarkTheme.second,
+    // цвет фона
+    isCollapsed: true,
+    contentPadding: const EdgeInsets.all(15),
+    hintStyle: const TextStyle(color: ColorsDarkTheme.text),
+
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(width: 1.0, color: ColorsDarkTheme.second),
+    ),
+
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        width: 2.0,
+        color: ColorsDarkTheme.buttons,
+      ),
+    ),
+  ),
+
+   dialogTheme: DialogTheme(
+     backgroundColor: ColorsDarkTheme.main,
+     titleTextStyle: TextStyle(color: ColorsDarkTheme.text, fontSize: 18,),
+     contentTextStyle: TextStyle(color: ColorsDarkTheme.text, fontSize: 16,),
+   ), // настройка Алертдиалог
+
+   canvasColor: ColorsDarkTheme.main, // цвет Driwer + всплывающее меню
+
+   splashColor: ColorsDarkTheme.second, // цвет сплеша глобальный
+
+   dividerColor: ColorsDarkTheme.buttons, // цвет divider
+
+   iconTheme: IconThemeData(
+     color: ColorsDarkTheme.hints,
+   ), // настройка иконок
+
+
+   textTheme: TextTheme(
+       // headline1: TextStyle(color: Colors.red),
+       // Чрезвычайно большой текст.
+       // headline3: TextStyle(color: Colors.red),
+       // Очень большой текст.
+       // headline4: TextStyle(color: Colors.red),
+       // Большой текст.
+       // headline5: TextStyle(color: Colors.red),
+       // Используется для большого текста в диалоговых окнах (например, месяц и год в диалоговом окне, показанном showDatePicker).
+
+       // bodyText1: TextStyle(color: Colors.green),
+       // Используется для выделения текста, который в противном случае был бы bodyText2
+       bodyText2: TextStyle(color: ColorsDarkTheme.text),
+       // цвет body текста, Стиль текста по умолчанию для материала
+
+       subtitle1: TextStyle(color: ColorsDarkTheme.text),
+       // цвет ввода в текст филд, Используется для основного текста в списках (например, ListTile.title).
+       subtitle2: TextStyle(color: Colors.red),
+       // Для текста со средним акцентом, который немного меньше, чем подзаголовок1.
+
+       button: TextStyle(color: ColorsDarkTheme.buttons),
+       // Используется для текста на кнопках ElevatedButton, TextButton и OutlinedButton.
+       // caption: TextStyle(color: Colors.green),
+       // Используется для вспомогательного текста, связанного с изображениями.
+       overline: TextStyle(
+           color: Colors
+               .green) // Самый маленький стиль.Обычно используется для подписей или для введения (большего) заголовка.
+
+       ), // настройка цвета текста
+
+   appBarTheme: AppBarTheme(
+     backgroundColor: ColorsDarkTheme.main,
+   ), // настройка аппбара
+
+   textButtonTheme: TextButtonThemeData(
+     style: ButtonStyle(
+       textStyle: MaterialStateProperty.all(
+         const TextStyle(color: ColorsDarkTheme.text),
+       ),
+       shape: MaterialStateProperty.all(
+         RoundedRectangleBorder(
+           borderRadius: BorderRadius.circular(10),
+         ),
+       ),
+       shadowColor: MaterialStateProperty.all(Colors.grey),
+
+       foregroundColor: MaterialStateProperty.all(Colors.blue),
+       backgroundColor: MaterialStateProperty.all(ColorsDarkTheme.second), // меняет иконку добавления фото
+       overlayColor: MaterialStateProperty.all(ColorsDarkTheme.hints),
+     ),
+   ), // настройка текстбатон
 
   splashFactory: InkRipple.splashFactory,
+
+
 ); //copyWith - позволяет переопределить цвета

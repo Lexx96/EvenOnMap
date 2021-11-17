@@ -168,6 +168,8 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
       ),
     );
   }
+
+  /// Есть ли соглашение на ЛС
   void _agreeTerms (bool? isAccepted) {
     if(isAccepted == false) {
       _bloc.emptyState();

@@ -4,6 +4,7 @@ import 'package:event_on_map/news_page/widgets/end_widget.dart';
 import 'package:event_on_map/news_page/widgets/header_button_widget.dart';
 import 'package:event_on_map/news_page/widgets/sceleton.dart';
 import 'package:event_on_map/news_page/widgets/text_body_widget.dart';
+import 'package:event_on_map/themes/my_dark_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../main_driwer/main_drawer.dart';
@@ -66,6 +67,7 @@ class _NewsPageState extends State<NewsPage> {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   decoration: BoxDecoration(
+                    color: ColorsDarkTheme.main,
                     border: Border.symmetric(
                       vertical: BorderSide.none,
                     ),
