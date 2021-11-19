@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
+import 'package:event_on_map/map_widget/service/map_repository.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'create_event_map_bloc_state.dart';
@@ -36,6 +37,13 @@ class CreateEventMapBloc {
             onTabLatLng, _placemark));
       },
     );
+  }
+
+  /// Изминение темы карты на темную
+  void changeMapModeForCreateEventMap(String path) async {
+    return await MapRepository.getJsonFile(path).then((mapStyle) {
+      _streamCreateEventController.sink.add(CreateEventMapState.getMapThemeForCreateEventMapState(mapStyle));
+    },);
   }
 
   void dispose () {

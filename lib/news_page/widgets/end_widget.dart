@@ -15,46 +15,51 @@ class EndWidget extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                child: Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.all(Radius.circular(25)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Icon(
-                          CustomIcons.heart_1,
-                          color: Colors.blue,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  child: Container(
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Icon(
+                            CustomIcons.heart_1,
+                          ),
                         ),
-                      ),
-                      Text(
-                        ' 25  ',
-                        style: TextStyle(color: Colors.black38),
-                      ),
-                    ],
+                        Text(
+                          ' 25  ',
+                        ),
+                      ],
+                    ),
+                    clipBehavior: Clip.hardEdge,
                   ),
-                  clipBehavior: Clip.hardEdge,
+                  onTap: () => print('cc'),
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  splashColor: Theme.of(context).splashColor,
                 ),
-                onTap: () => print('cc'),
-                splashColor: Colors.grey,
-                borderRadius: BorderRadius.all(Radius.circular(25)),
               ),
             ),
             TextButton(
               onPressed: () => Share.share('text'),  //https://www.youtube.com/watch?v=-PmUFbbA-Fs
-              child: Icon(Icons.share),
+              child: Icon(Icons.share, color: Theme.of(context).iconTheme.color,),
               style: ButtonStyle(
-                elevation: MaterialStateProperty.all(0),
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                overlayColor: MaterialStateProperty.all(Colors.grey),
+                elevation: MaterialStateProperty.all(0),
                 padding: MaterialStateProperty.all(EdgeInsets.zero),
                 minimumSize: MaterialStateProperty.all(Size(60, 30)),
-
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                      side: BorderSide(color: Colors.transparent)
+                  ),
+                ),
               ),
             ),
           ],

@@ -11,34 +11,37 @@ class HeaderButtonWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/mapOne.png'),
-                  radius: 27,
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.all(Radius.circular(25)),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/mapOne.png'),
+                    radius: 27,
+                  ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    S.of(context).userNickname, // избежать оверфлоу
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    '48 ' + S.of(context).minutesAgo,
-                    style: TextStyle(fontSize: 12),
-                  ),
-                ],
-              )
-            ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.of(context).userNickname, // избежать оверфлоу
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      '48 ' + S.of(context).minutesAgo,
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
         Padding(

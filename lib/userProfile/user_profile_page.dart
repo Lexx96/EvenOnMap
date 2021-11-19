@@ -71,12 +71,12 @@ class UserProfilePageState extends State<UserProfilePage> {
                                     ),
                                     SizedBox(width: 15),
                                     Text(S.of(context).hometown,
-                                      style: TextStyle(color: Colors.black54, fontSize: 14),
+                                      style: TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
                                 Text(S.of(context).novokuznetsk,
-                                  style: TextStyle(fontSize: 15, color: Colors.black),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ],
                             ),
@@ -92,7 +92,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                     ),
                                     SizedBox(width: 15),
                                     Text(S.of(context).phoneNumber,
-                                      style: TextStyle(color: Colors.black54, fontSize: 14),
+                                      style: TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
@@ -112,7 +112,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                 ),
                                 const SizedBox(width: 15),
                                 Text('О себе',
-                                  style: TextStyle(color: Colors.black54, fontSize: 14),
+                                  style: TextStyle(fontSize: 14),
                                 )
                               ],
                             ),
@@ -143,9 +143,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                   height: 195,
                                   width: 90,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Colors.black.withOpacity(0.2)),
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
                                     boxShadow: [
@@ -167,7 +165,6 @@ class UserProfilePageState extends State<UserProfilePage> {
                                         color: Colors.transparent,
                                         child: InkWell(
                                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                                            splashColor: Colors.grey[1],
                                             onTap: () {} //_showActions(context, index),
                                         ),
                                       )

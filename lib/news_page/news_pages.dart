@@ -1,4 +1,3 @@
-import 'package:event_on_map/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import 'package:event_on_map/news_page/services/news_api_repository.dart';
 import 'package:event_on_map/news_page/widgets/end_widget.dart';
 import 'package:event_on_map/news_page/widgets/header_button_widget.dart';
@@ -67,7 +66,6 @@ class _NewsPageState extends State<NewsPage> {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   decoration: BoxDecoration(
-                    color: ColorsDarkTheme.main,
                     border: Border.symmetric(
                       vertical: BorderSide.none,
                     ),

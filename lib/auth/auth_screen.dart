@@ -1,8 +1,10 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
+import 'package:event_on_map/themes/my_dark_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../custom_icons_icons.dart';
@@ -59,22 +61,12 @@ class _AuthWidgetState extends State<AuthWidget> {
     final _height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topRight,
-            colors: [
-              Color(0xff5ac18e),
-              Color(0xffffffff),
-            ],
-          ),
-        ),
+        color: Theme.of(context).primaryColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-
               if (snapshot.data is AuthLogInLoadedState) {
                 Future.delayed(
                   Duration.zero,
@@ -113,7 +105,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                 children: [
                   ListView(
                     children: [
-                       Padding(
+                      Padding(
                         padding: const EdgeInsets.only(left: 8, right: 8.0),
                         child: Column(
                           children: [
@@ -131,7 +123,8 @@ class _AuthWidgetState extends State<AuthWidget> {
                         height: MediaQuery.of(context).size.height * 0.4,
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: const Image(
-                          image: NetworkImage('https://static.tildacdn.com/tild3830-6230-4265-a638-393035353836/itinerairepngcartede.png'),
+                          image: NetworkImage(
+                              'https://static.tildacdn.com/tild3830-6230-4265-a638-393035353836/itinerairepngcartede.png'),
                         ),
                       ),
                       Column(
@@ -202,6 +195,7 @@ class _AuthWidgetState extends State<AuthWidget> {
       ),
     );
   }
+
 
   /// Вход уже зарегистрированного пользователя
   void _goLogIn() {

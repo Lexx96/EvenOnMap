@@ -119,7 +119,7 @@ class _MainDrawerState extends State<MainDrawer> {
               Navigator.of(context).pushNamed('/InPut');
             },
           ),
-          Divider(height: 1),
+          Divider(),
           ListTile(
             title: Row(
               children: [
@@ -133,6 +133,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   .pushNamed(MainNavigationRouteName.userProfile);
             },
           ),
+          Divider(),
           ListTile(
             title: Row(
               children: [
@@ -148,7 +149,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   .pushNamed(MainNavigationRouteName.decorationPage);
             },
           ),
-          Divider(height: 1),
+          Divider(),
           ListTile(
             title: Row(
               children: [
@@ -164,6 +165,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   .pushNamed(MainNavigationRouteName.aboutApplication);
             },
           ),
+          Divider(),
           ListTile(
             title: Row(
               children: [
@@ -182,6 +184,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   .pushNamed(MainNavigationRouteName.feedbackPage);
             },
           ),
+          Divider(),
           SizedBox(
             height: 120,
           ),

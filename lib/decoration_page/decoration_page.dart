@@ -14,21 +14,6 @@ class DecorationPage extends StatefulWidget {
 class _DecorationPageState extends State<DecorationPage> {
   late DecorationPageBloc _bloc;
 
-
-
-  /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
-  Future<void> _choiceTheme() async {
-    final savedThemeMode = await AdaptiveTheme.getThemeMode();
-    if (savedThemeMode == AdaptiveThemeMode.system) {
-      _bloc.systemThemeState();
-    } else if (savedThemeMode == AdaptiveThemeMode.light) {
-      _bloc.lightThemeState();
-    } else if (savedThemeMode == AdaptiveThemeMode.dark) {
-      _bloc.darkThemeState();
-    }
-  }
-
-
   @override
   void initState() {
     super.initState();
@@ -122,5 +107,16 @@ class _DecorationPageState extends State<DecorationPage> {
         ),
       ),
     );
+  }
+  /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
+  Future<void> _choiceTheme() async {
+    final savedThemeMode = await AdaptiveTheme.getThemeMode();
+    if (savedThemeMode == AdaptiveThemeMode.system) {
+      _bloc.systemThemeState();
+    } else if (savedThemeMode == AdaptiveThemeMode.light) {
+      _bloc.lightThemeState();
+    } else if (savedThemeMode == AdaptiveThemeMode.dark) {
+      _bloc.darkThemeState();
+    }
   }
 }

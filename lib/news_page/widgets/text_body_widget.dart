@@ -38,6 +38,11 @@ class _TextBodyWidgetState extends State<TextBodyWidget> {
         },);
       },
       style: ButtonStyle(
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+              side: BorderSide(color: Colors.transparent)
+          ),
+        ),
         elevation: MaterialStateProperty.all(0),
         backgroundColor: MaterialStateProperty.all(Colors.transparent),
         overlayColor: MaterialStateProperty.all(Colors.grey),

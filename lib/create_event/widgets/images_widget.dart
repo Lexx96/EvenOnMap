@@ -43,8 +43,6 @@ class _ImagesWidgetState extends State<ImagesWidget> {
               final _images = _data.image;
               print(_images == null);
               _images != null ? _selectedImages.add(_images) : _selectedImages;
-              print(_selectedImages.length);
-              print('11111111111111111111111111111111111111111');
             }
             return (_selectedImages.length == 0)
                 ? Row(
@@ -59,61 +57,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: [
-                          Container(
-                            height: 195,
-                            width: 90,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: Colors.black.withOpacity(0.2)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 2))
-                              ],
-                            ),
-                            clipBehavior: Clip.hardEdge,
-                            child: Stack(
-                              children: [
-                                Center(
-                                    child: Image.file(
-                                        _selectedImages[index] as File)),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        (snapshot.data is LoadedPickImage ||
-                                                snapshot.data
-                                                    is NotSelectedPickImage)
-                                            ? Icon(
-                                                Icons.done,
-                                                color: Colors.deepOrange,
-                                                size: 18,
-                                              )
-                                            : SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child:
-                                                    CircularProgressIndicator()),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    splashColor: Colors.grey[1],
-                                    onTap: () => _showActions(context, index),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                          _showImages(context, index, snapshot),
                           SizedBox(
                             width: 10,
                           ),
@@ -130,9 +74,66 @@ class _ImagesWidgetState extends State<ImagesWidget> {
       ),
     );
   }
+  /// Карточка вывода изображения
+  Container _showImages(BuildContext context, int index, AsyncSnapshot<dynamic> snapshot) {
+    return Container(
+                          height: 195,
+                          width: 90,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border.all(
+                                color: Colors.black.withOpacity(0.2)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black,
+                                  blurRadius: 8,
+                                  offset: Offset(0, 2))
+                            ],
+                          ),
+                          clipBehavior: Clip.hardEdge,
+                          child: Stack(
+                            children: [
+                              Center(
+                                  child: Image.file(
+                                      _selectedImages[index] as File),),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      (snapshot.data is LoadedPickImage ||
+                                              snapshot.data
+                                                  is NotSelectedPickImage)
+                                          ? Icon(
+                                              Icons.done,
+                                              color: Colors.deepOrange,
+                                              size: 18,
+                                            )
+                                          : SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child:
+                                                  CircularProgressIndicator()),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () => _showActions(context, index),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+  }
 
   /// Выбор источника изображения
-  _showImagesSource(BuildContext context) async {
+  _showCardAdd(BuildContext context) async {
     if (Platform.isIOS) {
       return showCupertinoModalPopup<ImageSource>(
         context: context,
@@ -247,26 +248,30 @@ class _ImagesWidgetState extends State<ImagesWidget> {
     }
   }
 
-  /// Карточка вывода изображения
+  /// Карточка вывода карточки добавить фото
   Widget _isButton() {
     return Container(
       height: 195,
       width: 90,
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black.withOpacity(0.2)),
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
-          BoxShadow(color: Colors.black, blurRadius: 8, offset: Offset(0, 2))
+          BoxShadow(
+              color: Colors.black,
+              blurRadius: 8,
+              offset: Offset(0, 2))
         ],
       ),
       clipBehavior: Clip.hardEdge,
       child: TextButton(
-        onPressed: () => _showImagesSource(context),
+        onPressed: () => _showCardAdd(context),
         child: Icon(
           Icons.add_rounded,
+          color: Theme.of(context).iconTheme.color,
           size: 45,
-          color: Colors.grey,
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Theme.of(context).scaffoldBackgroundColor),
         ),
       ),
     );

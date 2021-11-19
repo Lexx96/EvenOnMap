@@ -63,7 +63,7 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
                 height: 160,
                 width: 160,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   border:
                   Border.all(color: Colors.black.withOpacity(0.2)),
                   borderRadius: BorderRadius.all(Radius.circular(90)),

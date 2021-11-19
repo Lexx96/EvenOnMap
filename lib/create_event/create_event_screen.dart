@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc.dart';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc_state.dart';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
@@ -22,18 +23,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   late CreateEventBloc _bloc;
   final _headerTextController = TextEditingController();
   final _bodyTextController = TextEditingController();
-  final ButtonStyle _buttonStyle = ButtonStyle(
-    padding: MaterialStateProperty.all(EdgeInsets.zero),
-    shape: MaterialStateProperty.all(
-      RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.blue)),
-    ),
-  );
-  final BoxDecoration _containerDecoration = BoxDecoration(
-    border: Border.all(color: Colors.black.withOpacity(0.2)),
-    borderRadius: BorderRadius.all(Radius.circular(10),),
-  );
   LatLng _latLng = LatLng(0.0, 0.0);
   List<Placemark> _placemark = [
     Placemark(street: '', subThoroughfare: ''),
@@ -142,15 +131,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     ),
                   ],
                 ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(13),
-                        side: BorderSide(color: Colors.blueAccent)
-                    ),
-                  ),
-                ),
               ),
             ),
             Padding(
@@ -159,13 +139,11 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    style: _buttonStyle,
                     child: Text('Назад'),
                     onPressed: () => Navigator.of(context)
                         .pushNamed(MainNavigationRouteName.mainScreen),
                   ),
                   TextButton(
-                    style: _buttonStyle,
                     child: Text('Создать'),
                     onPressed: () => _postNewEventInServer(),
                   ),
@@ -187,6 +165,8 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     );
   }
 
+
+
   /// Вывод адреса события
   Padding _showAddress(BuildContext context, List<Placemark> _placemark) {
     return Padding(
@@ -195,7 +175,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         child: Container(
           height: 130,
           width: MediaQuery.of(context).size.width,
-          decoration: _containerDecoration,
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).dividerColor),
+            borderRadius: BorderRadius.all(Radius.circular(10),),
+          ),
           child: Container(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -332,40 +315,28 @@ class CreateEventMapWidget extends StatefulWidget {
 
 class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   CreateEventBloc bloc;
+
   _CreateEventMapWidgetState(this.bloc);
 
   late CreateEventMapBloc _createEventMapBloc;
   late GoogleMapController _googleMapController;
   late LatLng _myPosition = LatLng(0.0, 0.0);
   Set<Marker> _setUserMarkers = {};
-
   final ButtonStyle buttonStyle = ButtonStyle(
-    backgroundColor: MaterialStateProperty.all(Colors.white),
-    overlayColor: MaterialStateProperty.all(Colors.grey),
     padding: MaterialStateProperty.all(EdgeInsets.zero),
     minimumSize: MaterialStateProperty.all(Size(45, 45)),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(60),
-          side: const BorderSide(
-            color: Colors.blueAccent,
-            width: 2,
-          ) // цвет бордера
-          ),
+      ),
     ),
   );
-  final BoxDecoration _containerDecoration = BoxDecoration(
-    color: Colors.white,
-    border: Border.all(color: Colors.black.withOpacity(0.2)),
-    borderRadius: BorderRadius.all(Radius.circular(10),),
-  );
   final ButtonStyle buttonStyleTwo = ButtonStyle(
-    backgroundColor: MaterialStateProperty.all(Colors.white),
     padding: MaterialStateProperty.all(EdgeInsets.zero),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.blue)),
+      ),
     ),
   );
 
@@ -398,6 +369,9 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
 
   /// Тело CreateEventMapWidget
   Stack _body(AsyncSnapshot snapshot, BuildContext context) {
+
+    // _choiceTheme();  // из за него не работает вывод адресса , тк все время обновляется экран
+
     LatLng _position = LatLng(0.0, 0.0);
     List<Placemark> _placemark = [Placemark(street: '', subThoroughfare: '')];
 
@@ -408,7 +382,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
       _myPosition = LatLng(_position.latitude, _position.longitude);
       _getMyMarker(_myPosition, _placemark);
     }
-
     return Stack(
       children: [
         GoogleMap(
@@ -422,7 +395,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
             ),
             onTap: (LatLng _onTabLatLng) => _createEventMapBloc.getAddressOnTab(
                 _onTabLatLng) // получение LatLng по нажатию на карту
-            ),
+        ),
         _showAddress(context, _placemark, _position),
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -435,7 +408,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                   child: TextButton(
                     onPressed: () => _createEventMapBloc
                         .createEventGetLatLngAndAddressUserPosition(),
-                    child: const Icon(
+                    child: Icon(
                       CustomIcons.map_marker,
                       size: 30,
                     ),
@@ -451,58 +424,86 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     );
   }
 
+  /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
+  Future<void> _choiceTheme() async {
+
+    final savedThemeMode = await AdaptiveTheme.getThemeMode();
+
+    if (AdaptiveThemeMode.system.isDark) {
+      _createEventMapBloc.changeMapModeForCreateEventMap('assets/map_dark_theme/dark_theme.json');
+    }
+    else if (AdaptiveThemeMode.system.isLight) {
+      _createEventMapBloc.changeMapModeForCreateEventMap('assets/map_dark_theme/light_theme.json');
+    }
+
+    else if (savedThemeMode == AdaptiveThemeMode.light) {
+      _createEventMapBloc.changeMapModeForCreateEventMap('assets/map_dark_theme/light_theme.json');
+    }
+    else if (savedThemeMode == AdaptiveThemeMode.dark) {
+      _createEventMapBloc.changeMapModeForCreateEventMap('assets/map_dark_theme/dark_theme.json');
+    }
+  }
+
+  /// Смена темы карты
+  void _mapDarkTheme (String mapStyle) {
+    _googleMapController.setMapStyle(mapStyle);
+  }
+
   /// Вывод на экран выбранного адреса
-  Column _showAddress(
-      BuildContext context, List<Placemark> _placemark, LatLng _onTabLatLng) {
+  Column _showAddress(BuildContext context, List<Placemark> _placemark, LatLng _onTabLatLng) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Center(
+          padding:
+          const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: Container(
+            height: 130,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              border: Border.all(color: Theme.of(context).dividerColor),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              boxShadow: [BoxShadow(color: Colors.black)],
+            ),
             child: Container(
-              height: 130,
-              width: MediaQuery.of(context).size.width,
-              decoration: _containerDecoration,
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Область/Край'),
-                          Text('${_placemark.first.administrativeArea}'),
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Город'),
-                          Text('${_placemark.first.locality}'),
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Улица/Проспект'),
-                          Text('${_placemark.first.street}'),
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Дом №'),
-                          Text('${_placemark.first.subThoroughfare}'),
-                        ],
-                      ),
-                    ],
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Область/Край'),
+                        Text('${_placemark.first.administrativeArea}'),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Город'),
+                        Text('${_placemark.first.locality}'),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Улица/Проспект'),
+                        Text('${_placemark.first.street}'),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Дом №'),
+                        Text('${_placemark.first.subThoroughfare}'),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -518,7 +519,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                 onPressed: () {
                   bloc.getLatLngAndAddressFromMap(_onTabLatLng);
                 },
-                child: Text('Выбрать'),
+                child: Text('Выбрать',),
               ),
             ),
           ],

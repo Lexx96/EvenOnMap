@@ -28,16 +28,6 @@ class _MapWidgetState extends State<MapWidget> {
   Set<Marker> _setUserMarkers = {};
   Set<Marker> _setOnTabMarkers = {};
   late List<Placemark> _placemark;
-  ButtonStyle buttonStyle = ButtonStyle(
-    backgroundColor: MaterialStateProperty.all(ColorsDarkTheme.second,),
-    overlayColor: MaterialStateProperty.all(Colors.white),
-    minimumSize: MaterialStateProperty.all(Size(45, 45)),
-    shape: MaterialStateProperty.all(
-      RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(60),
-          ),
-    ),
-  );
 
   @override
   void initState() {
@@ -63,7 +53,6 @@ class _MapWidgetState extends State<MapWidget> {
           return _bodyMapWidget(context, snapshot);
         },
       ),
-      // bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 
@@ -128,7 +117,14 @@ class _MapWidgetState extends State<MapWidget> {
                       CustomIcons.map_marker,
                       size: 30,
                     ),
-                    style: buttonStyle,
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(Size(45, 45)),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(60),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
