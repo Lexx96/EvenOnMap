@@ -186,7 +186,7 @@ class _MainDrawerState extends State<MainDrawer> {
           ),
           Divider(),
           SizedBox(
-            height: 120,
+            height: 50,
           ),
           ListTile(
             title: Row(

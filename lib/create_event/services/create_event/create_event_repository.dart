@@ -1,8 +1,4 @@
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
-import 'package:flutter_geocoder/geocoder.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class PostEventRepository {

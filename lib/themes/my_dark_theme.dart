@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 abstract class ColorsDarkTheme {
-  static const Color darkColor1 = Color(0xFF1F2833); // главный
-  static const Color darkColor2 = Color(0x800B0C10); // второстипенный
-  static const Color darkColor3 = Color(0xFF0B0C10); // второстипенный
-  static const Color darkColor4 = Color(0xFFC5C6C7); // текст
-  static const Color darkColor5 = Color(0xFF66FCF1); // кнопки
-  static const Color darkColor6 = Color(0xFF45A29E); // подсказки
+  static const Color darkColor1 = Color(0xFF1F2833);
+  static const Color darkColor2 = Color(0x800B0C10);
+  static const Color darkColor3 = Color(0xFF0B0C10);
+  static const Color darkColor4 = Color(0xFFC5C6C7);
+  static const Color darkColor5 = Color(0xFF66FCF1);
+  static const Color darkColor6 = Color(0xFF45A29E);
 }
 
 final myDarkTheme = ThemeData.dark().copyWith(
@@ -20,6 +20,7 @@ final myDarkTheme = ThemeData.dark().copyWith(
   ),
 
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
+
     backgroundColor: ColorsDarkTheme.darkColor1,
 
     selectedItemColor: ColorsDarkTheme.darkColor5,
@@ -63,24 +64,27 @@ final myDarkTheme = ThemeData.dark().copyWith(
     ),
   ),
 
+  textTheme: TextTheme(
+    bodyText2: TextStyle(color: ColorsDarkTheme.darkColor4),
+    subtitle1: TextStyle(color: ColorsDarkTheme.darkColor4),
+    button: TextStyle(color: ColorsDarkTheme.darkColor5),
+  ),
+
+
+  iconTheme: IconThemeData(
+    color: ColorsDarkTheme.darkColor5,
+  ),
+
   canvasColor: ColorsDarkTheme.darkColor1,
 
   splashColor: ColorsDarkTheme.darkColor6,
 
   dividerColor: ColorsDarkTheme.darkColor5,
 
-  iconTheme: IconThemeData(
-    color: ColorsDarkTheme.darkColor5,
+  progressIndicatorTheme: ProgressIndicatorThemeData(
+    color: ColorsDarkTheme.darkColor6,
+    circularTrackColor: ColorsDarkTheme.darkColor5,
   ),
-
-  textTheme: TextTheme(
-
-      bodyText2: TextStyle(color: ColorsDarkTheme.darkColor4),
-      subtitle1: TextStyle(color: ColorsDarkTheme.darkColor4),
-      button: TextStyle(color: ColorsDarkTheme.darkColor5),
-      ),
-
-
 
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(

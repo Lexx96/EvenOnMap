@@ -27,15 +27,6 @@ class _AuthWidgetState extends State<AuthWidget> {
   late final UserRegistrationRepository _repository;
   late final UserLogInRepository _authLogInRepository;
   final _textStyle = TextStyle(fontSize: 16);
-  final _spinkit = SpinKitWave(
-    itemBuilder: (BuildContext context, int index) {
-      return DecoratedBox(
-        decoration: BoxDecoration(
-          color: index.isEven ? Colors.lightBlue : Colors.white,
-        ),
-      );
-    },
-  );
 
   final _numberController = TextEditingController(text: '9134322000');
   final _passwordController = TextEditingController(text: 'Sex12345LK');
@@ -61,7 +52,16 @@ class _AuthWidgetState extends State<AuthWidget> {
     final _height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
-        color: Theme.of(context).primaryColor,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topRight,
+            colors: [
+              Color(0xffffffff),
+              Theme.of(context).primaryColor,
+            ],
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: StreamBuilder(
@@ -162,23 +162,25 @@ class _AuthWidgetState extends State<AuthWidget> {
                       ),
                       TextButton(
                         child: Text(
-                          S.of(context).enter,
+                          S.of(context).enter, style: TextStyle(fontSize: 18),
                         ),
-                        onPressed: () => _goLogIn(),
+                        onPressed: () => (snapshot.data is RegistrationLoadingState ||
+                            snapshot.data is AuthLogInLoadingState) ? null : _goLogIn(),
                       ),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.01),
                       TextButton(
                         child: Text(
-                          S.of(context).registration,
+                          S.of(context).registration, style: TextStyle(fontSize: 18),
                         ),
-                        onPressed: () => _goRegistration(),
+                        onPressed: () => (snapshot.data is RegistrationLoadingState ||
+              snapshot.data is AuthLogInLoadingState) ? null : _goRegistration(),
                       ),
                     ],
                   ),
                   (snapshot.data is RegistrationLoadingState ||
                           snapshot.data is AuthLogInLoadingState)
-                      ? Center(child: _spinkit)
+                      ? Center(child: CircularProgressIndicator())
                       : SizedBox.shrink(),
                   _showException(snapshot),
                   (snapshot.data is RegistrationLoadedState)
@@ -197,7 +199,7 @@ class _AuthWidgetState extends State<AuthWidget> {
   }
 
 
-  /// Вход уже зарегистрированного пользователя
+  /// Авторизация ранее зарегистрированного пользователя
   void _goLogIn() {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;

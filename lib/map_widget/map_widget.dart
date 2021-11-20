@@ -1,8 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:event_on_map/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
-import 'package:event_on_map/themes/my_dark_theme.dart';
-import 'package:event_on_map/themes/my_light_theme.dart';
+import 'package:event_on_map/news_page/models/news.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geocoder/geocoder.dart';
@@ -27,7 +25,12 @@ class _MapWidgetState extends State<MapWidget> {
   late LatLng _myPosition;
   Set<Marker> _setUserMarkers = {};
   Set<Marker> _setOnTabMarkers = {};
+  Iterable _setAllNewsMarkers = [];
   late List<Placemark> _placemark;
+
+
+  // LatLng latLngListNews = LatLng(0.0, 0.0);
+  // String descriptionListNews = '';
 
   @override
   void initState() {
@@ -35,6 +38,8 @@ class _MapWidgetState extends State<MapWidget> {
     GoogleMapController _googleMapController;
     _bloc = GoogleMapBloc();
     _bloc.getLatLngAndAddressUserPosition();
+    // _bloc.getAllNews();
+    _getNewsFromServer();
   }
 
   @override
@@ -59,7 +64,7 @@ class _MapWidgetState extends State<MapWidget> {
   /// Тело страницы
   Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
 
-    _choiceTheme();  // из за него ошибка
+    // _choiceTheme();  // из за него ошибка
 
     if (snapshot.data is LoadedLatLngAndAddressState) {
       final _data = snapshot.data as LoadedLatLngAndAddressState;
@@ -84,6 +89,20 @@ class _MapWidgetState extends State<MapWidget> {
       _mapDarkTheme(_mapStyle);
     }
 
+    // if (snapshot.data is AllNewsLoadedState) {
+    //   final _data = snapshot.data as AllNewsLoadedState;
+    //   final List<GetNewsFromServerModel> newsFromServerModel = _data.newsFromServer;
+    //
+    //   for (int i = 0; i < newsFromServerModel.length; i++) {
+    //     final LatLng latLng = LatLng(newsFromServerModel[i].lat, newsFromServerModel[i].lng);
+    //     final String description = newsFromServerModel[i].description;
+    //     final String title = newsFromServerModel[i].title;
+    //     // _bloc.getAllAddress(latLng).then((addressFrom) =>
+    //     //     _allNewsMarkers(address: addressFrom, latLngFromNews: latLng, description: description, title: title)
+    //     // );
+    //   }
+    // }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -91,7 +110,7 @@ class _MapWidgetState extends State<MapWidget> {
             mapToolbarEnabled: false,
             zoomControlsEnabled: false,
             onMapCreated: _onMapCreated,
-            markers: (snapshot.data is LoadedAddressFromCoordinatesState) ? _setOnTabMarkers : _setUserMarkers,
+            markers: Set.from(_setAllNewsMarkers),
             initialCameraPosition: CameraPosition(
               target: _myPosition,
               zoom: 16,
@@ -173,6 +192,44 @@ class _MapWidgetState extends State<MapWidget> {
     _onMapCreated(_googleMapController);
   }
 
+  /// Создание маркера по нажатию на карту
+  void _onTabMarker(Address address, LatLng _onTabLatLng) async {
+    final _onTabMarker = Marker(
+      markerId: MarkerId(''),
+      infoWindow: InfoWindow(
+          title: '${address.thoroughfare} ${address.subThoroughfare}', // Название
+          snippet: 'Создать событие'), // Тело
+      position: _onTabLatLng,
+    );
+    _setOnTabMarkers =  MapProvider.refreshSetProvider(set: _setOnTabMarkers, marker: _onTabMarker);
+  }
+
+  /// Создание маркера из списка новостей
+  void _getNewsFromServer () async {
+
+    List<GetNewsFromServerModel> allNews = await _bloc.getAllNews();
+    //
+    // for (int i = 0; i < allNews.length; i++) {
+    //   final addressFrom = await _bloc.getAllAddress(
+    //       LatLng(allNews[i].lat, allNews[i].lng));
+    // }
+
+    Iterable _markers = Iterable.generate(allNews.length, (index) {
+      // final addressFrom = await _bloc.getAllAddress( LatLng(allNews[index].lat, allNews[index].lng) );
+      return Marker(
+          markerId: MarkerId("marker$index"),
+          infoWindow: InfoWindow(
+              title: '${allNews[index].title}',
+              snippet: allNews[index].title),
+          position: LatLng(allNews[index].lat, allNews[index].lng),
+      );
+    });
+
+    setState(() {
+      _setAllNewsMarkers = _markers;
+    });
+  }
+
   /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
   Future<void> _choiceTheme() async {
 
@@ -210,15 +267,4 @@ class _MapWidgetState extends State<MapWidget> {
     }
   }
 
-  /// Создание маркера по нажатию на карту
-  void _onTabMarker(Address address, LatLng _onTabLatLng) async {
-    final _onTabMarker = Marker(
-      markerId: MarkerId(''),
-      infoWindow: InfoWindow(
-          title: '${address.thoroughfare} ${address.subThoroughfare}', // Название
-          snippet: 'Создание'), // Тело
-      position: _onTabLatLng,
-    );
-    _setOnTabMarkers =  MapProvider.refreshSetProvider(set: _setOnTabMarkers, marker: _onTabMarker);
-  }
 }

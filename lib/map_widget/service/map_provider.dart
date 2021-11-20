@@ -65,4 +65,11 @@ class MapProvider {
     set.add(marker);
     return set;
   }
+
+  /// Обновление Set<Marker> для обновления маркеров на карте
+  static Set<Marker> refreshSetNewsListProvider(
+      {required Set<Marker> set, required Marker marker}) {
+    set.add(marker);
+    return set;
+  }
 }
