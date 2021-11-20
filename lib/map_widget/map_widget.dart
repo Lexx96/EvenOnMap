@@ -208,26 +208,29 @@ class _MapWidgetState extends State<MapWidget> {
   void _getNewsFromServer () async {
 
     List<GetNewsFromServerModel> allNews = await _bloc.getAllNews();
-    //
-    // for (int i = 0; i < allNews.length; i++) {
-    //   final addressFrom = await _bloc.getAllAddress(
-    //       LatLng(allNews[i].lat, allNews[i].lng));
-    // }
 
-    Iterable _markers = Iterable.generate(allNews.length, (index) {
-      // final addressFrom = await _bloc.getAllAddress( LatLng(allNews[index].lat, allNews[index].lng) );
-      return Marker(
+    for (int i = 0; i < allNews.length; i++) {
+      Address addressFrom = await _bloc.getAllAddress(
+          LatLng(allNews[i].lat, allNews[i].lng));
+
+      Iterable _markers = Iterable.generate(allNews.length, (index) {
+        return Marker(
           markerId: MarkerId("marker$index"),
           infoWindow: InfoWindow(
-              title: '${allNews[index].title}',
+              title: '${addressFrom.thoroughfare} ${addressFrom.subThoroughfare}',  // приходит null. Хотя адреса в переменной есть
               snippet: allNews[index].title),
           position: LatLng(allNews[index].lat, allNews[index].lng),
-      );
-    });
+        );
+      });
+      print(addressFrom.thoroughfare);
+      print(addressFrom.subThoroughfare);
 
-    setState(() {
-      _setAllNewsMarkers = _markers;
-    });
+      setState(() {
+        _setAllNewsMarkers = _markers;
+      });
+    }
+
+
   }
 
   /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc

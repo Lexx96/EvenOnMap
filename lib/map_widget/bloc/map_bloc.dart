@@ -50,12 +50,12 @@ class GoogleMapBloc {
     },);
   }
 
+
+  // перенести из блока тк не управляют состоянием
   /// Получение всех новостей с сервера
   Future<List<GetNewsFromServerModel>> getAllNews() async{
     List<GetNewsFromServerModel> jsonNewsModel =  await NewsProvider().getAllNewsFromServer();
     return jsonNewsModel;
-    // _streamController.sink
-    //     .add(MapBlocState.allNewsLoadedState(jsonNewsModel));
   }
 
   /// Получение адресов по LatLng для вывода маркеров новостей на карту

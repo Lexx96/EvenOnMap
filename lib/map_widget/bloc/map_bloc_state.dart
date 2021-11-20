@@ -7,7 +7,7 @@ class MapBlocState {
   MapBlocState();
   factory MapBlocState.emptyLatLng() = EmptyGoogleMapState;
   factory MapBlocState.getMapThemeState(String mapStyle) = GetMapThemeState;
-  factory MapBlocState.allNewsLoadedState(List<GetNewsFromServerModel> newsFromServer) = AllNewsLoadedState;
+  // factory MapBlocState.allNewsLoadedState(List<GetNewsFromServerModel> newsFromServer) = AllNewsLoadedState;
   factory MapBlocState.loadedLatLngAndAddress( LatLng position, List<Placemark> placemark) = LoadedLatLngAndAddressState;
   factory MapBlocState.loadedAddressFromCoordinates(Address addresses, LatLng onTabLatLng) = LoadedAddressFromCoordinatesState;
 
@@ -20,10 +20,10 @@ class GetMapThemeState extends MapBlocState {
   GetMapThemeState(this.mapStyle);
 }
 
-class AllNewsLoadedState extends MapBlocState {
-  List<GetNewsFromServerModel> newsFromServer;
-  AllNewsLoadedState(this.newsFromServer);
-}
+// class AllNewsLoadedState extends MapBlocState {
+//   List<GetNewsFromServerModel> newsFromServer;
+//   AllNewsLoadedState(this.newsFromServer);
+// }
 
 class EmptyOnTabForCreateEventState extends MapBlocState {}
 
