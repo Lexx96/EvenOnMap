@@ -8,8 +8,8 @@ class MapBlocState {
   factory MapBlocState.emptyLatLng() = EmptyGoogleMapState;
   factory MapBlocState.getMapThemeState(String mapStyle) = GetMapThemeState;
   // factory MapBlocState.allNewsLoadedState(List<GetNewsFromServerModel> newsFromServer) = AllNewsLoadedState;
-  factory MapBlocState.loadedLatLngAndAddress( LatLng position, List<Placemark> placemark) = LoadedLatLngAndAddressState;
-  factory MapBlocState.loadedAddressFromCoordinates(Address addresses, LatLng onTabLatLng) = LoadedAddressFromCoordinatesState;
+  factory MapBlocState.loadedLatLngAndAddressFromOnTab(LatLng onTabLatLng, Address onTabAddress) = LoadedLatLngAndAddressFromOnTabState;
+  factory MapBlocState.loadedAddressFromCoordinates(Address addressUserPosition, LatLng latLngUserPosition) = LoadedAddressFromUserPositionState;
 
 }
 
@@ -27,14 +27,14 @@ class GetMapThemeState extends MapBlocState {
 
 class EmptyOnTabForCreateEventState extends MapBlocState {}
 
-class LoadedLatLngAndAddressState extends MapBlocState {
-  LatLng position;
-  List<Placemark> placemark;
-  LoadedLatLngAndAddressState(this.position, this.placemark);
+class LoadedLatLngAndAddressFromOnTabState extends MapBlocState {
+  LatLng onTabLatLng;
+  Address onTabAddress;
+  LoadedLatLngAndAddressFromOnTabState(this.onTabLatLng, this.onTabAddress);
 }
 
-class LoadedAddressFromCoordinatesState extends MapBlocState {
-  LatLng onTabLatLng;
-  Address addresses;
-  LoadedAddressFromCoordinatesState(this.addresses, this.onTabLatLng);
+class LoadedAddressFromUserPositionState extends MapBlocState {
+  LatLng latLngUserPosition;
+  Address addressUserPosition;
+  LoadedAddressFromUserPositionState(this.addressUserPosition, this.latLngUserPosition);
 }

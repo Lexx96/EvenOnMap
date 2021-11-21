@@ -19,13 +19,12 @@ class GoogleMapBloc {
     _streamController.sink.add(MapBlocState.emptyLatLng());
     await MapProvider.determinePosition().then(
           (getPositionFromGPS) async {
-        List<Placemark> _placemark =
-        await MapProvider.getAddressFromLatLongGPS(
-            getPositionFromGPS.latitude, getPositionFromGPS.longitude);
-        LatLng position = LatLng(
-            getPositionFromGPS.latitude, getPositionFromGPS.longitude);
-        _streamController.sink.add(MapBlocState.loadedLatLngAndAddress(
-            position, _placemark));
+            LatLng latLngPosition = LatLng(
+                getPositionFromGPS.latitude, getPositionFromGPS.longitude);
+        Address addressUserPosition =
+        await MapProvider.getAddressFromCoordinates(latLngPosition);
+        _streamController.sink.add(MapBlocState.loadedAddressFromCoordinates(
+            addressUserPosition, latLngPosition));
       },
     );
   }
@@ -34,11 +33,11 @@ class GoogleMapBloc {
   void getAddressOnTab(LatLng onTabLatLng) async {
     await MapProvider.getAddressFromCoordinates(onTabLatLng).then(
           (addressesInOnTab) async {
-        List<Placemark> _placemark =
-        await MapProvider.getAddressFromLatLongGPS(
-            onTabLatLng.latitude, onTabLatLng.longitude);
-        _streamController.sink.add(MapBlocState.loadedLatLngAndAddress(
-            onTabLatLng, _placemark));
+        // List<Placemark> _placemark =
+        // await MapProvider.getAddressFromLatLongGPS(
+        //     onTabLatLng.latitude, onTabLatLng.longitude);
+        _streamController.sink.add(MapBlocState.loadedLatLngAndAddressFromOnTab(
+            onTabLatLng, addressesInOnTab));
       },
     );
   }

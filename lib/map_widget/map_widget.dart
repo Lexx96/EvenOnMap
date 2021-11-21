@@ -19,18 +19,14 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-
   late GoogleMapBloc _bloc;
   late GoogleMapController _googleMapController;
   late LatLng _myPosition;
   Set<Marker> _setUserMarkers = {};
   Set<Marker> _setOnTabMarkers = {};
+  Set<Marker> _setNewsAddUserPosition = {};
   Iterable _setAllNewsMarkers = [];
-  late List<Placemark> _placemark;
-
-
-  // LatLng latLngListNews = LatLng(0.0, 0.0);
-  // String descriptionListNews = '';
+  late Address _address;
 
   @override
   void initState() {
@@ -38,7 +34,6 @@ class _MapWidgetState extends State<MapWidget> {
     GoogleMapController _googleMapController;
     _bloc = GoogleMapBloc();
     _bloc.getLatLngAndAddressUserPosition();
-    // _bloc.getAllNews();
     _getNewsFromServer();
   }
 
@@ -51,36 +46,38 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: StreamBuilder(
         stream: _bloc.streamMapController,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return _bodyMapWidget(context, snapshot);
+          return _bodyMapWidget(context, snapshot, _googleMapController);
         },
       ),
     );
   }
 
   /// Тело страницы
-  Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
+  Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot, GoogleMapController googleMapController) {
+
 
     // _choiceTheme();  // из за него ошибка
 
-    if (snapshot.data is LoadedLatLngAndAddressState) {
-      final _data = snapshot.data as LoadedLatLngAndAddressState;
-      _myPosition = LatLng(_data.position.latitude, _data.position.longitude);
-      _placemark = _data.placemark;
-      _getMyMarker(_myPosition, _placemark);
+    if (snapshot.data is LoadedAddressFromUserPositionState) {
+      final _data = snapshot.data as LoadedAddressFromUserPositionState;
+      _myPosition = _data.latLngUserPosition;
+      _address = _data.addressUserPosition;
+      _getMyMarker(_myPosition, _address);
     } else {
-      _placemark = [];
+      _address = [] as Address;
       _myPosition = LatLng(0.0, 0.0);
     }
 
-    if (snapshot.data is LoadedAddressFromCoordinatesState) {
-      final _data = snapshot.data as LoadedAddressFromCoordinatesState;
-      final _address = _data.addresses;
+    if (snapshot.data is LoadedLatLngAndAddressFromOnTabState) {
+      final _data = snapshot.data as LoadedLatLngAndAddressFromOnTabState;
+      final _onTabAddress = _data.onTabAddress;
       final _onTabLatLng = _data.onTabLatLng;
-      _onTabMarker(_address, _onTabLatLng);
+      _onTabMarker(_onTabAddress, _onTabLatLng);
     }
 
     if (snapshot.data is GetMapThemeState) {
@@ -104,20 +101,17 @@ class _MapWidgetState extends State<MapWidget> {
     // }
 
     return Scaffold(
-      body: Stack(
-        children: [
-          GoogleMap(
-            mapToolbarEnabled: false,
-            zoomControlsEnabled: false,
-            onMapCreated: _onMapCreated,
-            markers: Set.from(_setAllNewsMarkers),
-            initialCameraPosition: CameraPosition(
-              target: _myPosition,
-              zoom: 16,
-            ),
-            onTap: (LatLng _onTabLatLng) => _bloc.getAddressOnTab(_onTabLatLng), // получение LatLng по нажатию на карту
-          ),
-        ],
+      body: GoogleMap(
+        mapToolbarEnabled: false,
+        zoomControlsEnabled: false,
+        onMapCreated: (GoogleMapController googleMapController) {
+        _onMapCreated(googleMapController);} ,
+        markers: _setNewsAddUserPosition,
+        initialCameraPosition: CameraPosition(
+          target: _myPosition,
+          zoom: 16,
+        ),
+        onTap: (LatLng _onTabLatLng) => _bloc.getAddressOnTab(_onTabLatLng),
       ),
       floatingActionButton: Stack(
         children: [
@@ -156,14 +150,18 @@ class _MapWidgetState extends State<MapWidget> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                        MainNavigationRouteName.createAnEventWidget, (route) => false),
-                    child:
-                    Text('Создать событие', style: TextStyle(fontSize: 18),),
+                    onPressed: () => Navigator.of(context)
+                        .pushNamedAndRemoveUntil(
+                            MainNavigationRouteName.createAnEventWidget,
+                            (route) => false),
+                    child: Text(
+                      'Создать событие',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
@@ -178,84 +176,19 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   /// Создание маркера при получении местоположения пользователя
-  void _getMyMarker(LatLng _myPosition, List<Placemark> placemark) {
+  void _getMyMarker(LatLng _myPosition, Address address) {
     final _userMarker = Marker(
       markerId: MarkerId(''),
       infoWindow: InfoWindow(
-          title: '${placemark.first.street} ${placemark.first.subThoroughfare}', // Название, не сохраняется адресс
-          snippet: 'Здарова'), // Тело
+          title: '${address.thoroughfare} ${address.subThoroughfare}', // Название, не сохраняется адресс
+          snippet: 'Мое местоположение'), // Тело
       position: _myPosition,
       icon: BitmapDescriptor.defaultMarkerWithHue(
           BitmapDescriptor.hueGreen), // изминение маркера
     );
-    _setUserMarkers = MapProvider.refreshSetProvider(set: _setUserMarkers, marker: _userMarker);
+    _setUserMarkers = MapProvider.refreshSetProvider(
+        set: _setUserMarkers, marker: _userMarker);
     _onMapCreated(_googleMapController);
-  }
-
-  /// Создание маркера по нажатию на карту
-  void _onTabMarker(Address address, LatLng _onTabLatLng) async {
-    final _onTabMarker = Marker(
-      markerId: MarkerId(''),
-      infoWindow: InfoWindow(
-          title: '${address.thoroughfare} ${address.subThoroughfare}', // Название
-          snippet: 'Создать событие'), // Тело
-      position: _onTabLatLng,
-    );
-    _setOnTabMarkers =  MapProvider.refreshSetProvider(set: _setOnTabMarkers, marker: _onTabMarker);
-  }
-
-  /// Создание маркера из списка новостей
-  void _getNewsFromServer () async {
-
-    List<GetNewsFromServerModel> allNews = await _bloc.getAllNews();
-
-    for (int i = 0; i < allNews.length; i++) {
-      Address addressFrom = await _bloc.getAllAddress(
-          LatLng(allNews[i].lat, allNews[i].lng));
-
-      Iterable _markers = Iterable.generate(allNews.length, (index) {
-        return Marker(
-          markerId: MarkerId("marker$index"),
-          infoWindow: InfoWindow(
-              title: '${addressFrom.thoroughfare} ${addressFrom.subThoroughfare}',  // приходит null. Хотя адреса в переменной есть
-              snippet: allNews[index].title),
-          position: LatLng(allNews[index].lat, allNews[index].lng),
-        );
-      });
-      print(addressFrom.thoroughfare);
-      print(addressFrom.subThoroughfare);
-
-      setState(() {
-        _setAllNewsMarkers = _markers;
-      });
-    }
-
-
-  }
-
-  /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
-  Future<void> _choiceTheme() async {
-
-    final savedThemeMode = await AdaptiveTheme.getThemeMode();
-
-    if (AdaptiveThemeMode.system.isDark) {
-    _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
-    }
-    else if (AdaptiveThemeMode.system.isLight) {
-    _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
-    }
-
-    else if (savedThemeMode == AdaptiveThemeMode.light) {
-      _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
-    }
-    else if (savedThemeMode == AdaptiveThemeMode.dark) {
-      _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
-    }
-  }
-
-  /// Смена темы карты
-  void _mapDarkTheme (String mapStyle) {
-    _googleMapController.setMapStyle(mapStyle);
   }
 
   /// Возвращает камеру на место положение пользователя
@@ -270,4 +203,69 @@ class _MapWidgetState extends State<MapWidget> {
     }
   }
 
+  /// Создание маркера по нажатию на карту
+  void _onTabMarker(Address _onTabAddress, LatLng _onTabLatLng) async {
+    final _onTabMarker = Marker(
+      markerId: MarkerId(''),
+      infoWindow: InfoWindow(
+          title: '${_onTabAddress.thoroughfare} ${_onTabAddress.subThoroughfare}',
+          // Название
+          snippet: 'Создать событие'), // Тело
+      position: _onTabLatLng,
+    );
+    _setOnTabMarkers = MapProvider.refreshSetProvider(
+        set: _setOnTabMarkers, marker: _onTabMarker);
+  }
+
+  /// Создание маркера из списка новостей
+  void _getNewsFromServer() async {
+    List<GetNewsFromServerModel> allNews = await _bloc.getAllNews();
+
+    for (int i = 0; i < allNews.length; i++) {
+      Address addressFrom =
+          await _bloc.getAllAddress(LatLng(allNews[i].lat, allNews[i].lng));
+
+      Iterable _markers = Iterable.generate(
+        allNews.length,
+        (index) {
+          return Marker(
+            markerId: MarkerId("marker$index"),
+            infoWindow: InfoWindow(
+                title:
+                    '${addressFrom.thoroughfare} ${addressFrom.subThoroughfare}', // приходит null. Хотя адреса в переменной есть
+                snippet: allNews[index].title),
+            position: LatLng(allNews[index].lat, allNews[index].lng),
+          );
+        },
+      );
+
+      setState(() {
+        _setAllNewsMarkers = _markers;
+        _setNewsAddUserPosition = Set.from(_setAllNewsMarkers).cast<Marker>();
+        _setNewsAddUserPosition.add(_setUserMarkers.first);
+        _setNewsAddUserPosition.add(_setOnTabMarkers.last); // появляется маркер с запозданием
+      });
+
+    }
+  }
+
+  /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
+  Future<void> _choiceTheme() async {
+    final savedThemeMode = await AdaptiveTheme.getThemeMode();
+
+    if (AdaptiveThemeMode.system.isDark) {
+      _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
+    } else if (AdaptiveThemeMode.system.isLight) {
+      _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
+    } else if (savedThemeMode == AdaptiveThemeMode.light) {
+      _bloc.changeMapMode('assets/map_dark_theme/light_theme.json');
+    } else if (savedThemeMode == AdaptiveThemeMode.dark) {
+      _bloc.changeMapMode('assets/map_dark_theme/dark_theme.json');
+    }
+  }
+
+  /// Смена темы карты
+  void _mapDarkTheme(String mapStyle) {
+    _googleMapController.setMapStyle(mapStyle);
+  }
 }
