@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc.dart';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc_state.dart';
@@ -319,7 +321,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   _CreateEventMapWidgetState(this.bloc);
 
   late CreateEventMapBloc _createEventMapBloc;
-  late GoogleMapController _googleMapController;
+  Completer<GoogleMapController> _controller = Completer();
   late LatLng _myPosition = LatLng(0.0, 0.0);
   Set<Marker> _setUserMarkers = {};
   final ButtonStyle buttonStyle = ButtonStyle(
@@ -352,7 +354,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   void dispose() {
     super.dispose();
     _createEventMapBloc.dispose();
-    _googleMapController.dispose();
   }
 
   @override
@@ -387,7 +388,9 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
         GoogleMap(
             mapToolbarEnabled: false,
             zoomControlsEnabled: false,
-            onMapCreated: _onMapCreated,
+            onMapCreated: (GoogleMapController controller){
+              _controller.complete(controller);
+              _onMapCreated();},
             markers: _setUserMarkers,
             initialCameraPosition: CameraPosition(
               target: _myPosition,
@@ -445,8 +448,9 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   }
 
   /// Смена темы карты
-  void _mapDarkTheme (String mapStyle) {
-    _googleMapController.setMapStyle(mapStyle);
+  Future<void> _mapDarkTheme (String mapStyle) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.setMapStyle(mapStyle);
   }
 
   /// Вывод на экран выбранного адреса
@@ -534,22 +538,21 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
       markerId: MarkerId(''),
       infoWindow: InfoWindow(
           title: '${placemark.first.street} ${placemark.first.subThoroughfare}',
-          // Название, не сохраняется адресс
           snippet: 'Выбор адреса для события'), // Тело
       position: _myPosition,
       icon: BitmapDescriptor.defaultMarkerWithHue(
-          BitmapDescriptor.hueGreen), // изминение маркера
+          BitmapDescriptor.hueGreen),
     );
     _setUserMarkers = MapProvider.refreshSetProvider(
         set: _setUserMarkers, marker: _userMarker);
-    _onMapCreated(_googleMapController);
+    _onMapCreated();
   }
 
   /// Возвращает камеру на место положение пользователя
-  void _onMapCreated(GoogleMapController controller) {
-    _googleMapController = controller;
+  Future<void> _onMapCreated() async {
+    final GoogleMapController controller = await _controller.future;
     if (_myPosition != LatLng(0.0, 0.0)) {
-      _googleMapController.animateCamera(
+      controller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(target: _myPosition, zoom: 16),
         ),

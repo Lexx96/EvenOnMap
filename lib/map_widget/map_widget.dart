@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/news_page/models/news.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geocoder/geocoder.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../custom_icons_icons.dart';
 import 'bloc/map_bloc.dart';
@@ -18,9 +19,17 @@ class MapWidget extends StatefulWidget {
   _MapWidgetState createState() => _MapWidgetState();
 }
 
+/*
+ появляется маркер с запозданием
+ проблема с темой карты
+ убрать сетстейт
+ на всех новостях один адресс
+ сделать маркер больше и над другими маркерами
+ */
+
 class _MapWidgetState extends State<MapWidget> {
   late GoogleMapBloc _bloc;
-  late GoogleMapController _googleMapController;
+  Completer<GoogleMapController> _controller = Completer();
   late LatLng _myPosition;
   Set<Marker> _setUserMarkers = {};
   Set<Marker> _setOnTabMarkers = {};
@@ -31,7 +40,6 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   void initState() {
     super.initState();
-    GoogleMapController _googleMapController;
     _bloc = GoogleMapBloc();
     _bloc.getLatLngAndAddressUserPosition();
     _getNewsFromServer();
@@ -41,7 +49,6 @@ class _MapWidgetState extends State<MapWidget> {
   void dispose() {
     super.dispose();
     _bloc.dispose();
-    _googleMapController.dispose();
   }
 
   @override
@@ -51,15 +58,14 @@ class _MapWidgetState extends State<MapWidget> {
       body: StreamBuilder(
         stream: _bloc.streamMapController,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return _bodyMapWidget(context, snapshot, _googleMapController);
+          return _bodyMapWidget(context, snapshot);
         },
       ),
     );
   }
 
   /// Тело страницы
-  Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot, GoogleMapController googleMapController) {
-
+  Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
 
     // _choiceTheme();  // из за него ошибка
 
@@ -69,15 +75,8 @@ class _MapWidgetState extends State<MapWidget> {
       _address = _data.addressUserPosition;
       _getMyMarker(_myPosition, _address);
     } else {
-      _address = [] as Address;
+      _address = Address(coordinates: Coordinates(0.0, 0.0));
       _myPosition = LatLng(0.0, 0.0);
-    }
-
-    if (snapshot.data is LoadedLatLngAndAddressFromOnTabState) {
-      final _data = snapshot.data as LoadedLatLngAndAddressFromOnTabState;
-      final _onTabAddress = _data.onTabAddress;
-      final _onTabLatLng = _data.onTabLatLng;
-      _onTabMarker(_onTabAddress, _onTabLatLng);
     }
 
     if (snapshot.data is GetMapThemeState) {
@@ -86,32 +85,19 @@ class _MapWidgetState extends State<MapWidget> {
       _mapDarkTheme(_mapStyle);
     }
 
-    // if (snapshot.data is AllNewsLoadedState) {
-    //   final _data = snapshot.data as AllNewsLoadedState;
-    //   final List<GetNewsFromServerModel> newsFromServerModel = _data.newsFromServer;
-    //
-    //   for (int i = 0; i < newsFromServerModel.length; i++) {
-    //     final LatLng latLng = LatLng(newsFromServerModel[i].lat, newsFromServerModel[i].lng);
-    //     final String description = newsFromServerModel[i].description;
-    //     final String title = newsFromServerModel[i].title;
-    //     // _bloc.getAllAddress(latLng).then((addressFrom) =>
-    //     //     _allNewsMarkers(address: addressFrom, latLngFromNews: latLng, description: description, title: title)
-    //     // );
-    //   }
-    // }
-
     return Scaffold(
       body: GoogleMap(
         mapToolbarEnabled: false,
         zoomControlsEnabled: false,
-        onMapCreated: (GoogleMapController googleMapController) {
-        _onMapCreated(googleMapController);} ,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        _onMapCreated();
+        } ,
         markers: _setNewsAddUserPosition,
         initialCameraPosition: CameraPosition(
           target: _myPosition,
           zoom: 16,
         ),
-        onTap: (LatLng _onTabLatLng) => _bloc.getAddressOnTab(_onTabLatLng),
       ),
       floatingActionButton: Stack(
         children: [
@@ -188,14 +174,14 @@ class _MapWidgetState extends State<MapWidget> {
     );
     _setUserMarkers = MapProvider.refreshSetProvider(
         set: _setUserMarkers, marker: _userMarker);
-    _onMapCreated(_googleMapController);
+    _onMapCreated();
   }
 
   /// Возвращает камеру на место положение пользователя
-  void _onMapCreated(GoogleMapController controller) {
-    _googleMapController = controller;
+  Future<void> _onMapCreated() async {
+    final GoogleMapController controller = await _controller.future;
     if (_myPosition != LatLng(0.0, 0.0)) {
-      _googleMapController.animateCamera(
+      controller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(target: _myPosition, zoom: 16),
         ),
@@ -203,31 +189,21 @@ class _MapWidgetState extends State<MapWidget> {
     }
   }
 
-  /// Создание маркера по нажатию на карту
-  void _onTabMarker(Address _onTabAddress, LatLng _onTabLatLng) async {
-    final _onTabMarker = Marker(
-      markerId: MarkerId(''),
-      infoWindow: InfoWindow(
-          title: '${_onTabAddress.thoroughfare} ${_onTabAddress.subThoroughfare}',
-          // Название
-          snippet: 'Создать событие'), // Тело
-      position: _onTabLatLng,
-    );
-    _setOnTabMarkers = MapProvider.refreshSetProvider(
-        set: _setOnTabMarkers, marker: _onTabMarker);
-  }
-
   /// Создание маркера из списка новостей
   void _getNewsFromServer() async {
     List<GetNewsFromServerModel> allNews = await _bloc.getAllNews();
 
-    for (int i = 0; i < allNews.length; i++) {
+    for (int i = 0; i <= allNews.length; i++) {
       Address addressFrom =
           await _bloc.getAllAddress(LatLng(allNews[i].lat, allNews[i].lng));
+      print('111111111111111111111111111111');
+      print(allNews[i].title);
+      print(addressFrom.thoroughfare);
 
       Iterable _markers = Iterable.generate(
         allNews.length,
         (index) {
+          print(index);
           return Marker(
             markerId: MarkerId("marker$index"),
             infoWindow: InfoWindow(
@@ -243,9 +219,8 @@ class _MapWidgetState extends State<MapWidget> {
         _setAllNewsMarkers = _markers;
         _setNewsAddUserPosition = Set.from(_setAllNewsMarkers).cast<Marker>();
         _setNewsAddUserPosition.add(_setUserMarkers.first);
-        _setNewsAddUserPosition.add(_setOnTabMarkers.last); // появляется маркер с запозданием
+        _setNewsAddUserPosition.add(_setOnTabMarkers.last); // просто пустой сет, т.к. появляется маркер с запозданием и последний маркер(пользователя не видно)
       });
-
     }
   }
 
@@ -265,7 +240,8 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   /// Смена темы карты
-  void _mapDarkTheme(String mapStyle) {
-    _googleMapController.setMapStyle(mapStyle);
+  Future<void> _mapDarkTheme(String mapStyle) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.setMapStyle(mapStyle);
   }
 }

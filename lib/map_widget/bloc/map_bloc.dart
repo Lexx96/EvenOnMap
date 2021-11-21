@@ -29,26 +29,12 @@ class GoogleMapBloc {
     );
   }
 
-  /// Определение адреса по LatLng [package:geocoder]
-  void getAddressOnTab(LatLng onTabLatLng) async {
-    await MapProvider.getAddressFromCoordinates(onTabLatLng).then(
-          (addressesInOnTab) async {
-        // List<Placemark> _placemark =
-        // await MapProvider.getAddressFromLatLongGPS(
-        //     onTabLatLng.latitude, onTabLatLng.longitude);
-        _streamController.sink.add(MapBlocState.loadedLatLngAndAddressFromOnTab(
-            onTabLatLng, addressesInOnTab));
-      },
-    );
-  }
-
   /// Изминение темы карты на темную
   void changeMapMode(String path) async {
     return await MapRepository.getJsonFile(path).then((mapStyle) {
       _streamController.sink.add(MapBlocState.getMapThemeState(mapStyle));
     },);
   }
-
 
   // перенести из блока тк не управляют состоянием
   /// Получение всех новостей с сервера
