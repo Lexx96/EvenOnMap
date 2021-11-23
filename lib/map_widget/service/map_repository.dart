@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_geocoder/geocoder.dart';
 import 'package:flutter_geocoder/model.dart';
@@ -35,6 +36,30 @@ class MapRepository {
           await Geocoder.local.findAddressesFromCoordinates(coordinatesOnTab);
       return addresses;
     } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  /// Получение информации о ранее выбранной теме и назначение новой темы
+  static Future<String> choiceMapTheme() async {
+    try{
+
+      final savedThemeMode = await AdaptiveTheme.getThemeMode();
+
+      String themeMap = '';
+
+      if (AdaptiveThemeMode.system.isDark) {
+         themeMap = 'assets/map_dark_theme/dark_theme.json';
+      } else if (AdaptiveThemeMode.system.isLight) {
+         themeMap = 'assets/map_dark_theme/light_theme.json';
+      } else if (savedThemeMode == AdaptiveThemeMode.light) {
+         themeMap = 'assets/map_dark_theme/light_theme.json';
+      } else if (savedThemeMode == AdaptiveThemeMode.dark) {
+         themeMap = 'assets/map_dark_theme/dark_theme.json';
+      }
+      return await rootBundle.loadString(themeMap);
+
+    }catch(e){
       throw Exception(e);
     }
   }

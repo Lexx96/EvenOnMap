@@ -1,12 +1,8 @@
 import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
-import 'package:event_on_map/news_page/models/news.dart';
-import 'package:event_on_map/news_page/services/news_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_geocoder/geocoder.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../custom_icons_icons.dart';
 import 'bloc/map_bloc.dart';
@@ -38,7 +34,7 @@ class _MapWidgetState extends State<MapWidget> {
     _bloc = GoogleMapBloc();
     _bloc.getLatLngAndAddressUserPositionBloc(_controller);
     _bloc.getAllNewsFromServerBloc();
-    _choiceTheme();
+    MapProvider.choiceMapTheme(_controller);
   }
 
   @override
@@ -150,24 +146,5 @@ class _MapWidgetState extends State<MapWidget> {
         ],
       ),
     );
-  }
-
-  /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
-  Future<void> _choiceTheme() async {
-    final savedThemeMode = await AdaptiveTheme.getThemeMode();
-
-    String themeMap = 'assets/map_dark_theme/dark_theme.json';
-    // if (AdaptiveThemeMode.system.isDark) {
-    //    themeMap = 'assets/map_dark_theme/dark_theme.json';
-    // } else if (AdaptiveThemeMode.system.isLight) {
-    //   themeMap = 'assets/map_dark_theme/light_theme.json';
-    // } else if (savedThemeMode == AdaptiveThemeMode.light) {
-    //   themeMap = 'assets/map_dark_theme/light_theme.json';
-    // } else if (savedThemeMode == AdaptiveThemeMode.dark) {
-    //   themeMap = 'assets/map_dark_theme/dark_theme.json';
-    // }
-
-    final GoogleMapController controller = await _controller.future;
-    controller.setMapStyle(themeMap);
   }
 }

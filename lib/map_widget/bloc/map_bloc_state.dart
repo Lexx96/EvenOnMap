@@ -1,5 +1,4 @@
 import 'package:event_on_map/news_page/models/news.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapBlocState {

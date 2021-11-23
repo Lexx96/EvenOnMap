@@ -95,14 +95,11 @@ class MapProvider {
 
   /// Создание маркера при получении местоположения пользователя
   static Future<Set<Marker>> getMyMarkerProvider() async {
-
     try{
       Position getPositionUserFromGPS = await determinePosition();
-
       List<Placemark> _placemark = await getAddressFromLatLongGPS(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
       LatLng _myPosition = LatLng(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
       Set<Marker> _setUserMarker = {};
-
       final _userMarker = Marker(
         markerId: MarkerId(''),
         infoWindow: InfoWindow(
@@ -116,18 +113,16 @@ class MapProvider {
       );
       _setUserMarker.add(_userMarker);
       return _setUserMarker;
-    }catch(e){
+    } catch(e){
       throw Exception(e);
     }
   }
 
   /// Возвращает камеру на место положение пользователя
   static Future<void> onMapCreatedProvider(Completer<GoogleMapController> _controller) async {
-
     try{
       Position getPositionUserFromGPS = await determinePosition();
       LatLng _myPosition = LatLng(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
-
       final GoogleMapController controller = await _controller.future;
       if (_myPosition != LatLng(0.0, 0.0)) {
         controller.animateCamera(
@@ -139,5 +134,13 @@ class MapProvider {
     }catch(e){
       throw Exception(e);
     }
+  }
+
+  /// Смена темы карты
+  static Future<void> choiceMapTheme(Completer<GoogleMapController> _controller) async {
+    MapRepository.choiceMapTheme().then((mapStyle) async {
+      final GoogleMapController controller = await _controller.future;
+      controller.setMapStyle(mapStyle);
+    });
   }
 }
