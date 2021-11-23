@@ -31,14 +31,13 @@ class _MapWidgetState extends State<MapWidget> {
   late LatLng _myPosition;
   Set<Marker> _setUserMarker = {};
   Set<Marker> _setNewsAddUserPosition = {};
-  late List<Placemark> _placemark; // аж 5 адресов, выбрать нужный
 
   @override
   void initState() {
     super.initState();
     _bloc = GoogleMapBloc();
-    _bloc.getLatLngAndAddressUserPosition();
-    _bloc.getAllNewsFromServer();
+    _bloc.getLatLngAndAddressUserPositionBloc(_controller);
+    _bloc.getAllNewsFromServerBloc();
     _choiceTheme();
   }
 
@@ -63,15 +62,10 @@ class _MapWidgetState extends State<MapWidget> {
   /// Тело страницы
   Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
 
-
-
     if (snapshot.data is LoadedAddressFromUserPositionState) {
       final _data = snapshot.data as LoadedAddressFromUserPositionState;
-      _myPosition = _data.latLngUserPosition;
-      _placemark = _data.placemark;
-      _getMyMarker(_myPosition, _placemark);
+      _setUserMarker.add(_data.setUserMarker.first);
     } else {
-      List<Placemark> _placemark = [Placemark()];
       _myPosition = LatLng(0.0, 0.0);
     }
 
@@ -79,7 +73,6 @@ class _MapWidgetState extends State<MapWidget> {
       final _data = snapshot.data as GetAllNewsFromServerState;
       Set<Marker> _newsMarkers = _data.markers;
       _newsMarkers.add(_setUserMarker.first);
-      print(_newsMarkers);
       _setNewsAddUserPosition = _newsMarkers;
     }
 
@@ -87,9 +80,9 @@ class _MapWidgetState extends State<MapWidget> {
       body: GoogleMap(
         mapToolbarEnabled: false,
         zoomControlsEnabled: false,
-        onMapCreated: (GoogleMapController controller) {
+        onMapCreated: (GoogleMapController controller) async {
           _controller.complete(controller);
-          _onMapCreated();
+          await MapProvider.onMapCreatedProvider(_controller);
         },
         markers: _setNewsAddUserPosition,
         initialCameraPosition: CameraPosition(
@@ -109,7 +102,7 @@ class _MapWidgetState extends State<MapWidget> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => _bloc.getLatLngAndAddressUserPosition(),
+                    onPressed: () => _bloc.getLatLngAndAddressUserPositionBloc(_controller),
                     child: const Icon(
                       CustomIcons.map_marker,
                       size: 30,
@@ -157,36 +150,6 @@ class _MapWidgetState extends State<MapWidget> {
         ],
       ),
     );
-  }
-
-  /// Создание маркера при получении местоположения пользователя
-  void _getMyMarker(LatLng _myPosition, List<Placemark> _placemark) {
-    final _userMarker = Marker(
-      markerId: MarkerId(''),
-      infoWindow: InfoWindow(
-          title: _placemark.first.locality != null
-              ? '${_placemark.first.street} ${_placemark.first.subThoroughfare}'
-              : 'Адрес не определен',
-          snippet: 'Мое местоположение'), // Тело
-      position: _myPosition,
-      icon: BitmapDescriptor.defaultMarkerWithHue(
-          BitmapDescriptor.hueGreen), // изминение маркера
-    );
-    _setUserMarker = MapProvider.refreshSetProvider(
-        set: _setUserMarker, marker: _userMarker);
-    _onMapCreated();
-  }
-
-  /// Возвращает камеру на место положение пользователя
-  Future<void> _onMapCreated() async {
-    final GoogleMapController controller = await _controller.future;
-    if (_myPosition != LatLng(0.0, 0.0)) {
-      controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: _myPosition, zoom: 16),
-        ),
-      );
-    }
   }
 
   /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc

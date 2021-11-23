@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapBlocState {
   MapBlocState();
   factory MapBlocState.emptyLatLng() = EmptyGoogleMapState;
-  factory MapBlocState.loadedAddressFromCoordinates(List<Placemark> placemark, LatLng latLngUserPosition) = LoadedAddressFromUserPositionState;
+  factory MapBlocState.loadedAddressFromUserPositionState(Set<Marker> setUserMarker) = LoadedAddressFromUserPositionState;
   factory MapBlocState.getAllNewsFromServerState({required Set<Marker> markers,  required List<GetNewsFromServerModel> listAllNews}) = GetAllNewsFromServerState;
 }
 
@@ -14,9 +14,8 @@ class EmptyGoogleMapState extends MapBlocState {}
 class EmptyOnTabForCreateEventState extends MapBlocState {}
 
 class LoadedAddressFromUserPositionState extends MapBlocState {
-  LatLng latLngUserPosition;
-  List<Placemark> placemark;
-  LoadedAddressFromUserPositionState(this.placemark, this.latLngUserPosition);
+  Set<Marker> setUserMarker;
+  LoadedAddressFromUserPositionState(this.setUserMarker);
 }
 
 class GetAllNewsFromServerState extends MapBlocState{

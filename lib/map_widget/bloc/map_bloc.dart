@@ -15,38 +15,29 @@ class GoogleMapBloc {
   Stream<MapBlocState> get streamMapController => _streamController.stream;
 
   /// Получение LatLng и адресса местоположения пользователя
-  void getLatLngAndAddressUserPosition() async {
+  void getLatLngAndAddressUserPositionBloc(Completer<GoogleMapController> controller) async {
     _streamController.sink.add(MapBlocState.emptyLatLng());
-    await MapProvider.determinePosition().then(
-          (getPositionFromGPS) async {
-        List<Placemark> _placemark =
-        await MapProvider.getAddressFromLatLongGPS(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
-        LatLng position = LatLng(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
-        _streamController.sink.add(MapBlocState.loadedAddressFromCoordinates(
-            _placemark, position));
-      },
-    );
+    try {
+    Set<Marker> setUserMarker = await MapProvider.getMyMarkerProvider();
+    await MapProvider.onMapCreatedProvider(controller);
+    _streamController.sink.add(MapBlocState.loadedAddressFromUserPositionState(setUserMarker));
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
-
-  void getAllNewsFromServer () async {
-    List<GetNewsFromServerModel> listAllNews = await NewsProvider().getAllNewsFromServer();
-    Set<Marker> newsMarkers = {};
-
-    for (int i = 0; i < listAllNews.length; i++) {
-        if (listAllNews.asMap().containsKey(i)) {
-          Address thisAddress = await MapProvider.getAddressFromCoordinates(LatLng(listAllNews[i].lat, listAllNews[i].lng));
-          Marker _marker = Marker(
-            markerId: MarkerId('${listAllNews[i].id}'),
-            infoWindow: InfoWindow(
-                title: thisAddress.subThoroughfare != null ? '${thisAddress.thoroughfare} ${thisAddress.subThoroughfare}' : '${thisAddress.thoroughfare} ',
-                snippet: listAllNews[i].title),
-            position: LatLng(listAllNews[i].lat, listAllNews[i].lng),
-          );
-          newsMarkers.add(_marker);
-        }
+  /// Получение новостей с сервера и создание маркеров новостей
+  void getAllNewsFromServerBloc() async {
+    try {
+      List<GetNewsFromServerModel> listAllNews =
+          await NewsProvider().getAllNewsFromServer();
+      MapProvider.getAllNewsFromServerProvider().then((newsMarkers) {
+        _streamController.sink.add(MapBlocState.getAllNewsFromServerState(
+            markers: newsMarkers, listAllNews: listAllNews));
+      });
+    } catch (e) {
+      throw Exception(e);
     }
-    _streamController.sink.add(MapBlocState.getAllNewsFromServerState(markers: newsMarkers, listAllNews: listAllNews));
   }
 
   void dispose() {
