@@ -167,8 +167,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     );
   }
 
-
-
   /// Вывод адреса события
   Padding _showAddress(BuildContext context, List<Placemark> _placemark) {
     return Padding(
@@ -347,7 +345,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     super.initState();
     _createEventMapBloc = CreateEventMapBloc();
     _createEventMapBloc.createEventGetLatLngAndAddressUserPosition();
-    GoogleMapController _googleMapController;
   }
 
   @override

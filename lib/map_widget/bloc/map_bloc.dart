@@ -19,35 +19,37 @@ class GoogleMapBloc {
     _streamController.sink.add(MapBlocState.emptyLatLng());
     await MapProvider.determinePosition().then(
           (getPositionFromGPS) async {
-            LatLng latLngPosition = LatLng(
-                getPositionFromGPS.latitude, getPositionFromGPS.longitude);
-        Address addressUserPosition =
-        await MapProvider.getAddressFromCoordinates(latLngPosition);
+        List<Placemark> _placemark =
+        await MapProvider.getAddressFromLatLongGPS(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
+        LatLng position = LatLng(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
         _streamController.sink.add(MapBlocState.loadedAddressFromCoordinates(
-            addressUserPosition, latLngPosition));
+            _placemark, position));
       },
     );
   }
 
-  /// Изминение темы карты на темную
-  void changeMapMode(String path) async {
-    return await MapRepository.getJsonFile(path).then((mapStyle) {
-      _streamController.sink.add(MapBlocState.getMapThemeState(mapStyle));
-    },);
+
+  void getAllNewsFromServer () async {
+    List<GetNewsFromServerModel> listAllNews = await NewsProvider().getAllNewsFromServer();
+    Set<Marker> newsMarkers = {};
+
+    for (int i = 0; i < listAllNews.length; i++) {
+        if (listAllNews.asMap().containsKey(i)) {
+          Address thisAddress = await MapProvider.getAddressFromCoordinates(LatLng(listAllNews[i].lat, listAllNews[i].lng));
+          Marker _marker = Marker(
+            markerId: MarkerId('${listAllNews[i].id}'),
+            infoWindow: InfoWindow(
+                title: thisAddress.subThoroughfare != null ? '${thisAddress.thoroughfare} ${thisAddress.subThoroughfare}' : '${thisAddress.thoroughfare} ',
+                snippet: listAllNews[i].title),
+            position: LatLng(listAllNews[i].lat, listAllNews[i].lng),
+          );
+          newsMarkers.add(_marker);
+        }
+    }
+    _streamController.sink.add(MapBlocState.getAllNewsFromServerState(markers: newsMarkers, listAllNews: listAllNews));
   }
 
-  // перенести из блока тк не управляют состоянием
-  /// Получение всех новостей с сервера
-  Future<List<GetNewsFromServerModel>> getAllNews() async{
-    List<GetNewsFromServerModel> jsonNewsModel =  await NewsProvider().getAllNewsFromServer();
-    return jsonNewsModel;
+  void dispose() {
+    _streamController.close();
   }
-
-  /// Получение адресов по LatLng для вывода маркеров новостей на карту
-  Future <Address> getAllAddress (LatLng latLng) async {
-    return await MapProvider.getAddressFromCoordinates(latLng);
-  }
-
-void dispose() {
-  _streamController.close();
-}}
+}

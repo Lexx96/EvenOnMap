@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'create_event_repository.dart';
 
 class PostNewEventProvider {
+
   /// Размещение нового события на сервер
   Future<NewEventModel> postNewEvent({
     String? title,
@@ -29,6 +30,7 @@ class PostNewEventProvider {
         final newJSonModelList =
             jsonDecode(response.body) as Map<String, dynamic>;
         final newJSonModel = NewEventModel.fromJson(newJSonModelList);
+
         return newJSonModel;
       } catch (error) {
         print('Ошибка запроса на размещение события $error');
