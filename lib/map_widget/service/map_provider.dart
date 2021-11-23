@@ -138,9 +138,13 @@ class MapProvider {
 
   /// Смена темы карты
   static Future<void> choiceMapTheme(Completer<GoogleMapController> _controller) async {
-    MapRepository.choiceMapTheme().then((mapStyle) async {
-      final GoogleMapController controller = await _controller.future;
-      controller.setMapStyle(mapStyle);
-    });
+    try{
+      MapRepository.choiceMapTheme().then((mapStyle) async {
+        final GoogleMapController controller = await _controller.future;
+        controller.setMapStyle(mapStyle);
+      });
+    }catch(e){
+      throw Exception(e);
+    }
   }
 }

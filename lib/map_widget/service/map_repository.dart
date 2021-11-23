@@ -43,11 +43,8 @@ class MapRepository {
   /// Получение информации о ранее выбранной теме и назначение новой темы
   static Future<String> choiceMapTheme() async {
     try{
-
       final savedThemeMode = await AdaptiveTheme.getThemeMode();
-
       String themeMap = '';
-
       if (AdaptiveThemeMode.system.isDark) {
          themeMap = 'assets/map_dark_theme/dark_theme.json';
       } else if (AdaptiveThemeMode.system.isLight) {
@@ -58,14 +55,8 @@ class MapRepository {
          themeMap = 'assets/map_dark_theme/dark_theme.json';
       }
       return await rootBundle.loadString(themeMap);
-
     }catch(e){
       throw Exception(e);
     }
-  }
-
-  /// Получение темы для карты
-  static Future<String> getJsonFile (String path) async{
-    return await rootBundle.loadString(path);
   }
 }

@@ -368,7 +368,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   /// Тело CreateEventMapWidget
   Stack _body(AsyncSnapshot snapshot, BuildContext context) {
 
-    // _choiceTheme();  // из за него не работает вывод адресса , тк все время обновляется экран
+    MapProvider.choiceMapTheme(_controller);
 
     LatLng _position = LatLng(0.0, 0.0);
     List<Placemark> _placemark = [Placemark(street: '', subThoroughfare: '')];
@@ -424,31 +424,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     );
   }
 
-  /// Получение информации о ранее выбранной теме и в зависимости от этого вызов метода bloc
-  Future<void> _choiceTheme() async {
-
-    final savedThemeMode = await AdaptiveTheme.getThemeMode();
-
-    if (AdaptiveThemeMode.system.isDark) {
-      _createEventMapBloc.changeMapModeForCreateEventMap('assets/map_dark_theme/dark_theme.json');
-    }
-    else if (AdaptiveThemeMode.system.isLight) {
-      _createEventMapBloc.changeMapModeForCreateEventMap('assets/map_dark_theme/light_theme.json');
-    }
-
-    else if (savedThemeMode == AdaptiveThemeMode.light) {
-      _createEventMapBloc.changeMapModeForCreateEventMap('assets/map_dark_theme/light_theme.json');
-    }
-    else if (savedThemeMode == AdaptiveThemeMode.dark) {
-      _createEventMapBloc.changeMapModeForCreateEventMap('assets/map_dark_theme/dark_theme.json');
-    }
-  }
-
-  /// Смена темы карты
-  Future<void> _mapDarkTheme (String mapStyle) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.setMapStyle(mapStyle);
-  }
 
   /// Вывод на экран выбранного адреса
   Column _showAddress(BuildContext context, List<Placemark> _placemark, LatLng _onTabLatLng) {

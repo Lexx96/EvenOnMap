@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ class MapWidget extends StatefulWidget {
 }
 
 /*
- проблема с темой карты
  сделать маркер больше и над другими маркерами
  */
 
@@ -34,7 +32,7 @@ class _MapWidgetState extends State<MapWidget> {
     _bloc = GoogleMapBloc();
     _bloc.getLatLngAndAddressUserPositionBloc(_controller);
     _bloc.getAllNewsFromServerBloc();
-    MapProvider.choiceMapTheme(_controller);
+
   }
 
   @override
@@ -57,6 +55,8 @@ class _MapWidgetState extends State<MapWidget> {
 
   /// Тело страницы
   Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
+
+    MapProvider.choiceMapTheme(_controller);
 
     if (snapshot.data is LoadedAddressFromUserPositionState) {
       final _data = snapshot.data as LoadedAddressFromUserPositionState;

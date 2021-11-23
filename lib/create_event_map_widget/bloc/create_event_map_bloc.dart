@@ -18,8 +18,7 @@ class CreateEventMapBloc {
   void createEventGetLatLngAndAddressUserPosition() async {
     await MapProvider.determinePosition().then(
           (getPositionFromGPS) async {
-        List<Placemark> _placemark =
-        await MapProvider.getAddressFromLatLongGPS(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
+        List<Placemark> _placemark = await MapProvider.getAddressFromLatLongGPS(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
         LatLng position = LatLng(getPositionFromGPS.latitude, getPositionFromGPS.longitude);
         _streamCreateEventController.sink.add(CreateEventMapState.loadedAddressFromCoordinatesState(
             position, _placemark));
@@ -37,13 +36,6 @@ class CreateEventMapBloc {
             onTabLatLng, _placemark));
       },
     );
-  }
-
-  /// Изминение темы карты на темную
-  void changeMapModeForCreateEventMap(String path) async {
-    return await MapRepository.getJsonFile(path).then((mapStyle) {
-      _streamCreateEventController.sink.add(CreateEventMapState.getMapThemeForCreateEventMapState(mapStyle));
-    },);
   }
 
   void dispose () {

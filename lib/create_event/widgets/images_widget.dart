@@ -41,7 +41,6 @@ class _ImagesWidgetState extends State<ImagesWidget> {
             if (snapshot.data is LoadedPickImage) {
               LoadedPickImage _data = snapshot.data as LoadedPickImage;
               final _images = _data.image;
-              print(_images == null);
               _images != null ? _selectedImages.add(_images) : _selectedImages;
             }
             return (_selectedImages.length == 0)
