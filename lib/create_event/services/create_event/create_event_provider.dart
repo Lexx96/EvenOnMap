@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
 import 'package:event_on_map/create_event/models/post_event_model.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 import 'create_event_repository.dart';
@@ -31,20 +32,11 @@ class PostNewEventProvider {
         final newJSonModelList =
             jsonDecode(response.body) as Map<String, dynamic>;
         final newJsonModel = NewEventModel.fromJson(newJSonModelList);
-
-
-
-        final String idEvent =  newJSonModelList['id'];
-
-
-
-
         return newJsonModel;
       } catch (error) {
         print('Ошибка запроса на размещение события $error');
         return newEventModel;
       }
-
       // вынести классы ошибок в отдельный файл
     } else if (response.statusCode == 400) {
       throw PostEvenErrorSendingServerException;
@@ -55,8 +47,14 @@ class PostNewEventProvider {
     }
   }
 
-  void postNewEventImages (List<File?> _images, String idEvent) {
-
+  /// Размещение изображений к событию по id события
+  static void postNewEventImages ({required List<File?> listImages, required String? idEvent}) {
+    try{
+      if (listImages.isNotEmpty) {
+        PostEventRepository.postNewEventImages(listImages: listImages, idEvent: idEvent);
+      }
+    }catch(e){
+      throw Exception(e);
+    }
   }
-
 }

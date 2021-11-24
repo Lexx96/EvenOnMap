@@ -77,10 +77,7 @@ class MapProvider {
           Marker _marker = Marker(
             markerId: MarkerId('${listAllNews[i].id}'),
             infoWindow: InfoWindow(
-                title: thisAddress.subThoroughfare != null
-                    ? '${thisAddress.thoroughfare} ${thisAddress.subThoroughfare}'
-                    : '${thisAddress.thoroughfare} ',
-                snippet: listAllNews[i].title),
+                title: titleForMarker(thisAddress)),
             position: LatLng(listAllNews[i].lat, listAllNews[i].lng),
           );
           newsMarkers.add(_marker);
@@ -92,6 +89,16 @@ class MapProvider {
     }
   }
 
+  /// Возвращает адрес для маркера новостей
+  static String? titleForMarker (Address thisAddress) {
+    String? title = '';
+    if (thisAddress.thoroughfare != null && thisAddress.subThoroughfare != null) {
+      return title = '${thisAddress.thoroughfare} ${thisAddress.subThoroughfare}';
+    }
+    else {
+      return title = '${thisAddress.addressLine}';
+    }
+  }
 
   /// Создание маркера при получении местоположения пользователя
   static Future<Set<Marker>> getMyMarkerProvider() async {

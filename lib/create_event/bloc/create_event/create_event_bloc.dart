@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:event_on_map/create_event/services/create_event/create_event_provider.dart';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
 import 'package:geocoding/geocoding.dart';
@@ -23,6 +24,7 @@ class CreateEventBloc {
     String? description,
     String? lat,
     String? lng,
+    required List<File?> listImages,
   }) async {
     _streamController.sink.add(NewEventBlocState.loadingEventState());
 
@@ -32,13 +34,9 @@ class CreateEventBloc {
       description: description,
       lat: lat,
       lng: lng,
-    )
-        .then(
+    ).then(
       (responseModelNewEvent) {
-
-        // вызов метода добавления фото
-
-
+          PostNewEventProvider.postNewEventImages(listImages: listImages, idEvent: responseModelNewEvent.id);
         _streamController.sink
             .add(NewEventBlocState.loadedEventState(responseModelNewEvent));
       },
@@ -83,8 +81,14 @@ class CreateEventBloc {
     }
   }
 
+  /// Открытие виджета с картой для выбора место события на карте
   void openGoogleMapState () {
     _streamController.add(NewEventBlocState.openGoogleMapState());
+  }
+
+  /// Получение листа изображений от ImageWidget
+  void getListImagesFromImageWidgetBloc(List<File?> _images) {
+    _streamController.add(NewEventBlocState.getListImagesFromImageWidgetBloc(_images));
   }
 
   void dispose() {

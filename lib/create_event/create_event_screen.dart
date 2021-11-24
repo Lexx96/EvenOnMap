@@ -1,15 +1,17 @@
 import 'dart:async';
-
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'dart:io';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc.dart';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc_state.dart';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import '../custom_icons_icons.dart';
-import 'widgets/images_widget.dart';
+import 'bloc/pick_image/pick_image_bloc.dart';
+import 'bloc/pick_image/pick_image_bloc_state.dart';
 import 'bloc/create_event/create_event_bloc_state.dart';
 import 'bloc/create_event/create_event_bloc.dart';
 
@@ -29,6 +31,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   List<Placemark> _placemark = [
     Placemark(street: '', subThoroughfare: ''),
   ];
+  List<File?> _listImages = [];
 
 
   @override
@@ -63,8 +66,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     if (snapshot.data is GetLatLngAndAddressState) {
       final _data = snapshot.data as GetLatLngAndAddressState;
       _placemark = _data.placemark;
-      _latLng =
-          LatLng(_data.initialLatLng.latitude, _data.initialLatLng.longitude);
+      _latLng = LatLng(_data.initialLatLng.latitude, _data.initialLatLng.longitude);
+    }
+
+    if (snapshot.data is GetListImagesFromImageWidgetState) {
+      GetListImagesFromImageWidgetState _data = snapshot.data as GetListImagesFromImageWidgetState;
+      _listImages = _data.listImages;
     }
 
     return Stack(
@@ -116,7 +123,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                 ],
               ),
             ),
-            ImagesWidget(),
+            ImagesWidget(bloc: _bloc,),
             _showAddress(context, _placemark),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 10.0),
@@ -147,7 +154,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   ),
                   TextButton(
                     child: Text('Создать'),
-                    onPressed: () => _postNewEventInServer(),
+                    onPressed: () => _postNewEventInServer(_listImages),
                   ),
                 ],
               ),
@@ -275,7 +282,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   }
 
   /// Размещение нового события на сервер
-  void _postNewEventInServer() {
+  void _postNewEventInServer(List<File?> listImages) {
     final _textFromTitle = _headerTextController.text;
     final _textFromDescription = _bodyTextController.text;
     final String lat = _latLng.latitude.toString();
@@ -284,7 +291,9 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         title: _textFromTitle,
         description: _textFromDescription,
         lng: lng,
-        lat: lat);
+        lat: lat,
+        listImages: listImages
+    );
   }
 }
 
@@ -504,6 +513,289 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     );
     _setUserMarkers = MapProvider.refreshSetProvider(
         set: _setUserMarkers, marker: _userMarker);
+  }
+}
+
+
+/// Класс с выбором изображений для создания события
+class ImagesWidget extends StatefulWidget {
+  CreateEventBloc bloc;
+   ImagesWidget({Key? key, required this.bloc}) : super(key: key);
+
+  @override
+  State<ImagesWidget> createState() => ImagesWidgetState(bloc);
+}
+
+class ImagesWidgetState extends State<ImagesWidget> {
+  CreateEventBloc bloc;
+  ImagesWidgetState(this.bloc);
+
+  final selectedImages = <File?>[];
+  late PickImageBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = PickImageBloc();
+    _bloc.notSelectedPickImage();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
+      child: SizedBox(
+        height: 220,
+        child: StreamBuilder(
+          stream: _bloc.streamPickImage,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            print(snapshot.data);
+            if (snapshot.data is LoadedPickImage) {
+              LoadedPickImage _data = snapshot.data as LoadedPickImage;
+              final _images = _data.image;
+              selectedImages.add(_images);
+              _bloc.notSelectedPickImage();
+              bloc.getListImagesFromImageWidgetBloc(selectedImages);
+            }
+            return (selectedImages.length == 0)
+                ? Row(
+              children: [
+                _isButton(),
+              ],
+            )
+                : ListView.builder(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: selectedImages.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Row(
+                  children: [
+                    _showImages(context, index, snapshot),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    (selectedImages.length <= 6 &&
+                        index == selectedImages.length - 1)
+                        ? _isButton()
+                        : SizedBox.shrink(),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+
+  /// Карточка вывода изображения
+  Container _showImages(BuildContext context, int index, AsyncSnapshot<dynamic> snapshot) {
+    return Container(
+      height: 195,
+      width: 90,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        border: Border.all(
+            color: Colors.black.withOpacity(0.2)),
+        borderRadius:
+        BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black,
+              blurRadius: 8,
+              offset: Offset(0, 2))
+        ],
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        children: [
+          Center(
+            child: Image.file(
+                selectedImages[index] as File),),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  (snapshot.data is LoadedPickImage ||
+                      snapshot.data
+                      is NotSelectedPickImage)
+                      ? Icon(
+                    Icons.done,
+                    color: Colors.deepOrange,
+                    size: 18,
+                  )
+                      : SizedBox(
+                      height: 20,
+                      width: 20,
+                      child:
+                      CircularProgressIndicator()),
+                ],
+              )
+            ],
+          ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => _showActions(context, index),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  /// Выбор источника изображения
+  _showCardAdd(BuildContext context) async {
+    if (Platform.isIOS) {
+      return showCupertinoModalPopup<ImageSource>(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                _bloc.addPickImageBloc(ImageSource.camera);
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [Icon(Icons.camera_alt), Text('Камера')],
+              ),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                _bloc.addPickImageBloc(ImageSource.gallery);
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [Icon(Icons.photo), Text('Галерея')],
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return showModalBottomSheet(
+        context: context,
+        builder: (context) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.camera_alt),
+              title: Text('Камера'),
+              onTap: () {
+                _bloc.addPickImageBloc(ImageSource.camera);
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.photo),
+              title: Text('Галерея'),
+              onTap: () {
+                _bloc.addPickImageBloc(ImageSource.gallery);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  /// Действия с выбранным изображением
+  _showActions(BuildContext context, index) async {
+    if (Platform.isIOS) {
+      return showCupertinoModalPopup<ImageSource>(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [Icon(Icons.image), Text('Открыть')],
+              ),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                selectedImages.removeAt(index);
+                _bloc.notSelectedPickImage();
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [Icon(Icons.delete_outline), Text('Удалить')],
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return showModalBottomSheet(
+        context: context,
+        builder: (context) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.image),
+              title: Text('Открыть'),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.delete_outline),
+              title: Text('Удалить'),
+              onTap: () {
+                selectedImages.removeAt(index);
+                _bloc.notSelectedPickImage();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  /// Карточка вывода карточки добавить фото
+  Widget _isButton() {
+    return Container(
+      height: 195,
+      width: 90,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black,
+              blurRadius: 8,
+              offset: Offset(0, 2))
+        ],
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: TextButton(
+        onPressed: () => _showCardAdd(context),
+        child: Icon(
+          Icons.add_rounded,
+          color: Theme.of(context).iconTheme.color,
+          size: 45,
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Theme.of(context).scaffoldBackgroundColor),
+        ),
+      ),
+    );
   }
 }
 

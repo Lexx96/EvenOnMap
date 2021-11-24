@@ -31,9 +31,9 @@ class GoogleMapBloc {
     try {
       List<GetNewsFromServerModel> listAllNews =
           await NewsProvider().getAllNewsFromServer();
-      MapProvider.getAllNewsFromServerProvider().then((newsMarkers) {
+      MapProvider.getAllNewsFromServerProvider().then((setNewsMarkers) {
         _streamController.sink.add(MapBlocState.getAllNewsFromServerState(
-            markers: newsMarkers, listAllNews: listAllNews));
+            markers: setNewsMarkers, listAllNews: listAllNews));
       });
     } catch (e) {
       throw Exception(e);
