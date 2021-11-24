@@ -9,7 +9,7 @@ class PostEventRepository {
   /// Получение токена из SharedPreferences при создании нового события
   static postNewEvent<Response>(Map<String, dynamic> eventJson) async {
     String _accessToken =
-        await SetAndReadAccessTokenFromSharedPreferences().readAccessToken();
+        await SetAndReadDataFromSharedPreferences().readAccessToken();
 
     return await http.post(
       Uri.parse('http://23.152.0.13:3000/news'),
@@ -23,7 +23,7 @@ class PostEventRepository {
       {required List<File?> listImages, required String? idEvent}) async {
     try {
       String _accessToken =
-          await SetAndReadAccessTokenFromSharedPreferences().readAccessToken();
+          await SetAndReadDataFromSharedPreferences().readAccessToken();
       for (int i = 0; i < listImages.length; i++) {
         if (listImages[i] != null && listImages.asMap().containsKey(i) && idEvent != null) {
           final ByteStream stream = http.ByteStream(

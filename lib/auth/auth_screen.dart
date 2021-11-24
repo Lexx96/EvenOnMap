@@ -260,7 +260,7 @@ class _AuthWidgetState extends State<AuthWidget> {
       return AlertDialog(
         title: Center(
             child: Text(
-          'Не верный пароль',
+          'Неверный пароль',
         )),
         actions: [
           TextButton(

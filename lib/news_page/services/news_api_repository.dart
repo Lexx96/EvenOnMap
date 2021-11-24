@@ -5,7 +5,7 @@ class NewsRepository {
 
   /// Получение accessToken из SharedPreferences и отправка запроса на сервер
   static getAllNews<Response>() async {
-    String _accessToken = await SetAndReadAccessTokenFromSharedPreferences().readAccessToken();
+    String _accessToken = await SetAndReadDataFromSharedPreferences().readAccessToken();
     return await http.get(
       Uri.parse('http://23.152.0.13:3000/news'),
       headers: {'Authorization': 'Bearer ' + _accessToken},

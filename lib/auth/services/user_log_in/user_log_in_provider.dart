@@ -11,11 +11,11 @@ class UserLogInProvider {
     String phone,
     String password,
   ) async {
+
     final _jsonLogInPostModel =
         UserLogInModel(phone: phone, password: password).toJson();
     final Response response =
         await UserLogInRepository.postUserLogInData(_jsonLogInPostModel);
-    final jsonLogInModel = UserLogInModel();
 
     if (response.statusCode == 201) {
       try {
@@ -23,8 +23,7 @@ class UserLogInProvider {
         final jsonLogInModel = UserLogInModel.fromJson(jsonLogInList);
         return jsonLogInModel;
       } catch (e) {
-        print('Ошибка получения данных от UserLogInModel.fromJson $e');
-        return jsonLogInModel;
+        throw Exception('Ошибка получения данных от UserLogInModel.fromJson $e');
       }
     } else if (response.statusCode == 401) {
       throw ErrorPasswordException();
@@ -39,10 +38,44 @@ class UserLogInProvider {
   Future<void> setAccessTokenInSharedPreferences(
       {required String accessToken}) async {
     try {
-      SetAndReadAccessTokenFromSharedPreferences()
+      SetAndReadDataFromSharedPreferences()
           .setAccessToken(accessToken: accessToken);
     } catch (_) {
       throw AccessTokenNotSetInSharedPreferencesException();
     }
   }
+
+
+  /// Сохранение логина в SecureStorage при регистрации и получение данных был ли авторизованн пользователь ранее при последующих входах в приложение
+  static Future<bool> writeLoginInSecureStorage({required String logIn}) async {
+    try {
+      final _phoneFromSecureStorage = await SetAndReadDataFromSecureStorage.isAuthUserLogIn(logIn: logIn);
+      if(_phoneFromSecureStorage != null) {
+        return true;
+      }else {
+        return false;
+      }
+    } catch (_) {
+      throw AccessTokenNotSetInSharedPreferencesException();
+    }
+  }
+
+  /// Сохранение пароля в SecureStorage при регистрации и получение данных был ли авторизованн пользователь ранее при последующих входах в приложение
+  static Future<bool> writePasswordSecureStorage({required String password}) async {
+    try {
+      final passwordFromSecureStorage = await SetAndReadDataFromSecureStorage.isAuthUserPassword(password: password);
+      if(passwordFromSecureStorage != null) {
+        return true;
+      }else {
+        return false;
+      }
+    } catch (_) {
+      throw AccessTokenNotSetInSharedPreferencesException();
+    }
+  }
+
+
+
+
+
 }

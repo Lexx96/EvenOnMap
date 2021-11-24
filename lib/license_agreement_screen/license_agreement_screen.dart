@@ -1,3 +1,4 @@
+import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/license_agreement_screen/bloc/license_agreement_state.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,13 @@ class LicenseAgreement extends StatefulWidget {
 class _LicenseAgreementState extends State<LicenseAgreement> {
   bool? _isAccepted;
   late final LicenseAgreementBloc _bloc;
-  final _mainTextStyle =
-      TextStyle(fontSize: 17, fontWeight: FontWeight.bold,);
-  final _secondTextStyle = TextStyle(fontSize: 16,);
+  final _mainTextStyle = TextStyle(
+    fontSize: 17,
+    fontWeight: FontWeight.bold,
+  );
+  final _secondTextStyle = TextStyle(
+    fontSize: 16,
+  );
 
   @override
   void initState() {
@@ -35,8 +40,8 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: _bloc.streamControllerLicense,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          stream: _bloc.streamControllerLicense,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
             final LicenseAgreementState data = snapshot.data;
             return Container(
               color: Colors.transparent,
@@ -136,10 +141,16 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                         ),
                         Row(
                           children: [
-                            Text('Принять', style: _secondTextStyle,),
+                            Text(
+                              'Принять',
+                              style: _secondTextStyle,
+                            ),
                             Checkbox(
-                              value: data is EmptyLicenseAgreementState ? _isAccepted : true,
-                              onChanged: (bool? isAccepted) => _agreeTerms(isAccepted),
+                              value: data is EmptyLicenseAgreementState
+                                  ? _isAccepted
+                                  : true,
+                              onChanged: (bool? isAccepted) =>
+                                  _agreeTerms(isAccepted),
                             ),
                           ],
                         ),
@@ -147,8 +158,11 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
-                              onPressed: data is EmptyLicenseAgreementState ? null : () => Navigator.of(context)
-                                  .pushNamed(MainNavigationRouteName.mainScreen),
+                              onPressed: data is EmptyLicenseAgreementState
+                                  ? null
+                                  : () =>
+                                      Navigator.of(context).pushNamed(
+                                          MainNavigationRouteName.mainScreen),
                               child: Text('OK'),
                             ),
                             TextButton(
@@ -157,24 +171,24 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             );
-          }
-      ),
+          }),
     );
   }
 
   /// Есть ли соглашение на ЛС
-  void _agreeTerms (bool? isAccepted) {
-    if(isAccepted == false) {
+  void _agreeTerms(bool? isAccepted) {
+    if (isAccepted == false) {
       _bloc.emptyState();
-    }
-    else{
+    } else {
       _bloc.accepted();
     }
   }

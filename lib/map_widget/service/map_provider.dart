@@ -91,7 +91,7 @@ class MapProvider {
 
   /// Возвращает адрес для маркера новостей
   static String? titleForMarker (Address thisAddress) {
-    String? title = '';
+    String? title;
     if (thisAddress.thoroughfare != null && thisAddress.subThoroughfare != null) {
       return title = '${thisAddress.thoroughfare} ${thisAddress.subThoroughfare}';
     }
