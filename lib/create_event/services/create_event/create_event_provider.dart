@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
 import 'package:event_on_map/create_event/models/post_event_model.dart';
 import 'package:http/http.dart';
@@ -29,9 +30,16 @@ class PostNewEventProvider {
       try {
         final newJSonModelList =
             jsonDecode(response.body) as Map<String, dynamic>;
-        final newJSonModel = NewEventModel.fromJson(newJSonModelList);
+        final newJsonModel = NewEventModel.fromJson(newJSonModelList);
 
-        return newJSonModel;
+
+
+        final String idEvent =  newJSonModelList['id'];
+
+
+
+
+        return newJsonModel;
       } catch (error) {
         print('Ошибка запроса на размещение события $error');
         return newEventModel;
@@ -46,4 +54,9 @@ class PostNewEventProvider {
       return newEventModel;
     }
   }
+
+  void postNewEventImages (List<File?> _images, String idEvent) {
+
+  }
+
 }

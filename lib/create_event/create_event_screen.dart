@@ -290,18 +290,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /// Класс с картор для выбора адреса события (нужно будет перенести в отдельный
 /// файл, он есть. Не получилось передать LatLng в другой блок)
 class CreateEventMapWidget extends StatefulWidget {
@@ -345,6 +333,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     super.initState();
     _createEventMapBloc = CreateEventMapBloc();
     _createEventMapBloc.createEventGetLatLngAndAddressUserPosition();
+    MapProvider.onMapCreatedProvider(_controller);
   }
 
   @override
@@ -387,14 +376,14 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
             zoomControlsEnabled: false,
             onMapCreated: (GoogleMapController controller){
               _controller.complete(controller);
-              _onMapCreated();},
+              },
             markers: _setUserMarkers,
             initialCameraPosition: CameraPosition(
               target: _myPosition,
               zoom: 16,
             ),
             onTap: (LatLng _onTabLatLng) => _createEventMapBloc.getAddressOnTab(
-                _onTabLatLng) // получение LatLng по нажатию на карту
+                _onTabLatLng)
         ),
         _showAddress(context, _placemark, _position),
         Column(
@@ -406,8 +395,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: TextButton(
-                    onPressed: () => _createEventMapBloc
-                        .createEventGetLatLngAndAddressUserPosition(),
+                    onPressed: () => MapProvider.onMapCreatedProvider(_controller),
                     child: Icon(
                       CustomIcons.map_marker,
                       size: 30,
@@ -423,7 +411,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
       ],
     );
   }
-
 
   /// Вывод на экран выбранного адреса
   Column _showAddress(BuildContext context, List<Placemark> _placemark, LatLng _onTabLatLng) {
@@ -517,19 +504,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     );
     _setUserMarkers = MapProvider.refreshSetProvider(
         set: _setUserMarkers, marker: _userMarker);
-    _onMapCreated();
-  }
-
-  /// Возвращает камеру на место положение пользователя
-  Future<void> _onMapCreated() async {
-    final GoogleMapController controller = await _controller.future;
-    if (_myPosition != LatLng(0.0, 0.0)) {
-      controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: _myPosition, zoom: 16),
-        ),
-      );
-    }
   }
 }
 

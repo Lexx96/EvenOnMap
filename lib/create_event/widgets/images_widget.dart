@@ -38,10 +38,12 @@ class _ImagesWidgetState extends State<ImagesWidget> {
         child: StreamBuilder(
           stream: _bloc.streamPickImage,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
+            print(snapshot.data);
             if (snapshot.data is LoadedPickImage) {
               LoadedPickImage _data = snapshot.data as LoadedPickImage;
               final _images = _data.image;
-              _images != null ? _selectedImages.add(_images) : _selectedImages;
+              _selectedImages.add(_images);
+              _bloc.notSelectedPickImage();
             }
             return (_selectedImages.length == 0)
                 ? Row(
@@ -73,6 +75,8 @@ class _ImagesWidgetState extends State<ImagesWidget> {
       ),
     );
   }
+
+
   /// Карточка вывода изображения
   Container _showImages(BuildContext context, int index, AsyncSnapshot<dynamic> snapshot) {
     return Container(

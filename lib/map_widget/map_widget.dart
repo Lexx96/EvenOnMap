@@ -15,10 +15,6 @@ class MapWidget extends StatefulWidget {
   _MapWidgetState createState() => _MapWidgetState();
 }
 
-/*
- сделать маркер больше и над другими маркерами
- */
-
 class _MapWidgetState extends State<MapWidget> {
   late GoogleMapBloc _bloc;
   Completer<GoogleMapController> _controller = Completer();

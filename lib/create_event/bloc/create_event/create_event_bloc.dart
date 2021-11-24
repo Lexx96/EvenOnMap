@@ -35,6 +35,10 @@ class CreateEventBloc {
     )
         .then(
       (responseModelNewEvent) {
+
+        // вызов метода добавления фото
+
+
         _streamController.sink
             .add(NewEventBlocState.loadedEventState(responseModelNewEvent));
       },

@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
-import 'package:event_on_map/map_widget/service/map_repository.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'create_event_map_bloc_state.dart';
