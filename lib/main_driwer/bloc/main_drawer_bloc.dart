@@ -23,8 +23,16 @@ class MainDrawerBloc {
     });
   }
 
-   void loadedImageUserProfileForDrawer ([File? image]){
+  void loadedImageUserProfileForDrawer ([File? image]){
     _streamController.sink.add(MainDrawerBlocState.loadedImageUserProfileForDrawer(image));
+  }
+
+  void closeAlertDialog() {
+    _streamController.sink.add(MainDrawerBlocState.closeAlertDialogState());
+  }
+
+  void showMessage () {
+    _streamController.sink.add(MainDrawerBlocState.showMessageState());
   }
 
   void dispose () {

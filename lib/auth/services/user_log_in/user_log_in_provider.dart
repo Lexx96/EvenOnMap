@@ -45,38 +45,38 @@ class UserLogInProvider {
       throw AccessTokenNotSetInSharedPreferencesException();
     }
   }
-
-  /// Сохранение логина в SecureStorage при регистрации и получение данных был ли авторизованн пользователь ранее
-  static Future<String?> writeAdnReadLoginInSecureStorage({required String logIn}) async {
-    try {
-      final _logInFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserLogIn();
-      if(_logInFromSecureStorage == null) {
-        await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: logIn);
-        final _logInFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserLogIn();
-        return _logInFromSecureStorage;
-      }else {
-        final _logInFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserLogIn();
-        return _logInFromSecureStorage;
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  /// Сохранение пароля в SecureStorage при регистрации и получение данных был ли авторизованн пользователь ранее
-  static Future<String?> writeAdnReadPasswordSecureStorage({required String password}) async {
-    try {
-      final _passwordFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserPassword();
-      if(_passwordFromSecureStorage == null) {
-        await WriteAndReadDataFromSecureStorage.writeUserPassword(password: password);
-        final _passwordFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserPassword();
-        return _passwordFromSecureStorage;
-      }else {
-        final _passwordFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserPassword();
-        return _passwordFromSecureStorage;
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
+  // не используются
+  // /// Сохранение логина в SecureStorage при регистрации и получение данных был ли авторизованн пользователь ранее
+  // static Future<String?> writeAdnReadLoginInSecureStorage({required String logIn}) async {
+  //   try {
+  //     final _logInFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserLogIn();
+  //     if(_logInFromSecureStorage == null) {
+  //       await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: logIn);
+  //       final _logInFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserLogIn();
+  //       return _logInFromSecureStorage;
+  //     }else {
+  //       final _logInFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserLogIn();
+  //       return _logInFromSecureStorage;
+  //     }
+  //   } catch (e) {
+  //     throw Exception(e);
+  //   }
+  // }
+  //
+  // /// Сохранение пароля в SecureStorage при регистрации и получение данных был ли авторизованн пользователь ранее
+  // static Future<String?> writeAdnReadPasswordSecureStorage({required String password}) async {
+  //   try {
+  //     final _passwordFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserPassword();
+  //     if(_passwordFromSecureStorage == null) {
+  //       await WriteAndReadDataFromSecureStorage.writeUserPassword(password: password);
+  //       final _passwordFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserPassword();
+  //       return _passwordFromSecureStorage;
+  //     }else {
+  //       final _passwordFromSecureStorage = await WriteAndReadDataFromSecureStorage.readUserPassword();
+  //       return _passwordFromSecureStorage;
+  //     }
+  //   } catch (e) {
+  //     throw Exception(e);
+  //   }
+  // }
 }

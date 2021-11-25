@@ -4,13 +4,19 @@ import 'dart:io';
 class MainDrawerBlocState {
   MainDrawerBlocState();
   factory MainDrawerBlocState.emptyMainDrawerState() = EmptyMainDrawerState;
-  factory MainDrawerBlocState.loadedImageUserProfileForDrawer(File? image) = LoadedImageUserProfileForDrawer;
+  factory MainDrawerBlocState.showMessageState() = ShowMessageState;
+  factory MainDrawerBlocState.closeAlertDialogState() = CloseAlertDialogState;
+  factory MainDrawerBlocState.loadedImageUserProfileForDrawer(File? image) = LoadedImageUserProfileForDrawerState;
 
 }
 
 class EmptyMainDrawerState extends MainDrawerBlocState {}
 
-class LoadedImageUserProfileForDrawer extends MainDrawerBlocState {
+class ShowMessageState extends MainDrawerBlocState {}
+
+class CloseAlertDialogState extends MainDrawerBlocState {}
+
+class LoadedImageUserProfileForDrawerState extends MainDrawerBlocState {
   late File? image;
-  LoadedImageUserProfileForDrawer(this.image);
+  LoadedImageUserProfileForDrawerState(this.image);
 }

@@ -100,4 +100,15 @@ class WriteAndReadDataFromSecureStorage {
       throw Exception(e);
     }
   }
+
+  /// Удаление пароля и логина из SecureStorage
+  static Future<String?> deleteUserPasswordAndLogIn () async {
+    try{
+      final _secureStorage = FlutterSecureStorage();
+      await _secureStorage.delete(key: _SecureStorageKeys._password);
+      await _secureStorage.delete(key: _SecureStorageKeys._logIn);
+    }catch(e){
+      throw Exception(e);
+    }
+  }
 }

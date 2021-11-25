@@ -96,3 +96,33 @@ Future<String?> isUserAuth() async {
     return MainNavigation().initialRouteMain;
   }
 }
+
+/*
+  Widget _showMessage() {
+    return AlertDialog(
+      title: Center(
+          child: Text(
+            '''Вы точно хотите выйти ?''',
+          )),
+      actions: [
+        Row(
+          children: [
+            TextButton(
+              onPressed: () {},
+              child: Text('Отмена'),
+            ),
+            TextButton(
+                onPressed: () async {
+                  await WriteAndReadDataFromSecureStorage
+                      .deleteUserPasswordAndLogIn();
+                  Navigator.of(context).pushReplacementNamed(
+                      MainNavigationRouteName.auth);
+                },
+                child: Text('Выйти')
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+ */
