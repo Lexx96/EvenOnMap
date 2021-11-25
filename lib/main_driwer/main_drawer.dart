@@ -1,14 +1,15 @@
 import 'dart:io';
-
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
-import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc.dart';
-import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc_state.dart';
 import 'package:flutter/material.dart';
 import '../custom_icons_icons.dart';
 import '../generated/l10n.dart';
 import 'bloc/main_drawer_bloc.dart';
 import 'bloc/main_drawer_state.dart';
+/*
+при прокидовании сосотояния пропадает фото
+кнопка выйти всегда внижней части экрана
+ */
 
 class MainDrawer extends StatefulWidget {
   MainDrawer({
@@ -21,7 +22,7 @@ class MainDrawer extends StatefulWidget {
 
 class _MainDrawerState extends State<MainDrawer> {
   late final MainDrawerBloc _bloc;
-  late File _image;
+   late File _image;
 
   @override
   void initState() {
@@ -44,6 +45,8 @@ class _MainDrawerState extends State<MainDrawer> {
         if (snapshot.data is LoadedImageUserProfileForDrawerState) {
           final _data = snapshot.data as LoadedImageUserProfileForDrawerState;
           _image = _data.image as File;
+        } else {
+          _image = File('path');
         }
         return Stack(
           children: [
@@ -64,7 +67,7 @@ class _MainDrawerState extends State<MainDrawer> {
                                   height: 160,
                                   width: 160,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     border: Border.all(
                                         color: Colors.black.withOpacity(0.2)),
                                     borderRadius: BorderRadius.all(Radius.circular(90)),
@@ -207,7 +210,12 @@ class _MainDrawerState extends State<MainDrawer> {
                             ),
                           ],
                         ),
-                        onTap: () => _bloc.showMessage(),
+                        onTap:  () async {
+                      await WriteAndReadDataFromSecureStorage
+                          .deleteUserPasswordAndLogIn();
+                      Navigator.of(context)
+                          .pushReplacementNamed(MainNavigationRouteName.auth);
+                      },
                       ),
                     ],
                   ),

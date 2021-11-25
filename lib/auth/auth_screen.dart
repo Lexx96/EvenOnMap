@@ -277,7 +277,7 @@ class _AuthWidgetState extends State<AuthWidget> {
         title: Center(
             child: Text(
           'Пользователь не зарегистрирован',
-        )),
+        ),),
         actions: [
           TextButton(
             onPressed: () => _bloc.emptyState(),
