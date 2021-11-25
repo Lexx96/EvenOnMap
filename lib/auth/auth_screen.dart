@@ -200,7 +200,7 @@ class _AuthWidgetState extends State<AuthWidget> {
 
 
   /// Авторизация ранее зарегистрированного пользователя
-  void _goLogIn() {
+  void _goLogIn() async {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;
 
@@ -211,15 +211,16 @@ class _AuthWidgetState extends State<AuthWidget> {
     } else if (_passwordText.length <= 7) {
       _bloc.errorLengthPassword();
     } else {
+      await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: _numberText);
+      await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
       _bloc.loadingLogIn(_numberText, _passwordText);
     }
   }
 
   /// Регистрация нового пользователя
-  void _goRegistration() {
+  void _goRegistration() async {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;
-    // print(_numberText + _passwordText);
 
     if (_numberText.length <= 9 && _passwordText.length <= 7) {
       _bloc.errorLengthLoginAndPassword();
@@ -228,6 +229,8 @@ class _AuthWidgetState extends State<AuthWidget> {
     } else if (_passwordText.length <= 7) {
       _bloc.errorLengthPassword();
     } else {
+      await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: _numberText);
+      await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
       _bloc.loadingRegistration(_numberText, _passwordText);
     }
   }

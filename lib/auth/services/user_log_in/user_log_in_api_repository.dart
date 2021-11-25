@@ -2,6 +2,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+abstract class _SecureStorageKeys {
+  static const _password = 'UserPassword';
+  static const _logIn = 'UserLogIn';
+}
+
 class UserLogInRepository {
 
   /// Отправка запроса на вход уже зарегистрированного пользователя
@@ -43,52 +48,56 @@ class SetAndReadDataFromSharedPreferences {
   }
 }
 
+class WriteAndReadDataFromSecureStorage {
 
-abstract class _SecureStorageKeys {
-  static const _password = 'isAuth';
-  static const _logIn = 'isAuth';
-}
 
-class SetAndReadDataFromSecureStorage {
-
-  /// Сохранение логина при регистрации и получение пароля при последующих входах в приложение
-  static Future<String?> isAuthUserLogIn ({ required String logIn}) async {
+  /// Проверка наличия логина в SecureStorage
+  static Future<String?> readUserLogIn () async {
     try{
       final _secureStorage = FlutterSecureStorage();
-
       final _logInFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._logIn);
-
-      if(_logInFromSecureStorage == null) {
-        await _secureStorage.write(key: _SecureStorageKeys._logIn, value: logIn);
-        final _logInFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._logIn);
+      if(_logInFromSecureStorage != null) {
         return _logInFromSecureStorage;
       } else {
-        return _logInFromSecureStorage;
+        return null;
       }
     }catch(e){
       throw Exception(e);
     }
   }
 
-  /// Сохранение пароля при регистрации и получение пароля при последующих входах в приложение
-  static Future<String?> isAuthUserPassword ({required String password}) async {
+  /// Сохранение логина в SecureStorage
+  static Future<void> writeUserLogIn ({ required String logIn}) async {
     try{
       final _secureStorage = FlutterSecureStorage();
+        await _secureStorage.write(key: _SecureStorageKeys._logIn, value: logIn);
+    }catch(e){
+      throw Exception(e);
+    }
+  }
 
+  /// Проверка наличия пароля в SecureStorage
+  static Future<String?> readUserPassword () async {
+    try{
+      final _secureStorage = FlutterSecureStorage();
       final _passwordFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._password);
-
-      if(_passwordFromSecureStorage == null) {
-        await _secureStorage.write(key: _SecureStorageKeys._password, value: password);
-        final _passwordFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._password);
+      if(_passwordFromSecureStorage != null) {
         return _passwordFromSecureStorage;
       } else {
-        return _passwordFromSecureStorage;
+        return null;
       }
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+  /// Сохранение пароля в SecureStorage
+  static Future<String?> writeUserPassword ({required String password}) async {
+    try{
+      final _secureStorage = FlutterSecureStorage();
+        await _secureStorage.write(key: _SecureStorageKeys._password, value: password);
     }catch(e){
       throw Exception(e);
     }
   }
 }
-
-
-
