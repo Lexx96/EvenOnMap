@@ -12,13 +12,6 @@ import 'auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'auth/services/user_log_in/user_log_in_provider.dart';
 import 'generated/l10n.dart';
 import 'navigation/main_navigation.dart';
-/*
-
-получение лат и лнг с карты
-сделать темы
-
-сделать карту
- */
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // говорит о там что инициализацию приложения проводить тут
@@ -41,17 +34,12 @@ class Home extends StatelessWidget {
       dark: myDarkTheme,
       builder: (light, dark) =>
           RefreshConfiguration( // для обновления страницы новостей потянуть вниз
-            headerBuilder: () => WaterDropHeader(),
-            // стиль обновления
-            footerBuilder: () => ClassicFooter(),
-            // нижний индикатор ???
-            headerTriggerDistance: 80.0,
-            // высота области обновления
-            maxOverScrollExtent: 100,
-            // Максимальный диапазон перетаскивания головки
-            maxUnderScrollExtent: 100,
-            // Максимальный диапазон перетаскивания головки
-            //enableScrollWhenRefreshCompleted: true, // панель вкладок влево и вправо
+            headerBuilder: () => WaterDropHeader(), // стиль обновления
+            footerBuilder: () => ClassicFooter(), // нижний индикатор ???
+            headerTriggerDistance: 80.0, // высота области обновления
+            maxOverScrollExtent: 100, // Максимальный диапазон перетаскивания головки
+            maxUnderScrollExtent: 100, // Максимальный диапазон перетаскивания головки
+            enableScrollWhenRefreshCompleted: true, // панель вкладок влево и вправо
             enableLoadingWhenFailed: true,
             //В случае сбоя загрузки пользователи по-прежнему могут запускать дополнительные нагрузки, подтягивая их жестом.
             child: MaterialApp(

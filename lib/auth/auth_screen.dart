@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import '../custom_icons_icons.dart';
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_bloc_state.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AuthWidget extends StatefulWidget {
   const AuthWidget({Key? key}) : super(key: key);

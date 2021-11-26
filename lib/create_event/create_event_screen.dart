@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc.dart';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc_state.dart';
+import 'package:event_on_map/main_screen/main_screen_widget.dart';
+import 'package:event_on_map/map_widget/map_widget.dart';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
@@ -149,8 +151,8 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                 children: [
                   TextButton(
                     child: Text('Назад'),
-                    onPressed: () => Navigator.of(context)
-                        .pushNamed(MainNavigationRouteName.mainScreen),
+                    onPressed: () => Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => MainScreen()))
                   ),
                   TextButton(
                     child: Text('Создать'),

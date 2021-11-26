@@ -6,10 +6,6 @@ import '../custom_icons_icons.dart';
 import '../generated/l10n.dart';
 import 'bloc/main_drawer_bloc.dart';
 import 'bloc/main_drawer_state.dart';
-/*
-при прокидовании сосотояния пропадает фото
-кнопка выйти всегда внижней части экрана
- */
 
 class MainDrawer extends StatefulWidget {
   MainDrawer({
@@ -22,7 +18,7 @@ class MainDrawer extends StatefulWidget {
 
 class _MainDrawerState extends State<MainDrawer> {
   late final MainDrawerBloc _bloc;
-   late File _image;
+  File _image = File('path');
 
   @override
   void initState() {
@@ -45,8 +41,6 @@ class _MainDrawerState extends State<MainDrawer> {
         if (snapshot.data is LoadedImageUserProfileForDrawerState) {
           final _data = snapshot.data as LoadedImageUserProfileForDrawerState;
           _image = _data.image as File;
-        } else {
-          _image = File('path');
         }
         return Stack(
           children: [
@@ -55,143 +49,135 @@ class _MainDrawerState extends State<MainDrawer> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(
-                        height: 320.0,
-                        child: DrawerHeader(
-                          decoration: BoxDecoration(),
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Container(
-                                  height: 160,
-                                  width: 160,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).scaffoldBackgroundColor,
-                                    border: Border.all(
-                                        color: Colors.black.withOpacity(0.2)),
-                                    borderRadius: BorderRadius.all(Radius.circular(90)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black,
-                                          blurRadius: 8,
-                                          offset: Offset(0, 2))
-                                    ],
-                                  ),
-                                  clipBehavior: Clip.hardEdge,
-                                  child:
-                                  snapshot.data is EmptyMainDrawerState
-                                      ? FlutterLogo(size: 160)
-                                      : ClipOval(
-                                    child: Image.file(
-                                      _image,
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 320.0,
+                            child: DrawerHeader(
+                              decoration: BoxDecoration(),
+                              child: Column(
+                                children: [
+                                  Center(
+                                    child: Container(
                                       height: 160,
                                       width: 160,
-                                      fit: BoxFit.cover,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                        border: Border.all(
+                                            color: Colors.black.withOpacity(0.2)),
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(90)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black,
+                                              blurRadius: 8,
+                                              offset: Offset(0, 2))
+                                        ],
+                                      ),
+                                      clipBehavior: Clip.hardEdge,
+                                      child: _image.path != 'path'
+                                          ? ClipOval(
+                                        child: Image.file(
+                                          _image,
+                                          height: 160,
+                                          width: 160,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                          : FlutterLogo(size: 160),
                                     ),
                                   ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Center(
-                                  child: Text(
-                                    S.of(context).name + ' ' + S.of(context).surname,
-                                    style: TextStyle(
-                                      fontSize: 19,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        S.of(context).name +
+                                            ' ' +
+                                            S.of(context).surname,
+                                        style: TextStyle(
+                                          fontSize: 19,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                      ListTile(
-                        title: Row(
-                          children: [
-                            Icon(
-                              CustomIcons.alarm,
-                              size: 26,
+                          ListTile(
+                            title: Row(
+                              children: [
+                                Icon(
+                                  CustomIcons.alarm,
+                                  size: 26,
+                                ),
+                                SizedBox(width: 7),
+                                Text('Уведомления'),
+                              ],
                             ),
-                            SizedBox(width: 7),
-                            Text('Уведомления'),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/InPut');
-                        },
-                      ),
-                      Divider(),
-                      ListTile(
-                        title: Row(
-                          children: [
-                            Icon(
-                              CustomIcons.user_2,
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/InPut');
+                            },
+                          ),
+                          Divider(),
+                          ListTile(
+                            title: Row(
+                              children: [
+                                Icon(CustomIcons.picture_1),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('Темы'),
+                              ],
                             ),
-                            SizedBox(width: 10),
-                            Text(S.of(context).profile),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(MainNavigationRouteName.userProfile);
-                        },
-                      ),
-                      Divider(),
-                      ListTile(
-                        title: Row(
-                          children: [
-                            Icon(CustomIcons.picture_1),
-                            SizedBox(
-                              width: 10,
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  MainNavigationRouteName.decorationPage);
+                            },
+                          ),
+                          Divider(),
+                          ListTile(
+                            title: Row(
+                              children: [
+                                Icon(CustomIcons.italic),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('О приложении'),
+                              ],
                             ),
-                            Text('Темы'),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(MainNavigationRouteName.decorationPage);
-                        },
-                      ),
-                      Divider(),
-                      ListTile(
-                        title: Row(
-                          children: [
-                            Icon(CustomIcons.italic),
-                            SizedBox(
-                              width: 10,
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  MainNavigationRouteName.aboutApplication);
+                            },
+                          ),
+                          Divider(),
+                          ListTile(
+                            title: Row(
+                              children: [
+                                Icon(
+                                  CustomIcons.envelope,
+                                  size: 26,
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text('Обратная связь'),
+                              ],
                             ),
-                            Text('О приложении'),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(MainNavigationRouteName.aboutApplication);
-                        },
-                      ),
-                      Divider(),
-                      ListTile(
-                        title: Row(
-                          children: [
-                            Icon(
-                              CustomIcons.envelope,
-                              size: 26,
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text('Обратная связь'),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(MainNavigationRouteName.feedbackPage);
-                        },
-                      ),
-                      Divider(),
-                      SizedBox(
-                        height: 50,
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(MainNavigationRouteName.feedbackPage);
+                            },
+                          ),
+                          Divider(),
+                          SizedBox(
+                            height: 50,
+                          ),
+                        ],
                       ),
                       ListTile(
                         title: Row(
@@ -210,37 +196,37 @@ class _MainDrawerState extends State<MainDrawer> {
                             ),
                           ],
                         ),
-                        onTap:  () async {
-                      await WriteAndReadDataFromSecureStorage
-                          .deleteUserPasswordAndLogIn();
-                      Navigator.of(context)
-                          .pushReplacementNamed(MainNavigationRouteName.auth);
-                      },
+                        onTap: _bloc.showMessage,
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            snapshot.data is ShowMessageState ? _showMessage() : SizedBox.shrink()
+            snapshot.data is ShowMessageState
+                ? _showMessage()
+                : SizedBox.shrink()
           ],
         );
       },
     );
   }
 
+  /// Подтверждение выхода из учетной записи
   Widget _showMessage() {
     return AlertDialog(
       title: Center(
           child: Text(
-        '''Вы точно хотите выйти ?''',
+        '''Логин и пароль будут удалены. 
+        
+       Выйти из учетной записи ?''',
       )),
       actions: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             TextButton(
-              onPressed: () =>_bloc.closeAlertDialog(),
+              onPressed: () => _bloc.closeAlertDialog(),
               child: Text('Отмена'),
             ),
             TextButton(

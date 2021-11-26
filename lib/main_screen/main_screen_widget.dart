@@ -6,21 +6,20 @@ import 'package:flutter/material.dart';
 import '../custom_icons_icons.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+
+ const MainScreen({Key? key}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
+
+
+
   int _selectedTab = 0;
 
-  void onSelectTab(int index) {
-    if (_selectedTab == index) return;
-    setState(() {
-      _selectedTab = index;
-    });
-  }
+
 
   @override
   void initState() {
@@ -63,4 +62,10 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+   void onSelectTab(int index) {
+     if (_selectedTab == index) return;
+     setState(() {
+       _selectedTab = index;
+     });
+   }
 }

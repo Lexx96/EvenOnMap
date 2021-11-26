@@ -77,7 +77,8 @@ class MapProvider {
           Marker _marker = Marker(
             markerId: MarkerId('${listAllNews[i].id}'),
             infoWindow: InfoWindow(
-                title: titleForMarker(thisAddress)),
+                title: titleForMarker(thisAddress),
+              snippet: listAllNews[i].title,),
             position: LatLng(listAllNews[i].lat, listAllNews[i].lng),
           );
           newsMarkers.add(_marker);
