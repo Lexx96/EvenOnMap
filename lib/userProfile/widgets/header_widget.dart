@@ -40,16 +40,16 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
     return StreamBuilder(
       stream: _bloc.streamPersonalData,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return _bodyHeaderWidget(snapshot.data);
+        return _bodyHeaderWidget(snapshot);
       },
     );
   }
 
   /// Тело виджета
-  Stack _bodyHeaderWidget(data) {
+  Stack _bodyHeaderWidget(AsyncSnapshot snapshot) {
     File image = File('');
-    if (data is LoadedImageUserProfile){
-      final _data = data as LoadedImageUserProfile;
+    if (snapshot.data is LoadedImageUserProfile){
+      final _data = snapshot.data as LoadedImageUserProfile;
       image = _data.image as File;
     }
 
@@ -77,14 +77,14 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
                 clipBehavior: Clip.hardEdge,
                 child: Stack(
                   children: [
-                    (data is EmptyImageUserProfile) ? FlutterLogo(size: 160) : SizedBox.shrink(),
-                    (data is LoadingImageUserProfile) ? Stack(
+                    (snapshot.data is EmptyImageUserProfile) ? FlutterLogo(size: 160) : SizedBox.shrink(),
+                    (snapshot.data is LoadingImageUserProfile) ? Stack(
                       children: [
                         FlutterLogo(size: 160),
                         CircularProgressIndicator(),
                       ],
                     ) : SizedBox.shrink(),
-                    (data is LoadedImageUserProfile) ? ClipOval(
+                    (snapshot.data is LoadedImageUserProfile) ? ClipOval(
                       child: Image.file(
                         image,
                         height: 160,
@@ -99,7 +99,7 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
                           BorderRadius.all(Radius.circular(90)),
                           splashColor: Colors.grey[1],
                           onTap: () {
-                            (data is EmptyImageUserProfile)
+                            (snapshot.data is EmptyImageUserProfile)
                                 ? _showImagesSource(context)
                                 : _showActions(context);
                           } //_showActions(context, index),
@@ -118,10 +118,6 @@ class UserProfileHeaderWidgetState extends State<UserProfileHeaderWidget> {
                     style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    S.of(context).status,
-                    style: textStyle,
                   ),
                 ],
               ),

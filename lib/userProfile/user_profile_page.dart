@@ -70,7 +70,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                       size: 24,
                                     ),
                                     SizedBox(width: 15),
-                                    Text(S.of(context).hometown,
+                                    Text(S.of(context).city,
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ],

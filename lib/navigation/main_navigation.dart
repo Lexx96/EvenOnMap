@@ -4,7 +4,6 @@ import 'package:event_on_map/about_developer/abaut_developer.dart';
 import 'package:event_on_map/auth/auth_screen.dart';
 import 'package:event_on_map/change_personal_data_page/change_personal_data_page.dart';
 import 'package:event_on_map/create_event/create_event_screen.dart';
-import 'package:event_on_map/create_event_map_widget/create_event_map_widget.dart';
 import 'package:event_on_map/decoration_page/decoration_page.dart';
 import 'package:event_on_map/feedback_page/feedback_page.dart';
 import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
@@ -45,12 +44,11 @@ class MainNavigation {
     MainNavigationRouteName.userProfile: (context) => const UserProfilePage(),
     MainNavigationRouteName.newsWidget: (context) => const NewsPage(),
     MainNavigationRouteName.mapWidget: (context) => const MapWidget(),
-    MainNavigationRouteName.mainScreen: (context) => const MainScreen(),
+    MainNavigationRouteName.mainScreen: (context) => MainScreen(indexPage: 0,),
     MainNavigationRouteName.licenseAgreement: (context) => const LicenseAgreement(),
     MainNavigationRouteName.aboutApplication: (context) => const AboutApplication(),
     MainNavigationRouteName.feedbackPage: (context) => const FeedbackPage(),
     MainNavigationRouteName.aboutDeveloper: (context) => const AboutDeveloper(),
     MainNavigationRouteName.decorationPage: (context) => const DecorationPage(),
-    // MainNavigationRouteName.createEventMapWidget: (context) => const CreateEventMapWidget(),
   };
 }

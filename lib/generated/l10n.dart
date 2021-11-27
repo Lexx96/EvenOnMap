@@ -230,11 +230,11 @@ class S {
     );
   }
 
-  /// `Hometown`
-  String get hometown {
+  /// `City`
+  String get city {
     return Intl.message(
-      'Hometown',
-      name: 'hometown',
+      'City',
+      name: 'city',
       desc: '',
       args: [],
     );
@@ -495,16 +495,6 @@ class S {
     return Intl.message(
       'Photo',
       name: 'photo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `City`
-  String get city {
-    return Intl.message(
-      'City',
-      name: 'city',
       desc: '',
       args: [],
     );

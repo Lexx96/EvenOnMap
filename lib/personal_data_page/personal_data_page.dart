@@ -4,9 +4,6 @@ import 'package:event_on_map/personal_data_page/widgets/switch_private_informati
 import 'package:flutter/material.dart';
 import 'widgets/header_pages_widget.dart';
 
-/*
-добавить изминение авы
- */
 class PersonalDataPageWidget extends StatefulWidget {
   const PersonalDataPageWidget({Key? key}) : super(key: key);
 
@@ -182,7 +179,7 @@ class ContactInformationWidget extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 SizedBox(height: 15),
-                Text(S.of(context).hometown,
+                Text(S.of(context).city,
                   style: TextStyle(color: Colors.black54, fontSize: 14),
                 ),
                 TextButton(

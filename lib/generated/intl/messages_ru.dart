@@ -49,7 +49,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Введите номер телефона"),
         "friends": MessageLookupByLibrary.simpleMessage("Друзья"),
         "history": MessageLookupByLibrary.simpleMessage("История"),
-        "hometown": MessageLookupByLibrary.simpleMessage("Родной город"),
         "inMoreDetail": MessageLookupByLibrary.simpleMessage("Подробнее ..."),
         "informationAboutYourselfInAFreeForm":
             MessageLookupByLibrary.simpleMessage(

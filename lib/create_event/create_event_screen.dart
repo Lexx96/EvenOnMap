@@ -51,12 +51,19 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: _bloc.streamEventController,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return _bodyCreateEventWidget(context, snapshot);
-        },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainScreen(indexPage: 1,)));
+        return false;
+      },
+      child: Scaffold(
+        body: StreamBuilder(
+          stream: _bloc.streamEventController,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return _bodyCreateEventWidget(context, snapshot);
+          },
+        ),
       ),
     );
   }
@@ -152,7 +159,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   TextButton(
                     child: Text('Назад'),
                     onPressed: () => Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => MainScreen()))
+                        context, MaterialPageRoute(builder: (context) => MainScreen(indexPage: 1,)))
                   ),
                   TextButton(
                     child: Text('Создать'),
@@ -182,7 +189,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Center(
         child: Container(
-          height: 130,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).dividerColor),
@@ -304,7 +310,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 /// Класс с картор для выбора адреса события (нужно будет перенести в отдельный
 /// файл, он есть. Не получилось передать LatLng в другой блок)
 class CreateEventMapWidget extends StatefulWidget {
-  CreateEventBloc bloc;
+  final CreateEventBloc bloc;
 
   CreateEventMapWidget({Key? key, required this.bloc}) : super(key: key);
 
@@ -430,9 +436,8 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
       children: [
         Padding(
           padding:
-          const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
           child: Container(
-            height: 130,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -483,20 +488,23 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextButton(
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
                 style: buttonStyleTwo,
-                onPressed: () {
-                  bloc.getLatLngAndAddressFromMap(_onTabLatLng);
-                },
+                onPressed: () => bloc.emptyCreateEvent(),
+                child: Text('Отмена',),
+              ),
+              TextButton(
+                style: buttonStyleTwo,
+                onPressed: () => bloc.getLatLngAndAddressFromMap(_onTabLatLng),
                 child: Text('Выбрать',),
               ),
-            ),
-          ],
+            ],
+          ),
         )
       ],
     );
