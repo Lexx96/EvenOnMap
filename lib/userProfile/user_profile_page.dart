@@ -139,12 +139,13 @@ class UserProfilePageState extends State<UserProfilePage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text( _userData['userName'] == null ?
-                                  S.of(context).name + ' ' : _userData['userName'] as String,
+                                Text( _userData['userName'] == null || _userData['userName'] == '' ?
+                                  S.of(context).name : _userData['userName'] as String,
                                   style: const TextStyle(
                                       fontSize: 22, fontWeight: FontWeight.bold),
                                 ),
-                                Text( _userData['userSurname'] == null ?
+                                SizedBox(width: 5.0,),
+                                Text( _userData['userSurname'] == null || _userData['userSurname'] == '' ?
                                 S.of(context).surname : _userData['userSurname'] as String,
                                   style: const TextStyle(
                                       fontSize: 22, fontWeight: FontWeight.bold),
@@ -206,7 +207,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                   ),
                                 ],
                               ),
-                              Text(_userData['userCity'] == null ?
+                              Text(_userData['userCity'] == null || _userData['userCity'] == '' ?
                               S.of(context).city : _userData['userCity'] as String,
                                 style: TextStyle(fontSize: 15),
                               ),
@@ -229,7 +230,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                 ],
                               ),
                               SizedBox(width: 15),
-                              Text(_userData['phoneNumber'] == null ?
+                              Text(_userData['phoneNumber'] == null || _userData['phoneNumber'] == '' ?
                               S.of(context).phoneNumber : _userData['phoneNumber'] as String,
                                 style: TextStyle(fontSize: 15),
                               ),
@@ -252,7 +253,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                   )
                                 ],
                               ),
-                              Text(_userData['aboutMe'] == null ?
+                              Text(_userData['aboutMe'] == null || _userData['aboutMe'] == '' ?
                               'О себе' : _userData['aboutMe'] as String,
                                 style: TextStyle(fontSize: 15),
                               ),
