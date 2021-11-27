@@ -25,7 +25,7 @@ class SetAndReadDataFromSharedPreferences {
   final _storage = SharedPreferences.getInstance();
 
   /// Сохранение accessToken в SharedPreferences
-  Future<void> setAccessToken({required String accessToken}) async {
+  Future<void> saveAccessToken({required String accessToken}) async {
     try{
       final storage = await _storage;
       await storage.setString(_SharedPreferencesKeys._accessToken, accessToken);

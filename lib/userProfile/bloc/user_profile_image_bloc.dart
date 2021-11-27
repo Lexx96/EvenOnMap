@@ -10,6 +10,7 @@ class UserProfileImageBloc {
   Stream<UserProfileImageBlocState> get streamPersonalData =>
       _streamController.stream;
 
+  /// Получение и установка изображения на аватарку
   void addPersonalImageBloc(ImageSource source) {
     _streamController.sink.add(UserProfileImageBlocState.loadingPickImage());
     try {
@@ -25,6 +26,7 @@ class UserProfileImageBloc {
     }
   }
 
+  /// Чтение изображения для аватарки из памяти
   void emptyUserProfileImageBloc() async {
     _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
 
@@ -40,6 +42,7 @@ class UserProfileImageBloc {
     );
   }
 
+  /// Удаление аватарки
   void deleteUserProfileImageBloc() async {
     _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
 
@@ -48,6 +51,12 @@ class UserProfileImageBloc {
         _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
       },
     );
+  }
+
+  /// Получение данных о пользователе
+  void getUserDataFromSharedPreferencesBloc () async {
+    final userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferences();
+    _streamController.sink.add(UserProfileImageBlocState.saveUserDataInSharedPreferencesState(userDataFromSharedPreferences));
   }
 
   void dispose() {

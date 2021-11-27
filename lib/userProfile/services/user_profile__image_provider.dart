@@ -73,4 +73,36 @@ class UserProfileProvider {
     }
     throw Exception('file not exists');
   }
+
+  /// Сохранение данных о пользователе в SharedPreferences
+  void saveUserDataInSharedPreferences ({String? name, String? surName, String? city, String? aboutMe, String? phoneNumber}) async {
+    try{
+      if(name != null) {
+        await SaveAndReadDataFromSharedPreferences().saveNameData(name: name);
+      }
+      if(surName != null) {
+        SaveAndReadDataFromSharedPreferences().saveSurNameData(surName: surName);
+      }
+      if(city != null) {
+        SaveAndReadDataFromSharedPreferences().saveCityNameData(city: city);
+      }
+      if(aboutMe != null) {
+        SaveAndReadDataFromSharedPreferences().saveAboutMeData(aboutMe: aboutMe);
+      }
+      if(phoneNumber != null) {
+        SaveAndReadDataFromSharedPreferences().savePhoneNumberData(phoneNumber: phoneNumber);
+      }
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+  /// Получение всех данных о пользователе из SharedPreferences
+  Future<Map<String, String?>> getDataFromSharedPreferences () async {
+    try{
+      return await SaveAndReadDataFromSharedPreferences().readUserData();
+    }catch(e){
+      throw Exception(e);
+    }
+  }
 }

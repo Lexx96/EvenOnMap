@@ -40,7 +40,7 @@ class UserLogInProvider {
       {required String accessToken}) async {
     try {
       SetAndReadDataFromSharedPreferences()
-          .setAccessToken(accessToken: accessToken);
+          .saveAccessToken(accessToken: accessToken);
     } catch (_) {
       throw AccessTokenNotSetInSharedPreferencesException();
     }

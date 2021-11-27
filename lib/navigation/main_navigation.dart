@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 abstract class MainNavigationRouteName {
   static const auth = 'auth';
   static const authSignUp = 'auth/authSignUp';
-  static const personalDataPage = 'personalDataPage';
   static const changePersonalDataPage = 'changePersonalDataPage';
   static const createAnEventWidget = 'createAnEventWidget';
   static const userProfile = 'userProfile';
@@ -38,8 +37,7 @@ class MainNavigation {
   final initialRouteMain = MainNavigationRouteName.mainScreen;
   final routes = <String, Widget Function(BuildContext)>{
     MainNavigationRouteName.auth: (context) => const AuthWidget(),
-    MainNavigationRouteName.personalDataPage: (context) => const PersonalDataPageWidget(),
-    MainNavigationRouteName.changePersonalDataPage: (context) => const ChangePersonalDataPage(),
+    MainNavigationRouteName.changePersonalDataPage: (context) => ChangePersonalDataPage(),
     MainNavigationRouteName.createAnEventWidget: (context) => const CreateEventWidget(),
     MainNavigationRouteName.userProfile: (context) => const UserProfilePage(),
     MainNavigationRouteName.newsWidget: (context) => const NewsPage(),
