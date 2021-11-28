@@ -21,6 +21,7 @@ class UserProfilePage extends StatefulWidget {
 class UserProfilePageState extends State<UserProfilePage> {
   late UserProfileImageBloc _bloc;
   Map<String, String?> _userData = {};
+  File _image = File('');
 
   TextStyle textStyle = const TextStyle(
       fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold);
@@ -29,7 +30,7 @@ class UserProfilePageState extends State<UserProfilePage> {
   void initState() {
     super.initState();
     _bloc = UserProfileImageBloc();
-    _bloc.emptyUserProfileImageBloc();
+    _bloc.readUserProfileImageBloc();
     _bloc.getUserDataFromSharedPreferencesBloc();
   }
 
@@ -53,11 +54,13 @@ class UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
+  /// Тело UserProfilePage
   Container userProfilePageBody(BuildContext context, AsyncSnapshot snapshot) {
-    File image = File('');
+
+
     if (snapshot.data is LoadedImageUserProfile) {
       final _data = snapshot.data as LoadedImageUserProfile;
-      image = _data.image as File;
+      _image = _data.image as File;
     }
     if (snapshot.data is GetUserDataFromSharedPreferencesState) {
       final _data = snapshot.data as GetUserDataFromSharedPreferencesState;
@@ -108,7 +111,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                               (snapshot.data is LoadedImageUserProfile)
                                   ? ClipOval(
                                       child: Image.file(
-                                        image,
+                                        _image,
                                         height: 160,
                                         width: 160,
                                         fit: BoxFit.cover,

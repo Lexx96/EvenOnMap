@@ -18,13 +18,14 @@ class MainDrawer extends StatefulWidget {
 
 class _MainDrawerState extends State<MainDrawer> {
   late final MainDrawerBloc _bloc;
-  File _image = File('path');
+  Map<String, String?> _userNameAndSurname = {};
+  File _image = File('');
 
   @override
   void initState() {
     super.initState();
     _bloc = MainDrawerBloc();
-    _bloc.emptyMainDrawerState();
+    _bloc.getUserDataFromSharedPreferencesMainDrawerBloc();
   }
 
   @override
@@ -35,13 +36,22 @@ class _MainDrawerState extends State<MainDrawer> {
 
   @override
   Widget build(BuildContext context) {
+
     return StreamBuilder(
       stream: _bloc.streamController,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
+
         if (snapshot.data is LoadedImageUserProfileForDrawerState) {
           final _data = snapshot.data as LoadedImageUserProfileForDrawerState;
           _image = _data.image as File;
         }
+
+        if (snapshot.data is GetUserDataFromSharedPreferencesMainDrawerState) {
+          final _data = snapshot.data as GetUserDataFromSharedPreferencesMainDrawerState;
+          _userNameAndSurname = _data.userData;
+          _bloc.readImageUserBloc();
+        }
+
         return Stack(
           children: [
             Drawer(
@@ -74,32 +84,55 @@ class _MainDrawerState extends State<MainDrawer> {
                                           BoxShadow(
                                               color: Colors.black,
                                               blurRadius: 8,
-                                              offset: Offset(0, 2))
+                                              offset: Offset(0, 2),
+                                          ),
                                         ],
                                       ),
                                       clipBehavior: Clip.hardEdge,
-                                      child: _image.path != 'path'
-                                          ? ClipOval(
-                                        child: Image.file(
-                                          _image,
-                                          height: 160,
-                                          width: 160,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      )
-                                          : FlutterLogo(size: 160),
+                                      child: Stack(
+                                        children: [
+                                          (snapshot.data is EmptyMainDrawerState)
+                                              ? FlutterLogo(size: 160)
+                                              : SizedBox.shrink(),
+                                          (snapshot.data is LoadingImageMainDrawerState)
+                                              ? Stack(
+                                            children: [
+                                              FlutterLogo(size: 160),
+                                              Center(child: CircularProgressIndicator()),
+                                            ],
+                                          )
+                                              : SizedBox.shrink(),
+                                          _image != File('')
+                                              ? ClipOval(
+                                            child: Image.file(
+                                              _image,
+                                              height: 160,
+                                              width: 160,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : SizedBox.shrink()
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 20.0),
                                     child: Center(
-                                      child: Text(
-                                        S.of(context).name +
-                                            ' ' +
-                                            S.of(context).surname,
-                                        style: TextStyle(
-                                          fontSize: 19,
-                                        ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text( _userNameAndSurname['userName'] == null || _userNameAndSurname['userName'] == '' ?
+                                          S.of(context).name : _userNameAndSurname['userName'] as String,
+                                            style: const TextStyle(
+                                                fontSize: 22, fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(width: 5.0,),
+                                          Text( _userNameAndSurname['userSurname'] == null || _userNameAndSurname['userSurname'] == '' ?
+                                          S.of(context).surname : _userNameAndSurname['userSurname'] as String,
+                                            style: const TextStyle(
+                                                fontSize: 22, fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),

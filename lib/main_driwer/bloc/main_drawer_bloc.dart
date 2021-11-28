@@ -1,41 +1,51 @@
-
 import 'dart:async';
 import 'dart:io';
+import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc_state.dart';
 import 'package:event_on_map/userProfile/services/user_profile__image_provider.dart';
 
 import 'main_drawer_state.dart';
 
 class MainDrawerBloc {
-
   final _streamController = StreamController<MainDrawerBlocState>();
 
   Stream<MainDrawerBlocState> get streamController => _streamController.stream;
 
-  void emptyMainDrawerState () async {
+  /// Чтение изображения для аватарки из памяти
+  void readImageUserBloc() async {
     _streamController.sink.add(MainDrawerBlocState.emptyMainDrawerState());
 
     await UserProfileProvider().readPhotoFromMemory().then(
-          (imageFromMemory) {
-            _streamController.sink.add(MainDrawerBlocState.loadedImageUserProfileForDrawer(imageFromMemory));
+      (imageFromMemory) {
+        _streamController.sink.add(MainDrawerBlocState.loadedImageUserProfileForDrawerState(imageFromMemory));
       },
-    ).catchError((e){
-      _streamController.sink.add(MainDrawerBlocState.emptyMainDrawerState());
-    });
+    ).catchError(
+      (e) {
+        _streamController.sink.add(MainDrawerBlocState.emptyMainDrawerState());
+      },
+    );
   }
 
-  void loadedImageUserProfileForDrawer ([File? image]){
-    _streamController.sink.add(MainDrawerBlocState.loadedImageUserProfileForDrawer(image));
+  /// Получение имени и фамилии(логина) пользователя
+  void getUserDataFromSharedPreferencesMainDrawerBloc () async {
+    try{
+      final userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferences();
+      _streamController.sink.add(MainDrawerBlocState.getUserDataFromSharedPreferencesMainDrawerState(userDataFromSharedPreferences));
+    }catch(e){
+      throw Exception(e);
+    }
   }
 
+  /// Закрыть AlertDialog
   void closeAlertDialog() {
     _streamController.sink.add(MainDrawerBlocState.closeAlertDialogState());
   }
 
-  void showMessage () {
+  /// Подтверждение выходя из акаунта
+  void showMessage() {
     _streamController.sink.add(MainDrawerBlocState.showMessageState());
   }
 
-  void dispose () {
+  void dispose() {
     _streamController.close();
   }
 }

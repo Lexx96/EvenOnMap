@@ -1,24 +1,26 @@
 import 'dart:io';
-
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/map_widget/map_widget.dart';
 import 'package:event_on_map/news_page/news_pages.dart';
 import 'package:event_on_map/userProfile/user_profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../custom_icons_icons.dart';
 
 class MainScreen extends StatefulWidget {
 final int indexPage;
-MainScreen({Key? key,required this.indexPage}) : super(key: key);
+final LatLng? latLngNews;
+MainScreen(this.indexPage, [this.latLngNews]);
 
   @override
-  _MainScreenState createState() => _MainScreenState(indexPage);
+  _MainScreenState createState() => _MainScreenState(indexPage, latLngNews);
 }
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedTab = 0;
   late int indexPage;
-  _MainScreenState(this.indexPage);
+  late LatLng? latLngNews;
+  _MainScreenState(this.indexPage, this.latLngNews);
 
 
 
@@ -37,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
           index: _selectedTab,
           children: [
             NewsPage(),
-            MapWidget(),
+            latLngNews != null ? MapWidget(latLngNews) : MapWidget(),
             UserProfilePage(),
           ],
         ),

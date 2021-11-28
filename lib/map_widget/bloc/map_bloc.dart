@@ -15,11 +15,11 @@ class GoogleMapBloc {
   Stream<MapBlocState> get streamMapController => _streamController.stream;
 
   /// Получение LatLng и адресса местоположения пользователя
-  void getLatLngAndAddressUserPositionBloc(Completer<GoogleMapController> controller) async {
+  void getLatLngAndAddressUserPositionBloc(Completer<GoogleMapController> controller, [LatLng? latLngNews]) async {
     _streamController.sink.add(MapBlocState.emptyLatLng());
     try {
     Set<Marker> setUserMarker = await MapProvider.getMyMarkerProvider();
-    await MapProvider.onMapCreatedProvider(controller);
+    await MapProvider.onMapCreatedProvider(controller, latLngNews);
     _streamController.sink.add(MapBlocState.loadedAddressFromUserPositionState(setUserMarker));
     } catch (e) {
       throw Exception(e);

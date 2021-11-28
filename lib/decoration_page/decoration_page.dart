@@ -1,6 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-
 import 'bloc/decoration_page_bloc.dart';
 import 'bloc/decoration_page_bloc_state.dart';
 

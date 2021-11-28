@@ -54,7 +54,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     return WillPopScope(
       onWillPop: () async {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainScreen(indexPage: 1,)));
+            context, MaterialPageRoute(builder: (context) => MainScreen( 1,)));
         return false;
       },
       child: Scaffold(
@@ -159,7 +159,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   TextButton(
                     child: Text('Назад'),
                     onPressed: () => Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => MainScreen(indexPage: 1,)))
+                        context, MaterialPageRoute(builder: (context) => MainScreen( 1,)))
                   ),
                   TextButton(
                     child: Text('Создать'),
@@ -350,7 +350,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     super.initState();
     _createEventMapBloc = CreateEventMapBloc();
     _createEventMapBloc.createEventGetLatLngAndAddressUserPosition();
-    MapProvider.onMapCreatedProvider(_controller);
+    MapProvider.onMapCreatedProvider(_controller, null);
   }
 
   @override
@@ -412,7 +412,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: TextButton(
-                    onPressed: () => MapProvider.onMapCreatedProvider(_controller),
+                    onPressed: () => MapProvider.onMapCreatedProvider(_controller, null),
                     child: Icon(
                       CustomIcons.map_marker,
                       size: 30,

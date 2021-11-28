@@ -17,7 +17,7 @@ class UserProfileImageBloc {
       UserProfileProvider().getImageFileUserProfile(source).then(
         (image) async {
           await UserProfileProvider().writePhotoInMemory(image as File);
-          emptyUserProfileImageBloc();
+          readUserProfileImageBloc();
         },
       );
     } catch (error) {
@@ -27,7 +27,7 @@ class UserProfileImageBloc {
   }
 
   /// Чтение изображения для аватарки из памяти
-  void emptyUserProfileImageBloc() async {
+  void readUserProfileImageBloc() async {
     _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
 
     await UserProfileProvider().readPhotoFromMemory().then(
@@ -35,8 +35,7 @@ class UserProfileImageBloc {
         _streamController.sink
             .add(UserProfileImageBlocState.loadedPickImage(imageFromMemory));
       },
-    ).catchError(
-      (e) {
+    ).catchError((e){
         _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
       },
     );
@@ -55,8 +54,12 @@ class UserProfileImageBloc {
 
   /// Получение данных о пользователе
   void getUserDataFromSharedPreferencesBloc () async {
-    final userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferences();
-    _streamController.sink.add(UserProfileImageBlocState.saveUserDataInSharedPreferencesState(userDataFromSharedPreferences));
+    try{
+      final userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferences();
+      _streamController.sink.add(UserProfileImageBlocState.getUserDataInSharedPreferencesState(userDataFromSharedPreferences));
+    }catch(e){
+      throw Exception(e);
+    }
   }
 
   void dispose() {

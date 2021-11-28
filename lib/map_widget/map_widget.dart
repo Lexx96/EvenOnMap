@@ -9,16 +9,21 @@ import 'bloc/map_bloc_state.dart';
 import 'service/map_provider.dart';
 
 class MapWidget extends StatefulWidget {
-  const MapWidget({Key? key}) : super(key: key);
+  final LatLng? latLngNews;
+  MapWidget([this.latLngNews]);
 
   @override
-  _MapWidgetState createState() => _MapWidgetState();
+  _MapWidgetState createState() => _MapWidgetState(latLngNews);
 }
 
 class _MapWidgetState extends State<MapWidget> {
+  late LatLng? latLngNews;
+  _MapWidgetState(this.latLngNews);
+
+
   late GoogleMapBloc _bloc;
-  Completer<GoogleMapController> _controller = Completer();
   late LatLng _myPosition;
+  Completer<GoogleMapController> _controller = Completer();
   Set<Marker> _setUserMarker = {};
   Set<Marker> _setNewsAddUserPosition = {};
 
@@ -26,7 +31,7 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     super.initState();
     _bloc = GoogleMapBloc();
-    _bloc.getLatLngAndAddressUserPositionBloc(_controller);
+    _bloc.getLatLngAndAddressUserPositionBloc(_controller, latLngNews);
     _bloc.getAllNewsFromServerBloc();
 
   }
@@ -74,7 +79,7 @@ class _MapWidgetState extends State<MapWidget> {
         zoomControlsEnabled: false,
         onMapCreated: (GoogleMapController controller) async {
           _controller.complete(controller);
-          await MapProvider.onMapCreatedProvider(_controller);
+          await MapProvider.onMapCreatedProvider(_controller, latLngNews);
         },
         markers: _setNewsAddUserPosition,
         initialCameraPosition: CameraPosition(

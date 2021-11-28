@@ -75,7 +75,7 @@ class UserProfileProvider {
   }
 
   /// Сохранение данных о пользователе в SharedPreferences
-  void saveUserDataInSharedPreferences ({String? name, String? surName, String? city, String? aboutMe, String? phoneNumber}) async {
+  Future<void> saveUserDataInSharedPreferences ({String? name, String? surName, String? city, String? aboutMe, String? phoneNumber}) async {
     try{
       if(name != null) {
         await SaveAndReadDataFromSharedPreferences().saveNameData(name: name);

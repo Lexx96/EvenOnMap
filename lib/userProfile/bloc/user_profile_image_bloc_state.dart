@@ -4,7 +4,7 @@ import 'dart:io';
 class UserProfileImageBlocState {
   UserProfileImageBlocState();
   factory UserProfileImageBlocState.emptyPickImage() = EmptyImageUserProfile;
-  factory UserProfileImageBlocState.saveUserDataInSharedPreferencesState(Map<String, String?> userData) = GetUserDataFromSharedPreferencesState;
+  factory UserProfileImageBlocState.getUserDataInSharedPreferencesState(Map<String, String?> userData) = GetUserDataFromSharedPreferencesState;
   factory UserProfileImageBlocState.loadingPickImage() = LoadingImageUserProfile;
   factory UserProfileImageBlocState.loadedPickImage(File? image) = LoadedImageUserProfile;
   factory UserProfileImageBlocState.loadedImageUserForDrawer(File? image) = LoadedImageUserForDrawer;

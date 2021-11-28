@@ -127,18 +127,28 @@ class MapProvider {
   }
 
   /// Возвращает камеру на место положение пользователя
-  static Future<void> onMapCreatedProvider(Completer<GoogleMapController> _controller) async {
+  static Future<void> onMapCreatedProvider(Completer<GoogleMapController> _controller, LatLng? latLngNews) async {
     try{
-      Position getPositionUserFromGPS = await determinePosition();
-      LatLng _myPosition = LatLng(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
-      final GoogleMapController controller = await _controller.future;
-      if (_myPosition != LatLng(0.0, 0.0)) {
+      if(latLngNews == null) {
+        Position getPositionUserFromGPS = await determinePosition();
+        LatLng _myPosition = LatLng(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
+        final GoogleMapController controller = await _controller.future;
+        if (_myPosition != LatLng(0.0, 0.0)) {
+          controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(target: _myPosition, zoom: 16),
+            ),
+          );
+        }
+      }else{
+        final GoogleMapController controller = await _controller.future;
         controller.animateCamera(
           CameraUpdate.newCameraPosition(
-            CameraPosition(target: _myPosition, zoom: 16),
+            CameraPosition(target: latLngNews, zoom: 16),
           ),
         );
       }
+
     }catch(e){
       throw Exception(e);
     }

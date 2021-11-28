@@ -41,8 +41,7 @@ class _ChangePersonalDataPageState extends State<ChangePersonalDataPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MainScreen(
-              indexPage: 2,
+            builder: (context) => MainScreen( 2,
             ),
           ),
         );
@@ -105,7 +104,7 @@ class _ChangePersonalDataPageState extends State<ChangePersonalDataPage> {
                             maxLength: 50,
                             controller: _userCityController,
                             decoration: InputDecoration(
-                              hintText: 'Город',
+                              hintText: S.of(context).city,
                             ),
                           ),
                           Padding(
@@ -136,18 +135,22 @@ class _ChangePersonalDataPageState extends State<ChangePersonalDataPage> {
           children: [
             TextButton(
               onPressed: () {
-                UserProfileProvider().saveUserDataInSharedPreferences(
-                    name: _nameController.text,
-                    surName: _surNameController.text,
-                    city: _userCityController.text,
-                    aboutMe: _aboutMeController.text);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MainScreen(
-                      indexPage: 2,
-                    ),
-                  ),
+                UserProfileProvider()
+                    .saveUserDataInSharedPreferences(
+                        name: _nameController.text,
+                        surName: _surNameController.text,
+                        city: _userCityController.text,
+                        aboutMe: _aboutMeController.text)
+                    .whenComplete(
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainScreen( 2,
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
               child: Text(
@@ -162,8 +165,7 @@ class _ChangePersonalDataPageState extends State<ChangePersonalDataPage> {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MainScreen(
-                    indexPage: 2,
+                  builder: (context) => MainScreen( 2,
                   ),
                 ),
               ),

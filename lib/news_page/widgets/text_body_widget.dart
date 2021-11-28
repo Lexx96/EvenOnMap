@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class TextBodyWidget extends StatefulWidget {
   final GetNewsFromServerModel  _newsResponse;
-  TextBodyWidget( this._newsResponse,{Key? key}) : super(key: key);
+  TextBodyWidget(this._newsResponse,{Key? key}) : super(key: key);
 
   @override
   _TextBodyWidgetState createState() => _TextBodyWidgetState(_newsResponse);

@@ -1,10 +1,21 @@
 import 'package:event_on_map/generated/l10n.dart';
+import 'package:event_on_map/main_screen/main_screen_widget.dart';
+import 'package:event_on_map/news_page/models/news.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../custom_icons_icons.dart';
 
-class HeaderButtonWidget extends StatelessWidget {
-  const HeaderButtonWidget({Key? key}) : super(key: key);
+class HeaderButtonWidget extends StatefulWidget {
+  final GetNewsFromServerModel  _newsResponse;
+  HeaderButtonWidget(this._newsResponse,{Key? key}) : super(key: key);
 
+  @override
+  State<HeaderButtonWidget> createState() => _HeaderButtonWidgetState(_newsResponse);
+}
+
+class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
+  late GetNewsFromServerModel  _newsResponse;
+  _HeaderButtonWidgetState(this._newsResponse);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -47,7 +58,10 @@ class HeaderButtonWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MainScreen( 1, LatLng(_newsResponse.lat, _newsResponse.lng))));
+            },
             child: Icon(
               CustomIcons.map_marker,
               color: Colors.blue,
@@ -66,13 +80,4 @@ class HeaderButtonWidget extends StatelessWidget {
       ],
     );
   }
-// /// Получение информации о ранее выбранной теме и в зависимости от этого выбор цвета иконки
-// static Future<bool> _choiceTheme() async {
-//   final savedThemeMode = await AdaptiveTheme.getThemeMode();
-//   if (savedThemeMode == AdaptiveThemeMode.light) {
-//     return true;
-//   }else {
-//     return false;
-//   }
-// }
 }
