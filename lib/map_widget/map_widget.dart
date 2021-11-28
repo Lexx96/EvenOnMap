@@ -22,7 +22,8 @@ class _MapWidgetState extends State<MapWidget> {
 
 
   late GoogleMapBloc _bloc;
-  late LatLng _myPosition;
+  late LatLng? _myLastPosition;
+  late LatLng _myPositionLatLng;
   Completer<GoogleMapController> _controller = Completer();
   Set<Marker> _setUserMarker = {};
   Set<Marker> _setNewsAddUserPosition = {};
@@ -31,9 +32,9 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     super.initState();
     _bloc = GoogleMapBloc();
+    _bloc.readMyLastPositionBloc();
     _bloc.getLatLngAndAddressUserPositionBloc(_controller, latLngNews);
     _bloc.getAllNewsFromServerBloc();
-
   }
 
   @override
@@ -62,8 +63,6 @@ class _MapWidgetState extends State<MapWidget> {
     if (snapshot.data is LoadedAddressFromUserPositionState) {
       final _data = snapshot.data as LoadedAddressFromUserPositionState;
       _setUserMarker.add(_data.setUserMarker.first);
-    } else {
-      _myPosition = LatLng(0.0, 0.0);
     }
 
     if (snapshot.data is GetAllNewsFromServerState) {
@@ -71,6 +70,12 @@ class _MapWidgetState extends State<MapWidget> {
       Set<Marker> _newsMarkers = _data.markers;
       _newsMarkers.add(_setUserMarker.first);
       _setNewsAddUserPosition = _newsMarkers;
+    }
+
+    if (snapshot.data is ReadMyLastPositionState) {
+      final _data = snapshot.data as ReadMyLastPositionState;
+      _myLastPosition = _data.myLastPosition;
+      _myPositionLatLng = (_myLastPosition != null ? _myLastPosition : LatLng(53.7444831, 85.0315746))!;
     }
 
     return Scaffold(
@@ -83,7 +88,7 @@ class _MapWidgetState extends State<MapWidget> {
         },
         markers: _setNewsAddUserPosition,
         initialCameraPosition: CameraPosition(
-          target: _myPosition,
+          target: _myPositionLatLng,
           zoom: 16,
         ),
       ),

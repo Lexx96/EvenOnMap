@@ -39,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
           index: _selectedTab,
           children: [
             NewsPage(),
-            latLngNews != null ? MapWidget(latLngNews) : MapWidget(),
+            MapWidget(latLngNews),
             UserProfilePage(),
           ],
         ),

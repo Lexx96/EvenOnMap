@@ -4,13 +4,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapBlocState {
   MapBlocState();
   factory MapBlocState.emptyLatLng() = EmptyGoogleMapState;
+  factory MapBlocState.readMyLastPositionState(LatLng? myLastPosition) = ReadMyLastPositionState;
   factory MapBlocState.loadedAddressFromUserPositionState(Set<Marker> setUserMarker) = LoadedAddressFromUserPositionState;
   factory MapBlocState.getAllNewsFromServerState({required Set<Marker> markers,  required List<GetNewsFromServerModel> listAllNews}) = GetAllNewsFromServerState;
 }
 
 class EmptyGoogleMapState extends MapBlocState {}
 
-class EmptyOnTabForCreateEventState extends MapBlocState {}
+class ReadMyLastPositionState extends MapBlocState {
+  LatLng? myLastPosition;
+  ReadMyLastPositionState(this.myLastPosition);
+}
 
 class LoadedAddressFromUserPositionState extends MapBlocState {
   Set<Marker> setUserMarker;

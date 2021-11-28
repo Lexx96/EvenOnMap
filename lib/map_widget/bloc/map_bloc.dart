@@ -18,9 +18,10 @@ class GoogleMapBloc {
   void getLatLngAndAddressUserPositionBloc(Completer<GoogleMapController> controller, [LatLng? latLngNews]) async {
     _streamController.sink.add(MapBlocState.emptyLatLng());
     try {
-    Set<Marker> setUserMarker = await MapProvider.getMyMarkerProvider();
-    await MapProvider.onMapCreatedProvider(controller, latLngNews);
-    _streamController.sink.add(MapBlocState.loadedAddressFromUserPositionState(setUserMarker));
+      Set<Marker> setUserMarker = await MapProvider.getMyMarkerProvider();
+      await MapProvider.onMapCreatedProvider(controller, latLngNews);
+      _streamController.sink
+          .add(MapBlocState.loadedAddressFromUserPositionState(setUserMarker));
     } catch (e) {
       throw Exception(e);
     }
@@ -31,11 +32,23 @@ class GoogleMapBloc {
     try {
       List<GetNewsFromServerModel> listAllNews =
           await NewsProvider().getAllNewsFromServer();
-      MapProvider.getAllNewsFromServerProvider().then((setNewsMarkers) {
-        _streamController.sink.add(MapBlocState.getAllNewsFromServerState(
-            markers: setNewsMarkers, listAllNews: listAllNews));
-      });
+      MapProvider.getAllNewsFromServerProvider().then(
+        (setNewsMarkers) {
+          _streamController.sink.add(MapBlocState.getAllNewsFromServerState(
+              markers: setNewsMarkers, listAllNews: listAllNews));
+        },
+      );
     } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  /// Чтение последнего местоположения пользователя
+  void readMyLastPositionBloc () async{
+    try{
+      final LatLng? myLastPosition = await MapProvider.readMyLastPosition();
+      _streamController.sink.add(MapBlocState.readMyLastPositionState(myLastPosition));
+    }catch(e){
       throw Exception(e);
     }
   }

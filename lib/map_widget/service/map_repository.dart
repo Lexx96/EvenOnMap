@@ -5,9 +5,16 @@ import 'package:flutter_geocoder/model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+abstract class _SharedPreferencesKeys {
+  static const _userLastLat = 'userLastLat';
+  static const _userLastLng = 'userLastLng';
+}
+
+
 
 class MapRepository {
-
 
   /// Определение Position пользователя при инициализации карты
   static Future<Position> determinePositionGPS() async {
@@ -22,7 +29,7 @@ class MapRepository {
           await placemarkFromCoordinates(lat, lng);
       return placemark;
     } catch (e) {
-      throw Exception('Не удалось получить адресс');
+      throw Exception('Не удалось получить адресс $e');
     }
   }
 
@@ -56,6 +63,40 @@ class MapRepository {
       }
       return await rootBundle.loadString(themeMap);
     }catch(e){
+      throw Exception(e);
+    }
+  }
+}
+
+class SaveAndReadLatLngFromSharedPreferences {
+
+  final _storage = SharedPreferences.getInstance();
+
+  /// Сохранение последнего местоположения пользователя в SharedPreferences
+  Future<void> saveLastLatLngUser({required String lat, required String lng}) async {
+    try{
+      final storage = await _storage;
+      await storage.setString(_SharedPreferencesKeys._userLastLat, lat);
+      await storage.setString(_SharedPreferencesKeys._userLastLng, lng);
+    }catch(e) {
+      throw Exception(e);
+    }
+  }
+
+  /// Получение данных о последнем местоположении пользователя из SharedPreferences
+  Future<LatLng?> readLastLatLngUser() async {
+    final storage = await _storage;
+    try{
+      final lastLat = storage.getString(_SharedPreferencesKeys._userLastLat);
+      final lastLng = storage.getString(_SharedPreferencesKeys._userLastLng);
+      if(lastLng != null || lastLat != null) {
+        final doubleLastLat = double.parse(lastLat!);
+        final doubleLastLng = double.parse(lastLng!);
+        return LatLng(doubleLastLat, doubleLastLng);
+      }
+      return null;
+    }
+    catch(e){
       throw Exception(e);
     }
   }

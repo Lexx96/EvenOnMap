@@ -6,16 +6,20 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../custom_icons_icons.dart';
 
 class HeaderButtonWidget extends StatefulWidget {
-  final GetNewsFromServerModel  _newsResponse;
-  HeaderButtonWidget(this._newsResponse,{Key? key}) : super(key: key);
+  final GetNewsFromServerModel _newsResponse;
+
+  HeaderButtonWidget(this._newsResponse, {Key? key}) : super(key: key);
 
   @override
-  State<HeaderButtonWidget> createState() => _HeaderButtonWidgetState(_newsResponse);
+  State<HeaderButtonWidget> createState() =>
+      _HeaderButtonWidgetState(_newsResponse);
 }
 
 class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
-  late GetNewsFromServerModel  _newsResponse;
+  late GetNewsFromServerModel _newsResponse;
+
   _HeaderButtonWidgetState(this._newsResponse);
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -41,7 +45,8 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
                   children: [
                     Text(
                       S.of(context).userNickname, // избежать оверфлоу
-                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -60,7 +65,10 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
           child: TextButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MainScreen( 1, LatLng(_newsResponse.lat, _newsResponse.lng))));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MainScreen(
+                          1, LatLng(_newsResponse.lat, _newsResponse.lng))));
             },
             child: Icon(
               CustomIcons.map_marker,

@@ -8,6 +8,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'map_repository.dart';
 
+
+
+
 class MapProvider {
   // Разбить на методы
   /// Проверка доступа к GPS модулю и определение Position
@@ -126,20 +129,19 @@ class MapProvider {
     }
   }
 
-  /// Возвращает камеру на место положение пользователя
+  /// Возвращает камеру на место положение пользователя и и вызывает метод сохранения последнего местоположение пользователя
   static Future<void> onMapCreatedProvider(Completer<GoogleMapController> _controller, LatLng? latLngNews) async {
     try{
       if(latLngNews == null) {
         Position getPositionUserFromGPS = await determinePosition();
-        LatLng _myPosition = LatLng(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
         final GoogleMapController controller = await _controller.future;
-        if (_myPosition != LatLng(0.0, 0.0)) {
+        LatLng _myPosition = LatLng(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
           controller.animateCamera(
             CameraUpdate.newCameraPosition(
               CameraPosition(target: _myPosition, zoom: 16),
             ),
           );
-        }
+        await saveMyLastPosition(lat: getPositionUserFromGPS.latitude, lng: getPositionUserFromGPS.longitude);
       }else{
         final GoogleMapController controller = await _controller.future;
         controller.animateCamera(
@@ -149,6 +151,27 @@ class MapProvider {
         );
       }
 
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+  /// Сохранение последнего местоположения пользователя в LatLng
+  static Future<void> saveMyLastPosition ({required double lat, required double lng}) async {
+    try{
+      String latString = lat.toString();
+      String lngString = lng.toString();
+        await SaveAndReadLatLngFromSharedPreferences().saveLastLatLngUser(lat: latString, lng: lngString);
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+  /// Чтение последнего местоположения пользователя в LatLng
+  static Future<LatLng?> readMyLastPosition () async {
+    try{
+      final LatLng? _myLastPosition = await SaveAndReadLatLngFromSharedPreferences().readLastLatLngUser();
+      return _myLastPosition;
     }catch(e){
       throw Exception(e);
     }
