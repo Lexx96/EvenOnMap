@@ -4,10 +4,8 @@ import 'package:event_on_map/create_event_map_widget/create_event_map_widget.dar
 import 'package:event_on_map/themes/my_dark_theme.dart';
 import 'package:event_on_map/themes/my_light_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'auth/bloc/auth_bloc.dart';
 import 'auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'auth/services/user_log_in/user_log_in_provider.dart';
 import 'generated/l10n.dart';

@@ -31,7 +31,6 @@ class UserProfilePageState extends State<UserProfilePage> {
     super.initState();
     _bloc = UserProfileImageBloc();
     _bloc.readUserProfileImageBloc();
-    _bloc.getUserDataFromSharedPreferencesBloc();
   }
 
   @override
@@ -61,6 +60,7 @@ class UserProfilePageState extends State<UserProfilePage> {
     if (snapshot.data is LoadedImageUserProfile) {
       final _data = snapshot.data as LoadedImageUserProfile;
       _image = _data.image as File;
+      _bloc.getUserDataFromSharedPreferencesBloc();
     }
     if (snapshot.data is GetUserDataFromSharedPreferencesState) {
       final _data = snapshot.data as GetUserDataFromSharedPreferencesState;
@@ -102,34 +102,34 @@ class UserProfilePageState extends State<UserProfilePage> {
                                   : SizedBox.shrink(),
                               (snapshot.data is LoadingImageUserProfile)
                                   ? Stack(
-                                      children: [
-                                        FlutterLogo(size: 160),
-                                        Center(child: CircularProgressIndicator()),
-                                      ],
-                                    )
+                                children: [
+                                  FlutterLogo(size: 160),
+                                  Center(child: CircularProgressIndicator()),
+                                ],
+                              )
                                   : SizedBox.shrink(),
-                              (snapshot.data is LoadedImageUserProfile)
+                              _image != File('')
                                   ? ClipOval(
-                                      child: Image.file(
-                                        _image,
-                                        height: 160,
-                                        width: 160,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
+                                child: Image.file(
+                                  _image,
+                                  height: 160,
+                                  width: 160,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
                                   : SizedBox.shrink(),
                               Material(
                                 color: Colors.transparent,
                                 child: InkWell(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(90)),
+                                    BorderRadius.all(Radius.circular(90)),
                                     splashColor: Colors.grey[1],
                                     onTap: () {
                                       (snapshot.data is EmptyImageUserProfile)
                                           ? _showImagesSource(context)
                                           : _showActions(context);
                                     } //_showActions(context, index),
-                                    ),
+                                ),
                               )
                             ],
                           ),
@@ -143,7 +143,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text( _userData['userName'] == null || _userData['userName'] == '' ?
-                                  S.of(context).name : _userData['userName'] as String,
+                                S.of(context).name : _userData['userName'] as String,
                                   style: const TextStyle(
                                       fontSize: 22, fontWeight: FontWeight.bold),
                                 ),
@@ -174,7 +174,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                       ),
                       onPressed: () => Navigator.of(context)
                           .pushNamedAndRemoveUntil(
-                              MainNavigationRouteName.changePersonalDataPage,
+                          MainNavigationRouteName.changePersonalDataPage,
                               (route) => false),
                       child: Text(
                         S.of(context).edit,
@@ -295,9 +295,9 @@ class UserProfilePageState extends State<UserProfilePage> {
                                 width: 90,
                                 decoration: BoxDecoration(
                                   color:
-                                      Theme.of(context).scaffoldBackgroundColor,
+                                  Theme.of(context).scaffoldBackgroundColor,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(Radius.circular(10)),
                                   boxShadow: [
                                     BoxShadow(
                                         color: Colors.black,
@@ -320,7 +320,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                               Radius.circular(10)),
                                           onTap:
                                               () {} //_showActions(context, index),
-                                          ),
+                                      ),
                                     )
                                   ],
                                 ),
