@@ -72,6 +72,7 @@ class _MapWidgetState extends State<MapWidget> {
       _setNewsAddUserPosition = _newsMarkers;
     }
 
+    // происходит запрос к _myPositionLatLng быстрее чем ей присваевается значение, ошибка позней инициализации
     if (snapshot.data is ReadMyLastPositionState) {
       final _data = snapshot.data as ReadMyLastPositionState;
       _myLastPosition = _data.myLastPosition;

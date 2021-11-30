@@ -146,7 +146,7 @@ class MapProvider {
         final GoogleMapController controller = await _controller.future;
         controller.animateCamera(
           CameraUpdate.newCameraPosition(
-            CameraPosition(target: latLngNews, zoom: 16),
+            CameraPosition(target: latLngNews, zoom: 18),
           ),
         );
       }

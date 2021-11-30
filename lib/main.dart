@@ -1,6 +1,4 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:event_on_map/create_event/bloc/create_event/create_event_bloc.dart';
-import 'package:event_on_map/create_event_map_widget/create_event_map_widget.dart';
 import 'package:event_on_map/themes/my_dark_theme.dart';
 import 'package:event_on_map/themes/my_light_theme.dart';
 import 'package:flutter/material.dart';
@@ -82,33 +80,3 @@ Future<String?> isUserAuth() async {
     return MainNavigation().initialRouteMain;
   }
 }
-
-/*
-  Widget _showMessage() {
-    return AlertDialog(
-      title: Center(
-          child: Text(
-            '''Вы точно хотите выйти ?''',
-          )),
-      actions: [
-        Row(
-          children: [
-            TextButton(
-              onPressed: () {},
-              child: Text('Отмена'),
-            ),
-            TextButton(
-                onPressed: () async {
-                  await WriteAndReadDataFromSecureStorage
-                      .deleteUserPasswordAndLogIn();
-                  Navigator.of(context).pushReplacementNamed(
-                      MainNavigationRouteName.auth);
-                },
-                child: Text('Выйти')
-            ),
-          ],
-        ),
-      ],
-    );
-  }
- */

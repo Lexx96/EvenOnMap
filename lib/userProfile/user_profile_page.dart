@@ -56,7 +56,6 @@ class UserProfilePageState extends State<UserProfilePage> {
   /// Тело UserProfilePage
   Container userProfilePageBody(BuildContext context, AsyncSnapshot snapshot) {
 
-
     if (snapshot.data is LoadedImageUserProfile) {
       final _data = snapshot.data as LoadedImageUserProfile;
       _image = _data.image as File;

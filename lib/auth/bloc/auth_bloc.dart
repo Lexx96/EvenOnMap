@@ -23,10 +23,10 @@ class ServiceAuthBloc {
   }
 
   /// Регистрация и получения данных
-  void loadingRegistration(
+  Future<void> loadingRegistration(
     String phone,
     String password,
-  ) {
+  ) async {
     _streamController.sink.add(AuthBlocState.loadingRegistration());
     UserRegistrationProvider().postUserRegistration(phone, password).then(
       (responseJsonRegistration) {
@@ -50,10 +50,10 @@ class ServiceAuthBloc {
   }
 
   /// Авторизация и получения данных
-  void loadingLogIn(
+  Future<void> loadingLogIn(
     String phone,
     String password,
-  ) {
+  ) async {
     _streamController.sink.add(AuthBlocState.loadingLogIn());
     UserLogInProvider().postUserLogIn(phone, password).then(
       (responseJsonLogIn) {

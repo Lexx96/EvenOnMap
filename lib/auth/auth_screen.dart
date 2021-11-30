@@ -1,12 +1,11 @@
-
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
-import 'package:event_on_map/userProfile/services/user_profile__image_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../custom_icons_icons.dart';
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_bloc_state.dart';
@@ -27,8 +26,8 @@ class _AuthWidgetState extends State<AuthWidget> {
   late final UserLogInRepository _authLogInRepository;
   final _textStyle = TextStyle(fontSize: 16);
 
-  final _numberController = TextEditingController(text: '9134322000');
-  final _passwordController = TextEditingController(text: 'Sex12345LK');
+  final _numberController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -66,6 +65,8 @@ class _AuthWidgetState extends State<AuthWidget> {
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
+              print('111111111111111111111111111111111111111111');
+              print(snapshot.data);
               if (snapshot.data is AuthLogInLoadedState) {
                 Future.delayed(
                   Duration.zero,
@@ -161,19 +162,27 @@ class _AuthWidgetState extends State<AuthWidget> {
                       ),
                       TextButton(
                         child: Text(
-                          S.of(context).enter, style: TextStyle(fontSize: 18),
+                          S.of(context).enter,
+                          style: TextStyle(fontSize: 18),
                         ),
-                        onPressed: () => (snapshot.data is RegistrationLoadingState ||
-                            snapshot.data is AuthLogInLoadingState) ? null : _goLogIn(),
+                        onPressed: () =>
+                            (snapshot.data is RegistrationLoadingState ||
+                                    snapshot.data is AuthLogInLoadingState)
+                                ? null
+                                : _goLogIn(),
                       ),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.01),
                       TextButton(
                         child: Text(
-                          S.of(context).registration, style: TextStyle(fontSize: 18),
+                          S.of(context).registration,
+                          style: TextStyle(fontSize: 18),
                         ),
-                        onPressed: () => (snapshot.data is RegistrationLoadingState ||
-              snapshot.data is AuthLogInLoadingState) ? null : _goRegistration(),
+                        onPressed: () =>
+                            (snapshot.data is RegistrationLoadingState ||
+                                    snapshot.data is AuthLogInLoadingState)
+                                ? null
+                                : _goRegistration(),
                       ),
                     ],
                   ),
@@ -197,7 +206,7 @@ class _AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-
+  // при обновлении страницы , после выхода из уч зап само по себе приходит состояние и если в техтфилде есть логин и пароль он входит
   /// Авторизация ранее зарегистрированного пользователя
   void _goLogIn() async {
     final _numberText = _numberController.text;
@@ -210,10 +219,12 @@ class _AuthWidgetState extends State<AuthWidget> {
     } else if (_passwordText.length <= 7) {
       _bloc.errorLengthPassword();
     } else {
-      await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: _numberText);
-      await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
-      await SaveAndReadDataFromSharedPreferences().savePhoneNumberData(phoneNumber: _numberText);
-      _bloc.loadingLogIn(_numberText, _passwordText);
+      _bloc.loadingLogIn(_numberText, _passwordText).whenComplete(
+        () async {
+          await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: _numberText);
+          await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
+        },
+      );
     }
   }
 
@@ -229,9 +240,11 @@ class _AuthWidgetState extends State<AuthWidget> {
     } else if (_passwordText.length <= 7) {
       _bloc.errorLengthPassword();
     } else {
-      await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: _numberText);
-      await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
-      _bloc.loadingRegistration(_numberText, _passwordText);
+      _bloc.loadingRegistration(_numberText, _passwordText).whenComplete(() async{
+        await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: _numberText);
+        await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
+      },
+      );
     }
   }
 
@@ -275,9 +288,10 @@ class _AuthWidgetState extends State<AuthWidget> {
     } else if (snapshot.data is NotRegistered) {
       return AlertDialog(
         title: Center(
-            child: Text(
-          'Пользователь не зарегистрирован',
-        ),),
+          child: Text(
+            'Пользователь не зарегистрирован',
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => _bloc.emptyState(),
