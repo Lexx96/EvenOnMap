@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc.dart';
 import 'package:event_on_map/create_event_map_widget/bloc/create_event_map_bloc_state.dart';
 import 'package:event_on_map/main_screen/main_screen_widget.dart';
-import 'package:event_on_map/map_widget/map_widget.dart';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
-import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -323,6 +321,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
 
   _CreateEventMapWidgetState(this.bloc);
 
+  late LatLng? _myLastPosition;
   late CreateEventMapBloc _createEventMapBloc;
   Completer<GoogleMapController> _controller = Completer();
   late LatLng _myPosition = LatLng(0.0, 0.0);
@@ -349,6 +348,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   void initState() {
     super.initState();
     _createEventMapBloc = CreateEventMapBloc();
+    _createEventMapBloc.readMyLastPositionForCreateEventBloc();
     _createEventMapBloc.createEventGetLatLngAndAddressUserPosition();
     MapProvider.onMapCreatedProvider(_controller, null);
   }
@@ -386,6 +386,13 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
       _myPosition = LatLng(_position.latitude, _position.longitude);
       _getMyMarker(_myPosition, _placemark);
     }
+
+    if (snapshot.data is ReadMyLastPositionForCreateEventState) {
+      final _data = snapshot.data as ReadMyLastPositionForCreateEventState;
+      _myLastPosition = _data.myLastPosition;
+      _myPosition = (_myLastPosition != null ? _myLastPosition : _myPosition)!;
+    }
+
     return Stack(
       children: [
         GoogleMap(
@@ -511,7 +518,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   }
 
   /// Создание маркера по нажатию на карту для CreateEvent
-  void _getMyMarker(LatLng _myPosition, List<Placemark> placemark) {
+  void _getMyMarker(LatLng _myPosition, List<Placemark> placemark) async {
     final _userMarker = Marker(
       markerId: MarkerId(''),
       infoWindow: InfoWindow(
@@ -525,7 +532,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
         set: _setUserMarkers, marker: _userMarker);
   }
 }
-
 
 /// Класс с выбором изображений для создания события
 class ImagesWidget extends StatefulWidget {

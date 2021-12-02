@@ -33,8 +33,8 @@ class _MapWidgetState extends State<MapWidget> {
     super.initState();
     _bloc = GoogleMapBloc();
     _bloc.readMyLastPositionBloc();
-    _bloc.getLatLngAndAddressUserPositionBloc(_controller, latLngNews);
     _bloc.getAllNewsFromServerBloc();
+    _bloc.getLatLngAndAddressUserPositionBloc(_controller, latLngNews);
   }
 
   @override

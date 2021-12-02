@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc_state.dart';
 import 'package:event_on_map/userProfile/services/user_profile__image_provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,12 +15,16 @@ class UserProfileImageBloc {
     try {
       UserProfileProvider().getImageFileUserProfile(source).then(
         (image) async {
-          await UserProfileProvider().writePhotoInMemory(image as File);
-          readUserProfileImageBloc();
+          if(image != null) {
+            await UserProfileProvider().writePhotoInMemory(image);
+            readUserProfileImageBloc();
+          } else {
+            _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
+          }
         },
       );
-    } catch (error) {
-      print('Ошибка получения изображения от провайдета $error');
+    } catch (e) {
+      print('Ошибка получения изображения от провайдета $e');
       _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
     }
   }

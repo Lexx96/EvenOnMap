@@ -40,7 +40,7 @@ class EndWidget extends StatelessWidget {
                     ),
                     clipBehavior: Clip.hardEdge,
                   ),
-                  onTap: () => print('cc'),
+                  onTap: () {},
                   borderRadius: BorderRadius.all(Radius.circular(25)),
                   splashColor: Theme.of(context).splashColor,
                 ),

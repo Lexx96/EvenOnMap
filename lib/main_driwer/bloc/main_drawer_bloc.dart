@@ -16,7 +16,11 @@ class MainDrawerBloc {
 
     await UserProfileProvider().readPhotoFromMemory().then(
       (imageFromMemory) {
-        _streamController.sink.add(MainDrawerBlocState.loadedImageUserProfileForDrawerState(imageFromMemory));
+        if(imageFromMemory != null) {
+          _streamController.sink.add(MainDrawerBlocState.loadedImageUserProfileForDrawerState(imageFromMemory));
+        }else {
+          _streamController.sink.add(MainDrawerBlocState.emptyMainDrawerState());
+        }
       },
     ).catchError(
       (e) {

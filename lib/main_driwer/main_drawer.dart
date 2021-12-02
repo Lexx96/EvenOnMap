@@ -102,15 +102,16 @@ class _MainDrawerState extends State<MainDrawer> {
                                             ],
                                           )
                                               : SizedBox.shrink(),
-                                          _image != File('')
-                                              ? ClipOval(
-                                            child: Image.file(
-                                              _image,
-                                              height: 160,
-                                              width: 160,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ) : SizedBox.shrink()
+                                              snapshot.data is EmptyMainDrawerState ||
+                                              snapshot.data is LoadingImageMainDrawerState
+                                              ? SizedBox.shrink() : ClipOval(
+                                                child: Image.file(
+                                                  _image,
+                                                  height: 160,
+                                                  width: 160,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
                                         ],
                                       ),
                                     ),

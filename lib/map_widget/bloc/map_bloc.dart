@@ -14,7 +14,7 @@ class GoogleMapBloc {
   void getLatLngAndAddressUserPositionBloc(Completer<GoogleMapController> controller, [LatLng? latLngNews]) async {
     _streamController.sink.add(MapBlocState.emptyLatLng());
     try {
-      Set<Marker> setUserMarker = await MapProvider.getMyMarkerProvider();
+      Set<Marker> setUserMarker = await MapProvider.getMyMarkerProvider(controller);
       await MapProvider.onMapCreatedProvider(controller, latLngNews);
       _streamController.sink
           .add(MapBlocState.loadedAddressFromUserPositionState(setUserMarker));

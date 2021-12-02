@@ -30,7 +30,7 @@ class UserProfilePageState extends State<UserProfilePage> {
   void initState() {
     super.initState();
     _bloc = UserProfileImageBloc();
-    _bloc.readUserProfileImageBloc();
+    _bloc.getUserDataFromSharedPreferencesBloc();
   }
 
   @override
@@ -59,11 +59,11 @@ class UserProfilePageState extends State<UserProfilePage> {
     if (snapshot.data is LoadedImageUserProfile) {
       final _data = snapshot.data as LoadedImageUserProfile;
       _image = _data.image as File;
-      _bloc.getUserDataFromSharedPreferencesBloc();
     }
     if (snapshot.data is GetUserDataFromSharedPreferencesState) {
       final _data = snapshot.data as GetUserDataFromSharedPreferencesState;
       _userData = _data.userData;
+      _bloc.readUserProfileImageBloc();
     }
 
     return Container(
@@ -107,7 +107,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                                 ],
                               )
                                   : SizedBox.shrink(),
-                              _image != File('')
+                              snapshot.data is LoadedImageUserProfile || snapshot.data is GetUserDataFromSharedPreferencesState
                                   ? ClipOval(
                                 child: Image.file(
                                   _image,

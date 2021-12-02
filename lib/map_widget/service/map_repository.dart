@@ -1,5 +1,7 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_geocoder/geocoder.dart';
 import 'package:flutter_geocoder/model.dart';
 import 'package:geocoding/geocoding.dart';
@@ -66,7 +68,20 @@ class MapRepository {
       throw Exception(e);
     }
   }
+
+  /// Преобразование маркера из Asset в Uint8List и задание размера
+   Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    try{
+      ByteData data = await rootBundle.load(path);
+      ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+      ui.FrameInfo fi = await codec.getNextFrame();
+      return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+    }catch(e){
+      throw Exception(e);
+    }
+  }
 }
+
 
 class SaveAndReadLatLngFromSharedPreferences {
 

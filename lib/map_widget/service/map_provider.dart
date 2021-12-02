@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui';
 import 'package:event_on_map/news_page/models/news.dart';
 import 'package:event_on_map/news_page/services/news_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_geocoder/model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'dart:ui' as ui;
 import 'map_repository.dart';
 
 
@@ -67,6 +70,36 @@ class MapProvider {
     set.add(marker);
     return set;
   }
+
+
+  /// Кастомный маркер для вывода новостей
+  static Future<Uint8List> getBytesFromCanvas(int width, int height) async {
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()..color = Colors.blue;
+    final Radius radius = Radius.circular(20.0);
+    canvas.drawRRect(
+        RRect.fromRectAndCorners(
+          Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
+          topLeft: radius,
+          topRight: radius,
+          bottomLeft: radius,
+          bottomRight: radius,
+        ),
+        paint);
+    TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
+    painter.text = TextSpan(
+      text: 'Hello world',
+      style: TextStyle(fontSize: 25.0, color: Colors.white),
+    );
+    painter.layout();
+    painter.paint(canvas, Offset((width * 0.5) - painter.width * 0.5, (height * 0.5) - painter.height * 0.5));
+    final img = await pictureRecorder.endRecording().toImage(width, height);
+    final data = await img.toByteData(format: ui.ImageByteFormat.png);
+    return data!.buffer.asUint8List();
+  }
+
+
   /// Получение новостей с сервера и создание маркеров новостей
   static Future<Set<Marker>> getAllNewsFromServerProvider() async {
     List<GetNewsFromServerModel> listAllNews =
@@ -78,6 +111,8 @@ class MapProvider {
           Address thisAddress = await getAddressFromCoordinates(
               LatLng(listAllNews[i].lat, listAllNews[i].lng));
           Marker _marker = Marker(
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueGreen),
             markerId: MarkerId('${listAllNews[i].id}'),
             infoWindow: InfoWindow(
                 title: titleForMarker(thisAddress),
@@ -105,10 +140,11 @@ class MapProvider {
   }
 
   /// Создание маркера при получении местоположения пользователя
-  static Future<Set<Marker>> getMyMarkerProvider() async {
+  static Future<Set<Marker>> getMyMarkerProvider(Completer<GoogleMapController> controller) async {
     try{
       Position getPositionUserFromGPS = await determinePosition();
       List<Placemark> _placemark = await getAddressFromLatLongGPS(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
+      final Uint8List markerIcon = await MapRepository().getBytesFromAsset('assets/user_marker/user.png', 100);
       LatLng _myPosition = LatLng(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
       Set<Marker> _setUserMarker = {};
       final _userMarker = Marker(
@@ -119,9 +155,7 @@ class MapProvider {
                 : 'Адрес не определен',
             snippet: 'Мое местоположение'),
         position: _myPosition,
-        icon: BitmapDescriptor.defaultMarkerWithHue(
-            BitmapDescriptor.hueGreen), // изминение маркера
-      );
+        icon: BitmapDescriptor.fromBytes(markerIcon),);
       _setUserMarker.add(_userMarker);
       return _setUserMarker;
     } catch(e){
@@ -138,7 +172,11 @@ class MapProvider {
         LatLng _myPosition = LatLng(getPositionUserFromGPS.latitude, getPositionUserFromGPS.longitude);
           controller.animateCamera(
             CameraUpdate.newCameraPosition(
-              CameraPosition(target: _myPosition, zoom: 16),
+              CameraPosition(
+                  target: _myPosition,
+                  zoom: 16,
+                bearing: getPositionUserFromGPS.heading,
+              ),
             ),
           );
         await saveMyLastPosition(lat: getPositionUserFromGPS.latitude, lng: getPositionUserFromGPS.longitude);
@@ -146,7 +184,10 @@ class MapProvider {
         final GoogleMapController controller = await _controller.future;
         controller.animateCamera(
           CameraUpdate.newCameraPosition(
-            CameraPosition(target: latLngNews, zoom: 18),
+            CameraPosition(
+                target: latLngNews,
+                zoom: 18
+            ),
           ),
         );
       }

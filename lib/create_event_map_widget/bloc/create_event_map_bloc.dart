@@ -37,6 +37,16 @@ class CreateEventMapBloc {
     );
   }
 
+  /// Чтение последнего местоположения пользователя
+  void readMyLastPositionForCreateEventBloc () async{
+    try{
+      final LatLng? myLastPosition = await MapProvider.readMyLastPosition();
+      _streamCreateEventController.sink.add(CreateEventMapState.readMyLastPositionForCreateEventState(myLastPosition));
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
   void dispose () {
     _streamCreateEventController.close();
   }

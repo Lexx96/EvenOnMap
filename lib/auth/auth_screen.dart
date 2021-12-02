@@ -5,6 +5,7 @@ import 'package:event_on_map/license_agreement_screen/license_agreement_screen.d
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../custom_icons_icons.dart';
 import 'bloc/auth_bloc.dart';
@@ -65,8 +66,6 @@ class _AuthWidgetState extends State<AuthWidget> {
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              print('111111111111111111111111111111111111111111');
-              print(snapshot.data);
               if (snapshot.data is AuthLogInLoadedState) {
                 Future.delayed(
                   Duration.zero,
@@ -81,7 +80,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                 prefixIcon: const Icon(
                   Icons.phone,
                 ),
-                hintText: S.of(context).phoneNumber,
+                labelText: S.of(context).phoneNumber,
               );
 
               InputDecoration _inputDecorationPassword = InputDecoration(
@@ -98,7 +97,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                       : Icon(CustomIcons.eye_off),
                 ),
                 contentPadding: const EdgeInsets.all(15),
-                hintText: '     ' + S.of(context).password,
+                labelText: S.of(context).password,
               );
 
               return Stack(
@@ -144,10 +143,10 @@ class _AuthWidgetState extends State<AuthWidget> {
                           SizedBox(height: _height * 0.01),
                           TextField(
                             decoration: _inputDecorationPassword,
-                            obscureText:
-                                (snapshot.data is ShowPassword) ? false : true,
+                            obscureText: (snapshot.data is ShowPassword) ? false : true,
                             obscuringCharacter: '*',
                             controller: _passwordController,
+                            onEditingComplete: () => TextInput.finishAutofillContext(),
                           ),
                         ],
                       ),

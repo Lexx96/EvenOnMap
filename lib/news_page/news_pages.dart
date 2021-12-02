@@ -10,6 +10,10 @@ import 'bloc/news_bloc.dart';
 import 'bloc/news_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'models/news.dart';
+
+final bucketGlobal = PageStorageBucket();
+
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
 
@@ -20,8 +24,10 @@ class NewsPage extends StatefulWidget {
 class _NewsPageState extends State<NewsPage> {
   _NewsPageState(this._newsRepository);
 
+
   late final ServiceNewsBloc _bloc;
   late final NewsRepository _newsRepository;
+  late List<GetNewsFromServerModel> _newsFromServer = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: true);
@@ -49,38 +55,42 @@ class _NewsPageState extends State<NewsPage> {
         stream: _bloc.newsStreamController,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
 
-          if (snapshot.data is NewsLoadingState) {
-            return SkeletonWidget();
+          if (snapshot.data is NewsLoadedState) {
+            final _data = snapshot.data as NewsLoadedState;
+             _newsFromServer = _data.newsFromServer;
           }
 
-          NewsLoadedState newsResponseData = snapshot.data as NewsLoadedState;
-          return SmartRefresher(
-            controller: _refreshController,
-            enablePullDown: true,
-            enablePullUp: true,
-            header: WaterDropHeader(),
-            onRefresh: _onRefresh,
-            onLoading: _onLoading,
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: newsResponseData.newsFromServer.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.symmetric(
-                      vertical: BorderSide.none,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      HeaderButtonWidget(newsResponseData.newsFromServer[index]),
-                      TextBodyWidget(newsResponseData.newsFromServer[index]),
-                      const EndWidget(),
-                    ],
-                  ),
-                );
-              },
+          return snapshot.data is NewsLoadingState ? SkeletonWidget() : PageStorage(
+            bucket: bucketGlobal,
+            child: SmartRefresher(
+              controller: _refreshController,
+              enablePullDown: true,
+              enablePullUp: true,
+              header: WaterDropHeader(),
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              child: ListView.builder(
+                key: PageStorageKey<String>('Se'),
+                  physics: BouncingScrollPhysics(),
+                  itemCount: _newsFromServer.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border.symmetric(
+                          vertical: BorderSide.none,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          HeaderButtonWidget(_newsFromServer[index]),
+                          TextBodyWidget(_newsFromServer[index]),
+                          EndWidget(),
+                        ],
+                      ),
+                    );
+                  },
+                ),
             ),
           );
         },
