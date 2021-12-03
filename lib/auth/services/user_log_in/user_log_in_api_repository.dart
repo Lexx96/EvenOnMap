@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 abstract class _SecureStorageKeys {
   static const _password = 'UserPassword';
-  static const _logIn = 'UserLogIn';
+  static const _phoneNumber = 'PhoneNumber';
 }
 
 class UserLogInRepository {
@@ -51,11 +51,11 @@ class SetAndReadDataFromSharedPreferences {
 class WriteAndReadDataFromSecureStorage {
 
 
-  /// Проверка наличия логина в SecureStorage
-  static Future<String?> readUserLogIn () async {
+  /// Проверка наличия номера в SecureStorage
+  static Future<String?> readUserPhoneNumber () async {
     try{
       final _secureStorage = FlutterSecureStorage();
-      final _logInFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._logIn);
+      final _logInFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._phoneNumber);
       if(_logInFromSecureStorage != null) {
         return _logInFromSecureStorage;
       } else {
@@ -66,11 +66,21 @@ class WriteAndReadDataFromSecureStorage {
     }
   }
 
-  /// Сохранение логина в SecureStorage
-  static Future<void> writeUserLogIn ({ required String logIn}) async {
+  /// Сохранение номера в SecureStorage
+  static Future<void> writeUserLogIn ({ required String phoneNumber}) async {
     try{
       final _secureStorage = FlutterSecureStorage();
-        await _secureStorage.write(key: _SecureStorageKeys._logIn, value: logIn);
+        await _secureStorage.write(key: _SecureStorageKeys._phoneNumber, value: phoneNumber);
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+  /// Сохранение пароля в SecureStorage
+  static Future<String?> writeUserPassword ({required String password}) async {
+    try{
+      final _secureStorage = FlutterSecureStorage();
+      await _secureStorage.write(key: _SecureStorageKeys._password, value: password);
     }catch(e){
       throw Exception(e);
     }
@@ -91,22 +101,12 @@ class WriteAndReadDataFromSecureStorage {
     }
   }
 
-  /// Сохранение пароля в SecureStorage
-  static Future<String?> writeUserPassword ({required String password}) async {
-    try{
-      final _secureStorage = FlutterSecureStorage();
-        await _secureStorage.write(key: _SecureStorageKeys._password, value: password);
-    }catch(e){
-      throw Exception(e);
-    }
-  }
-
   /// Удаление пароля и логина из SecureStorage
   static Future<String?> deleteUserPasswordAndLogIn () async {
     try{
       final _secureStorage = FlutterSecureStorage();
       await _secureStorage.delete(key: _SecureStorageKeys._password);
-      await _secureStorage.delete(key: _SecureStorageKeys._logIn);
+      await _secureStorage.delete(key: _SecureStorageKeys._phoneNumber);
     }catch(e){
       throw Exception(e);
     }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
+import 'package:event_on_map/userProfile/services/user_profile__image_repository.dart';
 import 'package:flutter/material.dart';
 import '../custom_icons_icons.dart';
 import '../generated/l10n.dart';
@@ -267,8 +268,9 @@ class _MainDrawerState extends State<MainDrawer> {
                 onPressed: () async {
                   await WriteAndReadDataFromSecureStorage
                       .deleteUserPasswordAndLogIn();
+                  await SaveAndReadDataFromSharedPreferences().deleteUserData();
                   Navigator.of(context)
-                      .pushReplacementNamed(MainNavigationRouteName.auth);
+                      .pushNamedAndRemoveUntil(MainNavigationRouteName.auth, (route) => false);
                 },
                 child: Text('Выйти')),
           ],

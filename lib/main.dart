@@ -71,7 +71,7 @@ class Home extends StatelessWidget {
 
 /// Проверка авторизации пользователя и перенаправление на страницу регистрации или на главную страницу приложения
 Future<String?> isUserAuth() async {
-  final isUserLogIn = await WriteAndReadDataFromSecureStorage.readUserLogIn();
+  final isUserLogIn = await WriteAndReadDataFromSecureStorage.readUserPhoneNumber();
   final isUserPassword = await WriteAndReadDataFromSecureStorage.readUserPassword();
   if (isUserLogIn == null || isUserPassword == null) {
     return MainNavigation().initialRouteAuth;

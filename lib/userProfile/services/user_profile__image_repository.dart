@@ -78,6 +78,16 @@ class SaveAndReadDataFromSharedPreferences {
       throw Exception(e);
     }
   }
+
+  Future<void> deleteUserData() async {
+    final storage = await _storage;
+    try{
+      storage.clear();
+    }
+    catch(e){
+      throw Exception(e);
+    }
+  }
 }
 
 /// Доступ к галереи и камере устройства для выбора фотографии на аватарку

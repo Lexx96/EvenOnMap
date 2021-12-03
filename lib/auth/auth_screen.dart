@@ -3,6 +3,7 @@ import 'package:event_on_map/auth/services/user_registration/user_registration_a
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
+import 'package:event_on_map/userProfile/services/user_profile__image_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -218,12 +219,10 @@ class _AuthWidgetState extends State<AuthWidget> {
     } else if (_passwordText.length <= 7) {
       _bloc.errorLengthPassword();
     } else {
-      _bloc.loadingLogIn(_numberText, _passwordText).whenComplete(
-        () async {
-          await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: _numberText);
-          await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
-        },
-      );
+      _bloc.loadingLogIn(_numberText, _passwordText);
+      await UserProfileProvider().saveUserDataInSharedPreferences(phoneNumber: _numberText);
+      await WriteAndReadDataFromSecureStorage.writeUserLogIn(phoneNumber: _numberText);
+      await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
     }
   }
 
@@ -240,7 +239,8 @@ class _AuthWidgetState extends State<AuthWidget> {
       _bloc.errorLengthPassword();
     } else {
       _bloc.loadingRegistration(_numberText, _passwordText).whenComplete(() async{
-        await WriteAndReadDataFromSecureStorage.writeUserLogIn(logIn: _numberText);
+        await UserProfileProvider().saveUserDataInSharedPreferences(phoneNumber: _numberText);
+        await WriteAndReadDataFromSecureStorage.writeUserLogIn(phoneNumber: _numberText);
         await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
       },
       );
