@@ -52,7 +52,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     return WillPopScope(
       onWillPop: () async {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainScreen( 1,)));
+            context, MaterialPageRoute(builder: (context) => MainScreen(1,)));
         return false;
       },
       child: Scaffold(
@@ -67,17 +67,18 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   }
 
   /// Тело CreateEventWidget
-  Stack _bodyCreateEventWidget(
-      BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-
+  Stack _bodyCreateEventWidget(BuildContext context,
+      AsyncSnapshot<dynamic> snapshot) {
     if (snapshot.data is GetLatLngAndAddressState) {
       final _data = snapshot.data as GetLatLngAndAddressState;
       _placemark = _data.placemark;
-      _latLng = LatLng(_data.initialLatLng.latitude, _data.initialLatLng.longitude);
+      _latLng =
+          LatLng(_data.initialLatLng.latitude, _data.initialLatLng.longitude);
     }
 
     if (snapshot.data is GetListImagesFromImageWidgetState) {
-      GetListImagesFromImageWidgetState _data = snapshot.data as GetListImagesFromImageWidgetState;
+      GetListImagesFromImageWidgetState _data = snapshot
+          .data as GetListImagesFromImageWidgetState;
       _listImages = _data.listImages;
     }
 
@@ -87,7 +88,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
           children: [
             Padding(
               padding:
-                  const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 10.0),
+              const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -114,7 +115,9 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   ),
                   Padding(padding: const EdgeInsets.symmetric(vertical: 15.0)),
                   TextField(
-                    maxLines: DefaultTextStyle.of(context).maxLines,
+                    maxLines: DefaultTextStyle
+                        .of(context)
+                        .maxLines,
                     minLines: 10,
                     maxLength: 1500,
                     decoration: InputDecoration(
@@ -155,9 +158,11 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    child: Text('Назад'),
-                    onPressed: () => Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => MainScreen( 1,)))
+                      child: Text('Назад'),
+                      onPressed: () =>
+                          Navigator.push(
+                              context, MaterialPageRoute(
+                              builder: (context) => MainScreen(1,)))
                   ),
                   TextButton(
                     child: Text('Создать'),
@@ -171,8 +176,8 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         _showException(snapshot),
         snapshot.data is OpenGoogleMapState
             ? CreateEventMapWidget(
-                bloc: _bloc,
-              )
+          bloc: _bloc,
+        )
             : SizedBox.shrink(),
         snapshot.data is EventLoadingBlocState
             ? Center(child: CircularProgressIndicator())
@@ -187,9 +192,14 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).dividerColor),
+            border: Border.all(color: Theme
+                .of(context)
+                .dividerColor),
             borderRadius: BorderRadius.all(Radius.circular(10),),
           ),
           child: Container(
@@ -249,7 +259,14 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         ),
         actions: [
           TextButton(
-            onPressed: () => _bloc.emptyCreateEvent(),
+            onPressed: () =>
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        MainScreen(
+                          1,),
+                  ),
+                ),
             child: Text('OK'),
           ),
         ],
@@ -304,7 +321,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 }
 
 
-
 /// Класс с картор для выбора адреса события (нужно будет перенести в отдельный
 /// файл, он есть. Не получилось передать LatLng в другой блок)
 class CreateEventMapWidget extends StatefulWidget {
@@ -331,7 +347,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     minimumSize: MaterialStateProperty.all(Size(45, 45)),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(60),
+        borderRadius: BorderRadius.circular(60),
       ),
     ),
   );
@@ -339,7 +355,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
     padding: MaterialStateProperty.all(EdgeInsets.zero),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10),
       ),
     ),
   );
@@ -373,7 +389,6 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
 
   /// Тело CreateEventMapWidget
   Stack _body(AsyncSnapshot snapshot, BuildContext context) {
-
     MapProvider.choiceMapTheme(_controller);
 
     LatLng _position = LatLng(0.0, 0.0);
@@ -398,16 +413,17 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
         GoogleMap(
             mapToolbarEnabled: false,
             zoomControlsEnabled: false,
-            onMapCreated: (GoogleMapController controller){
+            onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
-              },
+            },
             markers: _setUserMarkers,
             initialCameraPosition: CameraPosition(
               target: _myPosition,
               zoom: 16,
             ),
-            onTap: (LatLng _onTabLatLng) => _createEventMapBloc.getAddressOnTab(
-                _onTabLatLng)
+            onTap: (LatLng _onTabLatLng) =>
+                _createEventMapBloc.getAddressOnTab(
+                    _onTabLatLng)
         ),
         _showAddress(context, _placemark, _position),
         Column(
@@ -419,7 +435,8 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: TextButton(
-                    onPressed: () => MapProvider.onMapCreatedProvider(_controller, null),
+                    onPressed: () =>
+                        MapProvider.onMapCreatedProvider(_controller, null),
                     child: Icon(
                       CustomIcons.map_marker,
                       size: 30,
@@ -437,7 +454,8 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   }
 
   /// Вывод на экран выбранного адреса
-  Column _showAddress(BuildContext context, List<Placemark> _placemark, LatLng _onTabLatLng) {
+  Column _showAddress(BuildContext context, List<Placemark> _placemark,
+      LatLng _onTabLatLng) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -445,10 +463,17 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
           padding:
           const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
           child: Container(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              border: Border.all(color: Theme.of(context).dividerColor),
+              color: Theme
+                  .of(context)
+                  .scaffoldBackgroundColor,
+              border: Border.all(color: Theme
+                  .of(context)
+                  .dividerColor),
               borderRadius: BorderRadius.all(Radius.circular(10)),
               boxShadow: [BoxShadow(color: Colors.black)],
             ),
@@ -535,8 +560,9 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
 
 /// Класс с выбором изображений для создания события
 class ImagesWidget extends StatefulWidget {
-  CreateEventBloc bloc;
-   ImagesWidget({Key? key, required this.bloc}) : super(key: key);
+  final CreateEventBloc bloc;
+
+  ImagesWidget({Key? key, required this.bloc}) : super(key: key);
 
   @override
   State<ImagesWidget> createState() => ImagesWidgetState(bloc);
@@ -544,6 +570,7 @@ class ImagesWidget extends StatefulWidget {
 
 class ImagesWidgetState extends State<ImagesWidget> {
   CreateEventBloc bloc;
+
   ImagesWidgetState(this.bloc);
 
   final selectedImages = <File?>[];
@@ -612,12 +639,15 @@ class ImagesWidgetState extends State<ImagesWidget> {
 
 
   /// Карточка вывода изображения
-  Container _showImages(BuildContext context, int index, AsyncSnapshot<dynamic> snapshot) {
+  Container _showImages(BuildContext context, int index,
+      AsyncSnapshot<dynamic> snapshot) {
     return Container(
       height: 195,
       width: 90,
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme
+            .of(context)
+            .scaffoldBackgroundColor,
         border: Border.all(
             color: Colors.black.withOpacity(0.2)),
         borderRadius:
@@ -674,55 +704,57 @@ class ImagesWidgetState extends State<ImagesWidget> {
     if (Platform.isIOS) {
       return showCupertinoModalPopup<ImageSource>(
         context: context,
-        builder: (context) => CupertinoActionSheet(
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () {
-                _bloc.addPickImageBloc(ImageSource.camera);
-                Navigator.of(context).pop();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [Icon(Icons.camera_alt), Text('Камера')],
-              ),
+        builder: (context) =>
+            CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                    _bloc.addPickImageBloc(ImageSource.camera);
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [Icon(Icons.camera_alt), Text('Камера')],
+                  ),
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                    _bloc.addPickImageBloc(ImageSource.gallery);
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [Icon(Icons.photo), Text('Галерея')],
+                  ),
+                ),
+              ],
             ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                _bloc.addPickImageBloc(ImageSource.gallery);
-                Navigator.of(context).pop();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [Icon(Icons.photo), Text('Галерея')],
-              ),
-            ),
-          ],
-        ),
       );
     } else {
       return showModalBottomSheet(
         context: context,
-        builder: (context) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: Icon(Icons.camera_alt),
-              title: Text('Камера'),
-              onTap: () {
-                _bloc.addPickImageBloc(ImageSource.camera);
-                Navigator.of(context).pop();
-              },
+        builder: (context) =>
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.camera_alt),
+                  title: Text('Камера'),
+                  onTap: () {
+                    _bloc.addPickImageBloc(ImageSource.camera);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.photo),
+                  title: Text('Галерея'),
+                  onTap: () {
+                    _bloc.addPickImageBloc(ImageSource.gallery);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(Icons.photo),
-              title: Text('Галерея'),
-              onTap: () {
-                _bloc.addPickImageBloc(ImageSource.gallery);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
       );
     }
   }
@@ -732,55 +764,57 @@ class ImagesWidgetState extends State<ImagesWidget> {
     if (Platform.isIOS) {
       return showCupertinoModalPopup<ImageSource>(
         context: context,
-        builder: (context) => CupertinoActionSheet(
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [Icon(Icons.image), Text('Открыть')],
-              ),
+        builder: (context) =>
+            CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [Icon(Icons.image), Text('Открыть')],
+                  ),
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                    selectedImages.removeAt(index);
+                    _bloc.notSelectedPickImage();
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [Icon(Icons.delete_outline), Text('Удалить')],
+                  ),
+                ),
+              ],
             ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                selectedImages.removeAt(index);
-                _bloc.notSelectedPickImage();
-                Navigator.of(context).pop();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [Icon(Icons.delete_outline), Text('Удалить')],
-              ),
-            ),
-          ],
-        ),
       );
     } else {
       return showModalBottomSheet(
         context: context,
-        builder: (context) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: Icon(Icons.image),
-              title: Text('Открыть'),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+        builder: (context) =>
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.image),
+                  title: Text('Открыть'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.delete_outline),
+                  title: Text('Удалить'),
+                  onTap: () {
+                    selectedImages.removeAt(index);
+                    _bloc.notSelectedPickImage();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(Icons.delete_outline),
-              title: Text('Удалить'),
-              onTap: () {
-                selectedImages.removeAt(index);
-                _bloc.notSelectedPickImage();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
       );
     }
   }
@@ -804,11 +838,16 @@ class ImagesWidgetState extends State<ImagesWidget> {
         onPressed: () => _showCardAdd(context),
         child: Icon(
           Icons.add_rounded,
-          color: Theme.of(context).iconTheme.color,
+          color: Theme
+              .of(context)
+              .iconTheme
+              .color,
           size: 45,
         ),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Theme.of(context).scaffoldBackgroundColor),
+          backgroundColor: MaterialStateProperty.all(Theme
+              .of(context)
+              .scaffoldBackgroundColor),
         ),
       ),
     );

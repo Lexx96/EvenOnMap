@@ -2,6 +2,7 @@ import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/news_page/services/news_api_repository.dart';
 import 'package:event_on_map/news_page/widgets/end_widget.dart';
 import 'package:event_on_map/news_page/widgets/header_button_widget.dart';
+import 'package:event_on_map/news_page/widgets/image_gallery.dart';
 import 'package:event_on_map/news_page/widgets/sceleton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,6 @@ class _NewsPageState extends State<NewsPage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: true);
 
-
   late bool _maxLinesBool;
   late int _resultLines;
 
@@ -51,7 +51,6 @@ class _NewsPageState extends State<NewsPage> {
     _bloc.loadingNewsFromServer();
     _refreshController = RefreshController();
 
-
     _maxLinesBool = true;
     _resultLines = 3;
   }
@@ -70,79 +69,86 @@ class _NewsPageState extends State<NewsPage> {
       body: StreamBuilder(
         stream: _bloc.newsStreamController,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-
           if (snapshot.data is NewsLoadedState) {
             final _data = snapshot.data as NewsLoadedState;
-             _newsFromServer = _data.newsFromServer;
+            _newsFromServer = _data.newsFromServer;
           }
 
-          return snapshot.data is NewsLoadingState ? SkeletonWidget() : PageStorage(
-            bucket: bucketGlobal,
-            child: SmartRefresher(
-              controller: _refreshController,
-              enablePullDown: true,
-              enablePullUp: true,
-              header: WaterDropHeader(),
-              onRefresh: _onRefresh,
-              onLoading: _onLoading,
-              child: ListView.builder(
-                key: PageStorageKey<String>('news screen'),
-                  physics: BouncingScrollPhysics(),
-                  itemCount: _newsFromServer.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.symmetric(
-                          vertical: BorderSide.none,
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          HeaderButtonWidget(_newsFromServer[index]),
-                          Container(
-                            child: Column(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: _titleText(index),
-                                          ),
-                                          Expanded(child: Text('')),
-                                        ],
-                                      ),
-                                    ),
-                                    _newsFromServer[index].title.length == 0
-                                        ? SizedBox.shrink()
-                                        : SizedBox(height: 10),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                                      child: _descriptionText(_resultLines, index),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 16.0, right: 16.0, bottom: 10.0),
-                                      child: _isButton(index),
-                                    ),
-                                  ],
-                                ),
-                                bodyImageWidget(),
-                              ],
+          return snapshot.data is NewsLoadingState
+              ? SkeletonWidget()
+              : PageStorage(
+                  bucket: bucketGlobal,
+                  child: SmartRefresher(
+                    controller: _refreshController,
+                    enablePullDown: true,
+                    enablePullUp: true,
+                    header: WaterDropHeader(),
+                    onRefresh: _onRefresh,
+                    onLoading: _onLoading,
+                    child: ListView.builder(
+                      key: PageStorageKey<String>('news screen'),
+                      physics: BouncingScrollPhysics(),
+                      itemCount: _newsFromServer.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border.symmetric(
+                              vertical: BorderSide.none,
                             ),
                           ),
-                          EndWidget(),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-            ),
-          );
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              HeaderButtonWidget(_newsFromServer[index]),
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: _titleText(index),
+                                              ),
+                                              Expanded(child: Text('')),
+                                            ],
+                                          ),
+                                        ),
+                                        _newsFromServer[index].title.length == 0
+                                            ? SizedBox.shrink()
+                                            : SizedBox(height: 10),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: _descriptionText(
+                                              _resultLines, index),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 16.0,
+                                              right: 16.0,
+                                              bottom: 10.0),
+                                          child: _isButton(index),
+                                        ),
+                                      ],
+                                    ),
+                                    bodyImageWidget(),
+                                  ],
+                                ),
+                              ),
+                              EndWidget(),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
         },
       ),
       // bottomNavigationBar: BottomNavigationBarWidget(),
@@ -156,7 +162,7 @@ class _NewsPageState extends State<NewsPage> {
       children: [
         Container(
           child: InkWell(
-            onTap: (){print('111111');},
+            onTap: () => openGallery(0),
             splashColor: Colors.transparent,
             child: Image(
               image: NetworkImage(images[0]),
@@ -169,27 +175,40 @@ class _NewsPageState extends State<NewsPage> {
         SizedBox(
           height: 150.0,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
-              itemCount: images.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {print('555555');},
-                  splashColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      Image(
-                        image: NetworkImage(images[index]),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      )
-                    ],
-                  ),
-                );
-              }),
+            scrollDirection: Axis.horizontal,
+            physics: BouncingScrollPhysics(),
+            itemCount: images.length,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: () => openGallery(index),
+                splashColor: Colors.transparent,
+                child: Row(
+                  children: [
+                    Image(
+                      image: NetworkImage(images[index]),
+                    ),
+                    SizedBox(
+                      width: 5.0,
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ],
+    );
+  }
+
+  /// Открытие виджета показа изображений
+  void openGallery(index) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ImageGalleryWidget(
+          images: images,
+          index: index,
+        ),
+      ),
     );
   }
 
@@ -224,11 +243,12 @@ class _NewsPageState extends State<NewsPage> {
 
   /// Вывод кнопки "Подробнее ..."
   Widget _isButton(index) {
-    if (_newsFromServer[index].description.length > 147 && _maxLinesBool == true) {
+    if (_newsFromServer[index].description.length > 147 &&
+        _maxLinesBool == true) {
       return TextButton(
         onPressed: () {
           setState(
-                () {
+            () {
               if (_maxLinesBool) {
                 _maxLinesBool = !_maxLinesBool;
               } else {

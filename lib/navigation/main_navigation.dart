@@ -43,7 +43,7 @@ class MainNavigation {
     MainNavigationRouteName.newsWidget: (context) => const NewsPage(),
     MainNavigationRouteName.mapWidget: (context) => MapWidget(),
     MainNavigationRouteName.mainScreen: (context) => MainScreen(0),
-    MainNavigationRouteName.licenseAgreement: (context) => const LicenseAgreement(),
+    MainNavigationRouteName.licenseAgreement: (context) => LicenseAgreement(isFirstEnter: false,),
     MainNavigationRouteName.aboutApplication: (context) => const AboutApplication(),
     MainNavigationRouteName.feedbackPage: (context) => const FeedbackPage(),
     MainNavigationRouteName.aboutDeveloper: (context) => const AboutDeveloper(),

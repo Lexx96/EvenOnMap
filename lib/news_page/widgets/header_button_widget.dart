@@ -64,11 +64,12 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
           padding: const EdgeInsets.only(right: 10),
           child: TextButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MainScreen(
-                          1, LatLng(_newsResponse.lat, _newsResponse.lng))));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MainScreen(
+                      1, LatLng(_newsResponse.lat, _newsResponse.lng)),
+                ),
+              );
             },
             child: Icon(
               CustomIcons.map_marker,

@@ -23,7 +23,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   late GoogleMapBloc _bloc;
   late LatLng? _myLastPosition;
-  late LatLng _myPositionLatLng;
+  late LatLng _myPositionLatLng = LatLng(53.7444831, 85.0315746);
   Completer<GoogleMapController> _controller = Completer();
   Set<Marker> _setUserMarker = {};
   Set<Marker> _setNewsAddUserPosition = {};
@@ -76,7 +76,7 @@ class _MapWidgetState extends State<MapWidget> {
     if (snapshot.data is ReadMyLastPositionState) {
       final _data = snapshot.data as ReadMyLastPositionState;
       _myLastPosition = _data.myLastPosition;
-      _myPositionLatLng = (_myLastPosition != null ? _myLastPosition : LatLng(53.7444831, 85.0315746))!;
+      _myPositionLatLng = _myLastPosition ?? _myLastPosition as LatLng;
     }
 
     return Scaffold(

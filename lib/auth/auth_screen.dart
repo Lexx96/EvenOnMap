@@ -194,7 +194,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                   (snapshot.data is RegistrationLoadedState)
                       ? Padding(
                           padding: const EdgeInsets.all(25.0),
-                          child: LicenseAgreement(),
+                          child: LicenseAgreement(isFirstEnter: true),
                         )
                       : SizedBox.shrink(),
                 ],

@@ -92,7 +92,7 @@ class _MainDrawerState extends State<MainDrawer> {
                                       clipBehavior: Clip.hardEdge,
                                       child: Stack(
                                         children: [
-                                          (snapshot.data is EmptyMainDrawerState)
+                                          snapshot.data is EmptyMainDrawerState || snapshot.data is ShowMessageState
                                               ? FlutterLogo(size: 160)
                                               : SizedBox.shrink(),
                                           (snapshot.data is LoadingImageMainDrawerState)
