@@ -38,7 +38,8 @@ class PostEventRepository {
               filename: basename(listImages[i]!.path));
           request.files.add(multipartFile);
           request.headers.addAll({'Authorization': 'Bearer ' + _accessToken});
-          request.fields['id'] = idEvent;
+          request.fields['newsId'] = idEvent;
+          request.fields['photo'] = '';
           final StreamedResponse response= await request.send();
         }
       }

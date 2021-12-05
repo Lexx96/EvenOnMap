@@ -137,7 +137,7 @@ class _NewsPageState extends State<NewsPage> {
                                         ),
                                       ],
                                     ),
-                                    bodyImageWidget(),
+                                    bodyImageWidget(index),
                                   ],
                                 ),
                               ),
@@ -151,42 +151,53 @@ class _NewsPageState extends State<NewsPage> {
                 );
         },
       ),
-      // bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 
-  /// Вывод изображений
-  Column bodyImageWidget() {
+  /// Вывод изображений в ленту новостей
+  Column bodyImageWidget(index) {
+    final List<String> _images = [];
+    final List <String> _allImages = [];
+    String _mainImage = '';
+    if(_newsFromServer[index].images.length > 0) {
+      for(var i = 0; _newsFromServer[index].images.length -1 >= i ; i++) {
+        final _image = _newsFromServer[index].images[i].photo;
+        _allImages.add('http://23.152.0.13:3000/files/news/' + _image);
+        if(i == 0) {
+          _mainImage = 'http://23.152.0.13:3000/files/news/' + _image;
+        }else{
+          _images.add('http://23.152.0.13:3000/files/news/' + _image);
+        }
+      }
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           child: InkWell(
-            onTap: () => openGallery(0),
+            onTap: () => openGallery(0, _allImages),
             splashColor: Colors.transparent,
-            child: Image(
-              image: NetworkImage(images[0]),
-            ),
+            child: (_mainImage.isNotEmpty)  ? Image(
+              image: NetworkImage(_mainImage),
+            )  : SizedBox.shrink(),
           ),
         ),
         SizedBox(
           height: 5.0,
         ),
-        SizedBox(
+        (_images.length > 0) ? SizedBox(
           height: 150.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             physics: BouncingScrollPhysics(),
-            itemCount: images.length,
+            itemCount: _images.length,
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
-                onTap: () => openGallery(index),
+                onTap: () => openGallery(index + 1, _allImages),
                 splashColor: Colors.transparent,
                 child: Row(
                   children: [
-                    Image(
-                      image: NetworkImage(images[index]),
-                    ),
+                    Image(image: NetworkImage(_images[index]),),
                     SizedBox(
                       width: 5.0,
                     )
@@ -195,17 +206,17 @@ class _NewsPageState extends State<NewsPage> {
               );
             },
           ),
-        ),
+        ) : SizedBox.shrink(),
       ],
     );
   }
 
   /// Открытие виджета показа изображений
-  void openGallery(index) {
+  void openGallery(index, List<String> _allImages) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => ImageGalleryWidget(
-          images: images,
+          images: _allImages,
           index: index,
         ),
       ),

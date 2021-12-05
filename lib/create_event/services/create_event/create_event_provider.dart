@@ -48,7 +48,7 @@ class PostNewEventProvider {
   }
 
   /// Размещение изображений к событию по id события
-  static void postNewEventImages ({required List<File?> listImages, required String? idEvent}) {
+  static Future<void> postNewEventImages ({required List<File?> listImages, required String? idEvent}) async{
     try{
       if (listImages.isNotEmpty) {
         PostEventRepository.postNewEventImages(listImages: listImages, idEvent: idEvent);

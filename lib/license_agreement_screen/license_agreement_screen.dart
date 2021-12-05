@@ -13,6 +13,7 @@ class LicenseAgreement extends StatefulWidget {
 
 class _LicenseAgreementState extends State<LicenseAgreement> {
   bool? _isAccepted;
+  late LicenseAgreementState data = LicenseAgreementState();
   late final LicenseAgreementBloc _bloc;
   final _mainTextStyle = TextStyle(
     fontSize: 17,
@@ -42,7 +43,9 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
       body: StreamBuilder(
         stream: _bloc.streamControllerLicense,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          final LicenseAgreementState data = snapshot.data;
+          if(snapshot.data is LicenseAgreementState) {
+            data = snapshot.data;
+          }
           return Container(
             color: Colors.transparent,
             child: ListView(

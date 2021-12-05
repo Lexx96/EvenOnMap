@@ -1,4 +1,6 @@
 
+import 'images.dart';
+
 class GetNewsFromServerModel {
   String id;
   String title;
@@ -8,6 +10,8 @@ class GetNewsFromServerModel {
   String userId;
   String createdAt;
   String updatedAt;
+  List<Images> images;
+  Map<String,dynamic> user;
 
   GetNewsFromServerModel({
     required this.id,
@@ -18,6 +22,8 @@ class GetNewsFromServerModel {
     required this.userId,
     required this.createdAt,
     required this.updatedAt,
+    required this.images,
+    required this.user,
   });
 
   factory GetNewsFromServerModel.fromJson(Map<String, dynamic> newsJson){
@@ -30,6 +36,10 @@ class GetNewsFromServerModel {
       lng: newsJson['lng'] as dynamic,
       createdAt: newsJson['createdAt'] as String,
       updatedAt: newsJson['updatedAt'] as String,
+      images: (newsJson['images'] as List<dynamic>)
+          .map((dynamic e) => Images.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      user: newsJson['user'] as Map<String,dynamic>
     );
   }
 }

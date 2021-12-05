@@ -54,9 +54,7 @@ class MapRepository {
     try{
       final savedThemeMode = await AdaptiveTheme.getThemeMode();
       String themeMap = '';
-      if (AdaptiveThemeMode.system.isDark) {
-         themeMap = 'assets/map_dark_theme/dark_theme.json';
-      } else if (savedThemeMode == AdaptiveThemeMode.system) {
+       if (savedThemeMode == AdaptiveThemeMode.system) {
          themeMap = 'assets/map_dark_theme/light_theme.json';
       } else if (savedThemeMode == AdaptiveThemeMode.light) {
          themeMap = 'assets/map_dark_theme/light_theme.json';

@@ -9,6 +9,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
+import '../map_widget.dart';
 import 'map_repository.dart';
 
 
@@ -71,35 +72,6 @@ class MapProvider {
     return set;
   }
 
-
-  /// Кастомный маркер для вывода новостей
-  static Future<Uint8List> getBytesFromCanvas(int width, int height) async {
-    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
-    final Canvas canvas = Canvas(pictureRecorder);
-    final Paint paint = Paint()..color = Colors.blue;
-    final Radius radius = Radius.circular(20.0);
-    canvas.drawRRect(
-        RRect.fromRectAndCorners(
-          Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
-          topLeft: radius,
-          topRight: radius,
-          bottomLeft: radius,
-          bottomRight: radius,
-        ),
-        paint);
-    TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
-    painter.text = TextSpan(
-      text: 'Hello world',
-      style: TextStyle(fontSize: 25.0, color: Colors.white),
-    );
-    painter.layout();
-    painter.paint(canvas, Offset((width * 0.5) - painter.width * 0.5, (height * 0.5) - painter.height * 0.5));
-    final img = await pictureRecorder.endRecording().toImage(width, height);
-    final data = await img.toByteData(format: ui.ImageByteFormat.png);
-    return data!.buffer.asUint8List();
-  }
-
-
   /// Получение новостей с сервера и создание маркеров новостей
   static Future<Set<Marker>> getAllNewsFromServerProvider() async {
     List<GetNewsFromServerModel> listAllNews =
@@ -118,6 +90,9 @@ class MapProvider {
                 title: titleForMarker(thisAddress),
               snippet: listAllNews[i].title,),
             position: LatLng(listAllNews[i].lat, listAllNews[i].lng),
+            onTap: () {
+              MapWidgetState(null).cardForMarker(title: 'dcdcdcdcdcdcd', showCard: true);
+            }
           );
           newsMarkers.add(_marker);
         }

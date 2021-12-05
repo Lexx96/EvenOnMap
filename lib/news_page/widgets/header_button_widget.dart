@@ -29,7 +29,9 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
         Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              _newsResponse.user['id'];
+            }, // открыть метод передать id
             borderRadius: BorderRadius.all(Radius.circular(25)),
             child: Row(
               children: [
@@ -43,17 +45,27 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      S.of(context).userNickname, // избежать оверфлоу
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      '48 ' + S.of(context).minutesAgo,
-                      style: TextStyle(fontSize: 12),
-                    ),
+                    _newsResponse.user['username'] != null
+                        ? Text(
+                            _newsResponse.user['username'],
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        : Text(
+                            S.of(context).userNickname, // избежать оверфлоу
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                    _newsResponse.user['createdAt'] != null
+                        ? Text(
+                            _newsResponse.user['createdAt'],
+                            style: TextStyle(fontSize: 12),
+                          )
+                        : Text(''),
                   ],
                 )
               ],

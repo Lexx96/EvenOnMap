@@ -27,6 +27,17 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           maxScale: PhotoViewComputedScale.contained * 4,
         );
       },
+      loadingBuilder: (context, event) => Center(
+        child: Container(
+          width: 30.0,
+          height: 30.0,
+          child: CircularProgressIndicator(
+            value: event == null
+                ? 0
+                : event.cumulativeBytesLoaded / event.expectedTotalBytes!.toInt(),
+          ),
+        ),
+      ),
     );
   }
 }

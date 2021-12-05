@@ -35,8 +35,8 @@ class CreateEventBloc {
       lat: lat,
       lng: lng,
     ).then(
-      (responseModelNewEvent) {
-          PostNewEventProvider.postNewEventImages(listImages: listImages, idEvent: responseModelNewEvent.id);
+      (responseModelNewEvent) async {
+          await PostNewEventProvider.postNewEventImages(listImages: listImages, idEvent: responseModelNewEvent.id);
         _streamController.sink
             .add(NewEventBlocState.loadedEventState(responseModelNewEvent));
       },
