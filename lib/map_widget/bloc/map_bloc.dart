@@ -10,8 +10,13 @@ class GoogleMapBloc {
 
   Stream<MapBlocState> get streamMapController => _streamController.stream;
 
-  /// Получение LatLng и адресса местоположения пользователя
-  void getLatLngAndAddressUserPositionBloc(Completer<GoogleMapController> controller, [LatLng? latLngNews]) async {
+  /// Прокидывает пустое состояние
+  void emptyBloc () {
+    _streamController.sink.add(MapBlocState.emptyLatLng());
+  }
+
+  /// Получение LatLng, адресса местоположения пользователя и маркера
+  Future<void> getLatLngAndAddressAndMarkerUserPositionBloc(Completer<GoogleMapController> controller, [LatLng? latLngNews]) async {
     _streamController.sink.add(MapBlocState.emptyLatLng());
     try {
       Set<Marker> setUserMarker = await MapProvider.getMyMarkerProvider(controller);
@@ -47,6 +52,11 @@ class GoogleMapBloc {
     }catch(e){
       throw Exception(e);
     }
+  }
+
+  /// Вызов карточки показа информации по маркеру события
+  void cardForMarkerBloc (GetNewsFromServerModel _dataForCard, String? address) {
+    _streamController.sink.add(MapBlocState.cardForMarkerState(_dataForCard, address));
   }
 
   void dispose() {

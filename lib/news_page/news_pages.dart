@@ -160,7 +160,7 @@ class _NewsPageState extends State<NewsPage> {
     final List <String> _allImages = [];
     String _mainImage = '';
     if(_newsFromServer[index].images.length > 0) {
-      for(var i = 0; _newsFromServer[index].images.length -1 >= i ; i++) {
+      for(var i = 0; _newsFromServer[index].images.length - 1 >= i ; i++) {
         final _image = _newsFromServer[index].images[i].photo;
         _allImages.add('http://23.152.0.13:3000/files/news/' + _image);
         if(i == 0) {

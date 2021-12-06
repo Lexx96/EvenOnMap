@@ -8,7 +8,6 @@ import 'package:flutter_geocoder/model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:ui' as ui;
 import '../map_widget.dart';
 import 'map_repository.dart';
 
@@ -72,7 +71,7 @@ class MapProvider {
     return set;
   }
 
-  /// Получение новостей с сервера и создание маркеров новостей
+  /// Получение новостей с сервера и создание маркеров новостей - пока отключил
   static Future<Set<Marker>> getAllNewsFromServerProvider() async {
     List<GetNewsFromServerModel> listAllNews =
         await NewsProvider().getAllNewsFromServer();
@@ -90,9 +89,7 @@ class MapProvider {
                 title: titleForMarker(thisAddress),
               snippet: listAllNews[i].title,),
             position: LatLng(listAllNews[i].lat, listAllNews[i].lng),
-            onTap: () {
-              MapWidgetState(null).cardForMarker(title: 'dcdcdcdcdcdcd', showCard: true);
-            }
+            onTap: () {}
           );
           newsMarkers.add(_marker);
         }
