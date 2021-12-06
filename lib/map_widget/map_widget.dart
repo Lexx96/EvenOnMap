@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:event_on_map/main_screen/main_screen_widget.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/news_page/models/news.dart';
 import 'package:event_on_map/news_page/services/news_provider.dart';
@@ -24,29 +25,16 @@ class MapWidget extends StatefulWidget {
 
 class MapWidgetState extends State<MapWidget> {
   late LatLng? latLngNews;
-
   MapWidgetState(this.latLngNews);
-
-  late GetNewsFromServerModel _news;
   late GoogleMapBloc _bloc;
   late LatLng? _myLastPosition;
   late LatLng _myPositionLatLng = LatLng(53.7444831, 85.0315746);
   Completer<GoogleMapController> _controller = Completer();
   Set<Marker> _setUserMarker = {};
   Set<Marker> _setNewsAddUserPosition = {};
-
-
   late GetNewsFromServerModel _dataForCard;
   late String? _addressForCard;
 
-  // final List<String> images = [
-  //   'https://im0-tub-ru.yandex.net/i?id=16d9e6eddcbdfdeba9de432422bca25e-l&n=13',
-  //   'https://get.wallhere.com/photo/2560x1600-px-clear-sky-forest-landscape-pine-trees-road-sky-summer-1413157.jpg',
-  //   'https://w-dog.ru/wallpapers/9/17/322057789001671/zakat-nebo-solnce-luchi-oblaka-tuchi-pole-kolosya-zelenye-trava.jpg',
-  //   'https://im0-tub-ru.yandex.net/i?id=16d9e6eddcbdfdeba9de432422bca25e-l&n=13',
-  //   'https://get.wallhere.com/photo/2560x1600-px-clear-sky-forest-landscape-pine-trees-road-sky-summer-1413157.jpg',
-  //   'https://w-dog.ru/wallpapers/9/17/322057789001671/zakat-nebo-solnce-luchi-oblaka-tuchi-pole-kolosya-zelenye-trava.jpg',
-  // ];
 
   @override
   void initState() {
@@ -123,7 +111,9 @@ class MapWidgetState extends State<MapWidget> {
             ),
             onTap: (LatLng latLng) => _bloc.emptyBloc(),
           ),
-          snapshot.data is CardForMarkerState ? cardForMarker() : SizedBox.shrink()
+          snapshot.data is CardForMarkerState
+              ? cardForMarker()
+              : SizedBox.shrink()
         ],
       ),
       floatingActionButton: Stack(
@@ -131,16 +121,13 @@ class MapWidgetState extends State<MapWidget> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 200,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context)
                         .pushNamedAndRemoveUntil(
-                        MainNavigationRouteName.createAnEventWidget,
+                            MainNavigationRouteName.createAnEventWidget,
                             (route) => false),
                     child: Icon(
                       Icons.add_location_alt_outlined,
@@ -157,12 +144,18 @@ class MapWidgetState extends State<MapWidget> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.0,),
+              SizedBox(
+                height: 10.0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => _bloc.getLatLngAndAddressAndMarkerUserPositionBloc(_controller),
+                    onPressed: () {
+                      _bloc.emptyBloc();
+                      _bloc.getLatLngAndAddressAndMarkerUserPositionBloc(
+                          _controller);
+                    },
                     child: const Icon(
                       CustomIcons.map_marker,
                       size: 30,
@@ -211,12 +204,14 @@ class MapWidgetState extends State<MapWidget> {
       ),
     );
   }
-  /// Виджет вывода информации ми маркера на карте
+
+  /// Виджет вывода информации маркера в виджете на карте
   Widget cardForMarker() {
     final List<String> _images = [];
-    if(_dataForCard.images.length > 0) {
-      for(var i = 0; i < _dataForCard.images.length; i++){
-        _images.add('http://23.152.0.13:3000/files/news/' + _dataForCard.images[i].photo);
+    if (_dataForCard.images.length > 0) {
+      for (var i = 0; i < _dataForCard.images.length; i++) {
+        _images.add('http://23.152.0.13:3000/files/news/' +
+            _dataForCard.images[i].photo);
       }
     }
     return Padding(
@@ -231,9 +226,9 @@ class MapWidgetState extends State<MapWidget> {
             ),
             child: Column(
               children: [
-                SizedBox(
+                _dataForCard.images.length > 0 ? SizedBox(
                   height: 80.0,
-                  child: ListView.builder(
+                  child:  ListView.builder(
                     scrollDirection: Axis.horizontal,
                     physics: BouncingScrollPhysics(),
                     itemCount: _dataForCard.images.length,
@@ -244,7 +239,9 @@ class MapWidgetState extends State<MapWidget> {
                         child: Row(
                           children: [
                             Image(
-                              image: NetworkImage('http://23.152.0.13:3000/files/news/' + _dataForCard.images[index].photo),
+                              image: NetworkImage(
+                                  'http://23.152.0.13:3000/files/news/' +
+                                      _dataForCard.images[index].photo),
                             ),
                             SizedBox(
                               width: 1.0,
@@ -254,49 +251,50 @@ class MapWidgetState extends State<MapWidget> {
                       );
                     },
                   ),
-                ),
+                ) : SizedBox.shrink(),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                        child: Expanded(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(_addressForCard != null ? _addressForCard as String : '',
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _addressForCard != null
+                                    ? _addressForCard as String
+                                    : '',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(60)),
-                                  ),
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Icon(
-                                        Icons.clear,
-                                        size: 30.0,
-                                        color: Colors.white,
-                                      ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(60)),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => _bloc.emptyBloc(),
+                                    child: Icon(
+                                      Icons.clear,
+                                      size: 30.0,
+                                      color: Colors.white,
                                     ),
                                   ),
-                                  clipBehavior: Clip.hardEdge,
                                 ),
-                              )
-                            ],
-                          ),
+                                clipBehavior: Clip.hardEdge,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Padding(
@@ -304,7 +302,8 @@ class MapWidgetState extends State<MapWidget> {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Text(_dataForCard.title,
+                              child: Text(
+                                _dataForCard.title,
                                 style: TextStyle(
                                   fontSize: 16.0,
                                 ),
@@ -314,7 +313,8 @@ class MapWidgetState extends State<MapWidget> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: 8.0),
-                              child: Text(_dataForCard.createdAt,
+                              child: Text(
+                                _dataForCard.createdAt,
                                 style: TextStyle(
                                   fontSize: 12.0,
                                 ),
@@ -377,7 +377,7 @@ class MapWidgetState extends State<MapWidget> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () => Share.share('text'),
+                            onPressed: () => Share.share(_dataForCard.id),
                             //https://www.youtube.com/watch?v=-PmUFbbA-Fs
                             child: Icon(
                               Icons.share,
@@ -397,17 +397,6 @@ class MapWidgetState extends State<MapWidget> {
                                     side:
                                         BorderSide(color: Colors.transparent)),
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  onPressed: () {},
-                                  child: Text('К новости'),
-                                ),
-                              ],
                             ),
                           ),
                         ],
@@ -437,19 +426,21 @@ class MapWidgetState extends State<MapWidget> {
   }
 
   /// Возвращает адрес для маркера новостей
-  static String? _titleForMarker (Address thisAddress) {
+  static String? _titleForMarker(Address thisAddress) {
     String? title;
-    if (thisAddress.thoroughfare != null && thisAddress.subThoroughfare != null) {
-      return title = '${thisAddress.thoroughfare} ${thisAddress.subThoroughfare}';
-    }
-    else {
+    if (thisAddress.thoroughfare != null &&
+        thisAddress.subThoroughfare != null) {
+      return title =
+          '${thisAddress.thoroughfare} ${thisAddress.subThoroughfare}';
+    } else {
       return title = '${thisAddress.addressLine}';
     }
   }
 
   /// Получение новостей с сервера и создание маркеров новостей
   Future<void> _getAllNewsFromServerProvider() async {
-    List<GetNewsFromServerModel> listAllNews = await NewsProvider().getAllNewsFromServer();
+    List<GetNewsFromServerModel> listAllNews =
+        await NewsProvider().getAllNewsFromServer();
     try {
       for (int i = 0; i < listAllNews.length; i++) {
         if (listAllNews.asMap().containsKey(i)) {
@@ -461,14 +452,22 @@ class MapWidgetState extends State<MapWidget> {
               markerId: MarkerId('${listAllNews[i].id}'),
               infoWindow: InfoWindow(
                 title: _titleForMarker(thisAddress),
-                snippet: listAllNews[i].title,),
+                snippet: '          ',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => MainScreen(
+                          0, null, i),
+                    ),
+                  );
+                }
+              ),
               position: LatLng(listAllNews[i].lat, listAllNews[i].lng),
-              onTap: () => _bloc.cardForMarkerBloc(listAllNews[i], _titleForMarker(thisAddress))
-          );
+              onTap: () => _bloc.cardForMarkerBloc(
+                  listAllNews[i], _titleForMarker(thisAddress)));
           _setNewsAddUserPosition.add(_marker);
         }
       }
-
       setState(() {
         _setNewsAddUserPosition.add(_setUserMarker.first);
       });
@@ -476,5 +475,4 @@ class MapWidgetState extends State<MapWidget> {
       throw Exception(e);
     }
   }
-
 }

@@ -10,17 +10,19 @@ import '../custom_icons_icons.dart';
 class MainScreen extends StatefulWidget {
 final int indexPage;
 final LatLng? latLngNews;
-MainScreen(this.indexPage, [this.latLngNews]);
+final int? indexEvent;
+MainScreen(this.indexPage, [this.latLngNews, this.indexEvent]);
 
   @override
-  _MainScreenState createState() => _MainScreenState(indexPage, latLngNews);
+  _MainScreenState createState() => _MainScreenState(indexPage, latLngNews, indexEvent);
 }
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedTab = 0;
+  late int? indexEvent;
   late int indexPage;
   late LatLng? latLngNews;
-  _MainScreenState(this.indexPage, this.latLngNews);
+  _MainScreenState(this.indexPage, this.latLngNews, this.indexEvent);
 
 
 
@@ -38,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
         body: IndexedStack(
           index: _selectedTab,
           children: [
-            NewsPage(),
+            NewsPage(indexEvent),
             MapWidget(latLngNews),
             UserProfilePage(),
           ],

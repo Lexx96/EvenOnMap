@@ -6,6 +6,7 @@ import 'package:event_on_map/news_page/widgets/image_gallery.dart';
 import 'package:event_on_map/news_page/widgets/sceleton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../main_driwer/main_drawer.dart';
 import 'bloc/news_bloc.dart';
 import 'bloc/news_state.dart';
@@ -16,7 +17,10 @@ import 'models/news.dart';
 final bucketGlobal = PageStorageBucket();
 
 class NewsPage extends StatefulWidget {
-  const NewsPage({Key? key}) : super(key: key);
+  // indexEvent хотел сделать показ
+  final int? indexEvent;
+
+  NewsPage([this.indexEvent]);
 
   @override
   _NewsPageState createState() => _NewsPageState(NewsRepository());
@@ -25,24 +29,15 @@ class NewsPage extends StatefulWidget {
 class _NewsPageState extends State<NewsPage> {
   _NewsPageState(this._newsRepository);
 
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: true);
+
   late final ServiceNewsBloc _bloc;
   late final NewsRepository _newsRepository;
   late List<GetNewsFromServerModel> _newsFromServer = [];
 
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: true);
-
   late bool _maxLinesBool;
   late int _resultLines;
-
-  final List<String> images = [
-    'https://im0-tub-ru.yandex.net/i?id=16d9e6eddcbdfdeba9de432422bca25e-l&n=13',
-    'https://get.wallhere.com/photo/2560x1600-px-clear-sky-forest-landscape-pine-trees-road-sky-summer-1413157.jpg',
-    'https://w-dog.ru/wallpapers/9/17/322057789001671/zakat-nebo-solnce-luchi-oblaka-tuchi-pole-kolosya-zelenye-trava.jpg',
-    'https://im0-tub-ru.yandex.net/i?id=16d9e6eddcbdfdeba9de432422bca25e-l&n=13',
-    'https://get.wallhere.com/photo/2560x1600-px-clear-sky-forest-landscape-pine-trees-road-sky-summer-1413157.jpg',
-    'https://w-dog.ru/wallpapers/9/17/322057789001671/zakat-nebo-solnce-luchi-oblaka-tuchi-pole-kolosya-zelenye-trava.jpg',
-  ];
 
   @override
   void initState() {
@@ -50,7 +45,6 @@ class _NewsPageState extends State<NewsPage> {
     _bloc = ServiceNewsBloc(_newsRepository);
     _bloc.loadingNewsFromServer();
     _refreshController = RefreshController();
-
     _maxLinesBool = true;
     _resultLines = 3;
   }
@@ -72,11 +66,14 @@ class _NewsPageState extends State<NewsPage> {
           if (snapshot.data is NewsLoadedState) {
             final _data = snapshot.data as NewsLoadedState;
             _newsFromServer = _data.newsFromServer;
+
+            // a();
           }
 
           return snapshot.data is NewsLoadingState
               ? SkeletonWidget()
               : PageStorage(
+                  key: PageStorageKey<String>('news screen'),
                   bucket: bucketGlobal,
                   child: SmartRefresher(
                     controller: _refreshController,
@@ -86,7 +83,6 @@ class _NewsPageState extends State<NewsPage> {
                     onRefresh: _onRefresh,
                     onLoading: _onLoading,
                     child: ListView.builder(
-                      key: PageStorageKey<String>('news screen'),
                       physics: BouncingScrollPhysics(),
                       itemCount: _newsFromServer.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -115,7 +111,6 @@ class _NewsPageState extends State<NewsPage> {
                                               Expanded(
                                                 child: _titleText(index),
                                               ),
-                                              Expanded(child: Text('')),
                                             ],
                                           ),
                                         ),
@@ -154,18 +149,19 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
+
   /// Вывод изображений в ленту новостей
   Column bodyImageWidget(index) {
     final List<String> _images = [];
-    final List <String> _allImages = [];
+    final List<String> _allImages = [];
     String _mainImage = '';
-    if(_newsFromServer[index].images.length > 0) {
-      for(var i = 0; _newsFromServer[index].images.length - 1 >= i ; i++) {
+    if (_newsFromServer[index].images.length > 0) {
+      for (var i = 0; _newsFromServer[index].images.length - 1 >= i; i++) {
         final _image = _newsFromServer[index].images[i].photo;
         _allImages.add('http://23.152.0.13:3000/files/news/' + _image);
-        if(i == 0) {
+        if (i == 0) {
           _mainImage = 'http://23.152.0.13:3000/files/news/' + _image;
-        }else{
+        } else {
           _images.add('http://23.152.0.13:3000/files/news/' + _image);
         }
       }
@@ -177,36 +173,42 @@ class _NewsPageState extends State<NewsPage> {
           child: InkWell(
             onTap: () => openGallery(0, _allImages),
             splashColor: Colors.transparent,
-            child: (_mainImage.isNotEmpty)  ? Image(
-              image: NetworkImage(_mainImage),
-            )  : SizedBox.shrink(),
+            child: (_mainImage.isNotEmpty)
+                ? Image(
+                    image: NetworkImage(_mainImage),
+                  )
+                : SizedBox.shrink(),
           ),
         ),
         SizedBox(
           height: 5.0,
         ),
-        (_images.length > 0) ? SizedBox(
-          height: 150.0,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            physics: BouncingScrollPhysics(),
-            itemCount: _images.length,
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () => openGallery(index + 1, _allImages),
-                splashColor: Colors.transparent,
-                child: Row(
-                  children: [
-                    Image(image: NetworkImage(_images[index]),),
-                    SizedBox(
-                      width: 5.0,
-                    )
-                  ],
+        (_images.length > 0)
+            ? SizedBox(
+                height: 150.0,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  itemCount: _images.length,
+                  itemBuilder: (BuildContext context, int indexImage) {
+                    return InkWell(
+                      onTap: () => openGallery(indexImage + 1, _allImages),
+                      splashColor: Colors.transparent,
+                      child: Row(
+                        children: [
+                          Image(
+                            image: NetworkImage(_images[indexImage]),
+                          ),
+                          SizedBox(
+                            width: 5.0,
+                          )
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ) : SizedBox.shrink(),
+              )
+            : SizedBox.shrink(),
       ],
     );
   }
