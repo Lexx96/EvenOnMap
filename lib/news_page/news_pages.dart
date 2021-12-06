@@ -181,11 +181,11 @@ class _NewsPageState extends State<NewsPage> {
           ),
         ),
         SizedBox(
-          height: 5.0,
+          height: 3.0,
         ),
         (_images.length > 0)
             ? SizedBox(
-                height: 150.0,
+                height: 120.0,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   physics: BouncingScrollPhysics(),
@@ -200,7 +200,7 @@ class _NewsPageState extends State<NewsPage> {
                             image: NetworkImage(_images[indexImage]),
                           ),
                           SizedBox(
-                            width: 5.0,
+                            width: 3.0,
                           )
                         ],
                       ),

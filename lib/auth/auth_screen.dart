@@ -3,7 +3,7 @@ import 'package:event_on_map/auth/services/user_registration/user_registration_a
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
-import 'package:event_on_map/userProfile/services/user_profile__image_provider.dart';
+import 'package:event_on_map/userProfile/services/user_profile_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

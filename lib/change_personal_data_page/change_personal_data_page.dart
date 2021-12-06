@@ -1,6 +1,6 @@
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/main_screen/main_screen_widget.dart';
-import 'package:event_on_map/userProfile/services/user_profile__image_provider.dart';
+import 'package:event_on_map/userProfile/services/user_profile_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'bloc/change_personal_data_page_bloc.dart';
@@ -52,79 +52,92 @@ class _ChangePersonalDataPageState extends State<ChangePersonalDataPage> {
             stream: _bloc.streamChangePersonalData,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               Map<String, String?> _userDataFromSharedPreferences = {};
+
               if (snapshot.data is LoadUserDataState) {
                 final _data = snapshot.data as LoadUserDataState;
-                _userDataFromSharedPreferences =
-                    _data.userDataFromSharedPreferences;
-                _nameController = TextEditingController(
-                    text: _userDataFromSharedPreferences['userName']);
-                _surNameController = TextEditingController(
-                    text: _userDataFromSharedPreferences['userSurname']);
-                _userCityController = TextEditingController(
-                    text: _userDataFromSharedPreferences['userCity']);
-                _aboutMeController = TextEditingController(
-                    text: _userDataFromSharedPreferences['aboutMe']);
+                _userDataFromSharedPreferences = _data.userDataFromSharedPreferences;
+                _nameController = TextEditingController(text: _userDataFromSharedPreferences['userName']);
+                _surNameController = TextEditingController(text: _userDataFromSharedPreferences['userSurname']);
+                _userCityController = TextEditingController(text: _userDataFromSharedPreferences['userCity']);
+                _aboutMeController = TextEditingController(text: _userDataFromSharedPreferences['aboutMe']);
               }
               return Container(
                 child: Padding(
                   padding:
                       const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
-                  child: ListView(
+                  child: Stack(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      ListView(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: Text(S.of(context).name),
-                          ),
-                          TextField(
-                            controller: _nameController,
-                            maxLength: 50,
-                            decoration: InputDecoration(
-                              hintText: 'Ведите имя',
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: Text(S.of(context).surname),
-                          ),
-                          TextField(
-                            maxLength: 50,
-                            controller: _surNameController,
-                            decoration: InputDecoration(
-                              hintText: 'Ведите фамилию',
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: Text(S.of(context).city),
-                          ),
-                          TextField(
-                            maxLength: 50,
-                            controller: _userCityController,
-                            decoration: InputDecoration(
-                              hintText: S.of(context).city,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: Text(S.of(context).aboutMe),
-                          ),
-                          TextField(
-                            maxLines: DefaultTextStyle.of(context).maxLines,
-                            minLines: 10,
-                            maxLength: 1500,
-                            controller: _aboutMeController,
-                            decoration: InputDecoration(
-                              hintText: 'Расскажите о себе',
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                child: Text(S.of(context).name),
+                              ),
+                              TextField(
+                                controller: _nameController,
+                                maxLength: 50,
+                                decoration: InputDecoration(
+                                  hintText: 'Ведите имя',
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                child: Text(S.of(context).surname),
+                              ),
+                              TextField(
+                                maxLength: 50,
+                                controller: _surNameController,
+                                decoration: InputDecoration(
+                                  hintText: 'Ведите фамилию',
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                child: Text(S.of(context).city),
+                              ),
+                              TextField(
+                                maxLength: 50,
+                                controller: _userCityController,
+                                decoration: InputDecoration(
+                                  hintText: S.of(context).city,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                child: Text(S.of(context).aboutMe),
+                              ),
+                              TextField(
+                                maxLines: DefaultTextStyle.of(context).maxLines,
+                                minLines: 10,
+                                maxLength: 1500,
+                                controller: _aboutMeController,
+                                decoration: InputDecoration(
+                                  hintText: 'Расскажите о себе',
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                            ],
                           ),
                         ],
                       ),
+                   (snapshot.data is ShoeMessageChangePersonalDataState) ? AlertDialog(
+                  title: Center(
+                    child: Text(
+                      'Не все поля заполнены!\n \nПоля "Имя" и "Фамилия" должны содержать не менее трех смиволов.'
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => _bloc.emptyChangePersonalDataBloc(),
+                      child: Text('OK'),
+                    ),
+                  ],
+                ) : SizedBox.shrink()
                     ],
                   ),
                 ),
@@ -135,23 +148,27 @@ class _ChangePersonalDataPageState extends State<ChangePersonalDataPage> {
           children: [
             TextButton(
               onPressed: () {
-                UserProfileProvider()
-                    .saveUserDataInSharedPreferences(
-                        name: _nameController.text,
-                        surName: _surNameController.text,
-                        city: _userCityController.text,
-                        aboutMe: _aboutMeController.text)
-                    .whenComplete(
-                  () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainScreen( 2,
+                if(_nameController.text.length < 3 || _surNameController.text.length < 3){
+                  _bloc.shoeMessageChangePersonalDataBloc();
+                }else{
+                  UserProfileProvider()
+                      .saveUserDataInSharedPreferences(
+                      name: _nameController.text,
+                      surName: _surNameController.text,
+                      city: _userCityController.text,
+                      aboutMe: _aboutMeController.text)
+                      .whenComplete(
+                        () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainScreen( 2,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
+                      );
+                    },
+                  );
+                }
               },
               child: Text(
                 S.of(context).save,

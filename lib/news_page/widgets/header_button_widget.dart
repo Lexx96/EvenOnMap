@@ -60,12 +60,13 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                    _newsResponse.user['createdAt'] != null
-                        ? Text(
-                            _newsResponse.user['createdAt'],
-                            style: TextStyle(fontSize: 12),
-                          )
-                        : Text(''),
+                    Text(_dataTime(),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,)
                   ],
                 )
               ],
@@ -100,5 +101,21 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
         )
       ],
     );
+  }
+
+  /// Вывод времени размещения новости
+  String _dataTime() {
+    var _dataTimeNow = new DateTime.now().toString();
+    var _dataTimeFromServer = _newsResponse.user['createdAt'].toString();
+
+    if(_dataTimeFromServer.substring(8,10) == _dataTimeNow.substring(8,10)){
+      return 'Сегодня в ' + _dataTimeFromServer.substring(12,16);
+    } else if(_newsResponse.user['createdAt'] != null) {
+      return _dataTimeFromServer.substring(8,10)
+          + '.' + _dataTimeFromServer.substring(5,7)
+          + '.' + _dataTimeFromServer.substring(0,4)
+          + ' в ' + _dataTimeFromServer.substring(12,16);
+    }
+    return'Время размещения неопределенно';
   }
 }

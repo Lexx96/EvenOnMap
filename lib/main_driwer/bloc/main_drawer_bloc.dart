@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc_state.dart';
-import 'package:event_on_map/userProfile/services/user_profile__image_provider.dart';
+import 'package:event_on_map/userProfile/services/user_profile_provider.dart';
 
 import 'main_drawer_state.dart';
 

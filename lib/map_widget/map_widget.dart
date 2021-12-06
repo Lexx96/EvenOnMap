@@ -173,33 +173,6 @@ class MapWidgetState extends State<MapWidget> {
               ),
             ],
           ),
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     Row(
-          //       mainAxisAlignment: MainAxisAlignment.end,
-          //       children: [
-          //         TextButton(
-          //           onPressed: () => Navigator.of(context)
-          //               .pushNamedAndRemoveUntil(
-          //                   MainNavigationRouteName.createAnEventWidget,
-          //                   (route) => false),
-          //           child: Text(
-          //             'Создать событие',
-          //             style: TextStyle(fontSize: 18),
-          //           ),
-          //           style: ButtonStyle(
-          //             shape: MaterialStateProperty.all(
-          //               RoundedRectangleBorder(
-          //                 borderRadius: BorderRadius.circular(10),
-          //               ),
-          //             ),
-          //           ),
-          //         )
-          //       ],
-          //     )
-          //   ],
-          // ),
         ],
       ),
     );
@@ -264,7 +237,7 @@ class MapWidgetState extends State<MapWidget> {
                               child: Text(
                                 _addressForCard != null
                                     ? _addressForCard as String
-                                    : '',
+                                    : 'Адрес не определен',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold),
@@ -313,14 +286,13 @@ class MapWidgetState extends State<MapWidget> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: 8.0),
-                              child: Text(
-                                _dataForCard.createdAt,
+                              child: Text(_dataTime(),
                                 style: TextStyle(
-                                  fontSize: 12.0,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                                overflow: TextOverflow.ellipsis,),
                             ),
                           ],
                         ),
@@ -411,6 +383,22 @@ class MapWidgetState extends State<MapWidget> {
         ],
       ),
     );
+  }
+
+  /// Вывод времени размещения новости
+  String _dataTime() {
+    var _dataTimeNow = new DateTime.now().toString();
+    var _dataTimeFromServer = _dataForCard.user['createdAt'].toString();
+
+    if(_dataTimeFromServer.substring(8,10) == _dataTimeNow.substring(8,10)){
+      return 'Сегодня в ' + _dataTimeFromServer.substring(12,16);
+    } else if(_dataForCard.user['createdAt'] != null) {
+      return _dataTimeFromServer.substring(8,10)
+            + '.' + _dataTimeFromServer.substring(5,7)
+            + '.' + _dataTimeFromServer.substring(0,4)
+            + ' в ' + _dataTimeFromServer.substring(12,16);
+    }
+    return'Время размещения неопределенно';
   }
 
   /// Открытие виджета показа изображений
