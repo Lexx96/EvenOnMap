@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'dart:ui';
 import 'package:event_on_map/news_page/models/news.dart';
 import 'package:event_on_map/news_page/services/news_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_geocoder/model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../map_widget.dart';
 import 'map_repository.dart';
 
 

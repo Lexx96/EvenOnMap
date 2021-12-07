@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/news_page/services/news_api_repository.dart';
 import 'package:event_on_map/news_page/widgets/end_widget.dart';
@@ -6,7 +8,6 @@ import 'package:event_on_map/news_page/widgets/image_gallery.dart';
 import 'package:event_on_map/news_page/widgets/sceleton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../main_driwer/main_drawer.dart';
 import 'bloc/news_bloc.dart';
 import 'bloc/news_state.dart';
@@ -17,7 +18,7 @@ import 'models/news.dart';
 final bucketGlobal = PageStorageBucket();
 
 class NewsPage extends StatefulWidget {
-  // indexEvent хотел сделать показ
+  // indexEvent хотел сделать показ новостей по индексу
   final int? indexEvent;
 
   NewsPage([this.indexEvent]);
@@ -134,7 +135,7 @@ class _NewsPageState extends State<NewsPage> {
                                   ],
                                 ),
                               ),
-                              EndWidget(),
+                              EndWidget(_newsFromServer[index]),
                             ],
                           ),
                         );
@@ -146,7 +147,6 @@ class _NewsPageState extends State<NewsPage> {
       ),
     );
   }
-
 
   /// Вывод изображений в ленту новостей
   Column bodyImageWidget(index) {
@@ -164,6 +164,11 @@ class _NewsPageState extends State<NewsPage> {
         }
       }
     }
+    Size _mainImageSize = Size(0.0, 0.0);
+    _mainImage.isNotEmpty ? _calculateImageDimension(_mainImage).then((calculateImage) {
+      _mainImageSize = calculateImage;
+    }) : _mainImageSize = Size(0.0, 0.0);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -172,8 +177,13 @@ class _NewsPageState extends State<NewsPage> {
             onTap: () => openGallery(0, _allImages),
             splashColor: Colors.transparent,
             child: (_mainImage.isNotEmpty)
-                ? Image(
-                    image: NetworkImage(_mainImage),
+                ? CachedNetworkImage(
+                    imageUrl: _mainImage,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                      height: 320.0,
+                      width: _mainImageSize.width,),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   )
                 : SizedBox.shrink(),
           ),
@@ -189,13 +199,22 @@ class _NewsPageState extends State<NewsPage> {
                   physics: BouncingScrollPhysics(),
                   itemCount: _images.length,
                   itemBuilder: (BuildContext context, int indexImage) {
+                    Size _imageSize = Size(0.0, 0.0);
+                    _calculateImageDimension(_images[indexImage]).then((calculateImage) {
+                      _imageSize = calculateImage;
+                    });
                     return InkWell(
                       onTap: () => openGallery(indexImage + 1, _allImages),
                       splashColor: Colors.transparent,
                       child: Row(
                         children: [
-                          Image(
-                            image: NetworkImage(_images[indexImage]),
+                          CachedNetworkImage(
+                            imageUrl: _images[indexImage],
+                            placeholder: (context, url) => Container(
+                              color: Colors.grey,
+                                width: _imageSize.width,
+                                ),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
                           ),
                           SizedBox(
                             width: 3.0,
@@ -310,5 +329,21 @@ class _NewsPageState extends State<NewsPage> {
       },
     );
     _refreshController.loadFailed();
+  }
+
+  /// Расчет высоты и ширины изображения
+  Future<Size> _calculateImageDimension(String _imageForSize) {
+    Completer<Size> completer = Completer();
+    Image image = Image.network(_imageForSize);
+    image.image.resolve(ImageConfiguration()).addListener(
+      ImageStreamListener(
+            (ImageInfo image, bool synchronousCall) {
+          var myImage = image.image;
+          Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+          completer.complete(size);
+        },
+      ),
+    );
+    return completer.future;
   }
 }

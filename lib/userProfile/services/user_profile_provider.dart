@@ -118,8 +118,6 @@ class UserProfileProvider {
     String? aboutMe,
     String? phoneNumber
   }) async {
-    print(city);
-    print('1111111111111111111111111111111111');
     try {
       if (name != null) {
         await SaveAndReadDataFromSharedPreferences().saveNameData(name: name);

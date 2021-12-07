@@ -15,7 +15,6 @@ class NewsProvider {
       try {
         final newsJsonList = jsonDecode(response.body) as List<dynamic>;
         final newsJsonModel = newsJsonList.map((dynamic e) => GetNewsFromServerModel.fromJson(e as Map<String, dynamic>)).toList();
-        print(newsJsonModel);
         return newsJsonModel;
       } catch (_) {
         return newsJsonModel;

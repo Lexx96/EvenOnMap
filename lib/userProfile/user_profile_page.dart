@@ -64,7 +64,6 @@ class UserProfilePageState extends State<UserProfilePage> {
     if (snapshot.data is GetUserDataFromSharedPreferencesState) {
       final _data = snapshot.data as GetUserDataFromSharedPreferencesState;
       _userData = _data.userData;
-      print(_userData['UserLogIn']);
       _bloc.readUserProfileImageBloc();
     }
 

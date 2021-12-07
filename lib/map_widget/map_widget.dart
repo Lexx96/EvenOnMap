@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_on_map/main_screen/main_screen_widget.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
 import 'package:event_on_map/news_page/models/news.dart';
@@ -206,15 +207,23 @@ class MapWidgetState extends State<MapWidget> {
                     physics: BouncingScrollPhysics(),
                     itemCount: _dataForCard.images.length,
                     itemBuilder: (BuildContext context, int index) {
+                      Size _imageSize = Size(0.0, 0.0);
+                      _calculateImageDimension('http://23.152.0.13:3000/files/news/' +
+                          _dataForCard.images[index].photo).then((calculateImage) {
+                        _imageSize = calculateImage;
+                      });
                       return InkWell(
                         onTap: () => _openGallery(index, _images),
                         splashColor: Colors.transparent,
                         child: Row(
                           children: [
-                            Image(
-                              image: NetworkImage(
-                                  'http://23.152.0.13:3000/files/news/' +
-                                      _dataForCard.images[index].photo),
+                            CachedNetworkImage(
+                              imageUrl: 'http://23.152.0.13:3000/files/news/' + _dataForCard.images[index].photo,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey,
+                                height: 80.0,
+                                width: _imageSize.width,),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
                             ),
                             SizedBox(
                               width: 1.0,
@@ -229,6 +238,74 @@ class MapWidgetState extends State<MapWidget> {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Column(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {},
+                                borderRadius: BorderRadius.all(Radius.circular(25)),
+                                child: Row(
+                                  children: [
+                                    (_dataForCard.user['photo'] != null &&
+                                        _dataForCard.user['photo']['photo'] != null)
+                                        ? CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                        'http://23.152.0.13:3000/files/user/' +
+                                            _dataForCard.user['photo']['photo'],
+                                      ), //_newsResponse.user.photo.firs
+                                      radius: 27,
+                                    )
+                                        : CircleAvatar(
+                                      backgroundImage: AssetImage('assets/images/user.png'),
+                                      //_newsResponse.user.photo.firs
+                                      radius: 27,
+                                    ),
+                                    SizedBox(width: 10.0,),
+                                    Text(
+                                      _dataForCard.user['username'] != null &&
+                                          _dataForCard.user['surname'] != null
+                                          ? _dataForCard.user['username'] +
+                                          ' ' +
+                                          _dataForCard.user['surname']
+                                          : 'Инкогнито',
+                                      style:
+                                      TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(60)),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => _bloc.emptyBloc(),
+                                    child: Icon(
+                                      Icons.clear,
+                                      size: 30.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                clipBehavior: Clip.hardEdge,
+                              ),
+                            )
+                          ],
+                        )
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                         child: Row(
@@ -245,28 +322,6 @@ class MapWidgetState extends State<MapWidget> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(60)),
-                                ),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    onTap: () => _bloc.emptyBloc(),
-                                    child: Icon(
-                                      Icons.clear,
-                                      size: 30.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                clipBehavior: Clip.hardEdge,
-                              ),
-                            )
                           ],
                         ),
                       ),
@@ -284,16 +339,6 @@ class MapWidgetState extends State<MapWidget> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Text(_dataTime(),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,),
-                            ),
                           ],
                         ),
                       ),
@@ -310,66 +355,84 @@ class MapWidgetState extends State<MapWidget> {
                         ],
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                child: Container(
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    child: Container(
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(25)),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: Icon(
+                                              CustomIcons.heart_1,
+                                            ),
+                                          ),
+                                          Text(
+                                            ' 25  ',
+                                          ),
+                                        ],
+                                      ),
+                                      clipBehavior: Clip.hardEdge,
+                                    ),
+                                    onTap: () {},
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(25)),
+                                    splashColor: Theme.of(context).splashColor,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Icon(
-                                          CustomIcons.heart_1,
-                                        ),
-                                      ),
-                                      Text(
-                                        ' 25  ',
-                                      ),
-                                    ],
-                                  ),
-                                  clipBehavior: Clip.hardEdge,
                                 ),
-                                onTap: () {},
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25)),
-                                splashColor: Theme.of(context).splashColor,
                               ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () => Share.share(_dataForCard.id),
-                            //https://www.youtube.com/watch?v=-PmUFbbA-Fs
-                            child: Icon(
-                              Icons.share,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor:
+                              TextButton(
+                                onPressed: () => Share.share(_dataForCard.id),
+                                //https://www.youtube.com/watch?v=-PmUFbbA-Fs
+                                child: Icon(
+                                  Icons.share,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
                                   MaterialStateProperty.all(Colors.transparent),
-                              elevation: MaterialStateProperty.all(0),
-                              padding:
+                                  elevation: MaterialStateProperty.all(0),
+                                  padding:
                                   MaterialStateProperty.all(EdgeInsets.zero),
-                              minimumSize:
+                                  minimumSize:
                                   MaterialStateProperty.all(Size(60, 30)),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25),
-                                    side:
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(25),
+                                        side:
                                         BorderSide(color: Colors.transparent)),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(_dataTime(),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -385,7 +448,6 @@ class MapWidgetState extends State<MapWidget> {
     );
   }
 
-
   /// Вывод времени размещения новости
   String _dataTime() {
     var _dataTimeNow = new DateTime.now().toString();
@@ -394,10 +456,13 @@ class MapWidgetState extends State<MapWidget> {
     if(_dataTimeFromServer.substring(8,10) == _dataTimeNow.substring(8,10)){
       return 'Сегодня в ' + _dataTimeFromServer.substring(12,16);
     } else {
-      return _dataTimeFromServer.substring(8,10)
-          + '.' + _dataTimeFromServer.substring(5,7)
-          + '.' + _dataTimeFromServer.substring(0,4)
-          + ' в ' + _dataTimeFromServer.substring(12,16);
+      return _dataTimeFromServer.substring(8, 10) + // число
+          '.' +
+          _dataTimeFromServer.substring(5, 7) + // месяц
+          '.' +
+          _dataTimeFromServer.substring(0, 4) + // год
+          ' в ' +
+          _dataTimeFromServer.substring(11, 16); // часы и минуты
     }
   }
 
@@ -462,5 +527,21 @@ class MapWidgetState extends State<MapWidget> {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  /// Расчет высоты и ширины изображения
+  Future<Size> _calculateImageDimension(String _imageForSize) {
+    Completer<Size> completer = Completer();
+    Image image = Image.network(_imageForSize);
+    image.image.resolve(ImageConfiguration()).addListener(
+      ImageStreamListener(
+            (ImageInfo image, bool synchronousCall) {
+          var myImage = image.image;
+          Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+          completer.complete(size);
+        },
+      ),
+    );
+    return completer.future;
   }
 }

@@ -109,7 +109,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     maxLines: 1,
                     maxLength: 50,
                     decoration: InputDecoration(
-                      hintText: 'Заголовок',
+                      hintText: 'Тема',
                     ),
                     controller: _headerTextController,
                   ),
@@ -121,7 +121,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     minLines: 10,
                     maxLength: 1500,
                     decoration: InputDecoration(
-                      hintText: 'Тело события',
+                      hintText: 'Описание',
                     ),
                     controller: _bodyTextController,
                   ),
@@ -310,13 +310,76 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     final _textFromDescription = _bodyTextController.text;
     final String lat = _latLng.latitude.toString();
     final String lng = _latLng.longitude.toString();
-    _bloc.loadingPostEventBloc(
-        title: _textFromTitle,
-        description: _textFromDescription,
-        lng: lng,
-        lat: lat,
-        listImages: listImages
-    );
+
+    if(_headerTextController.text.length < 10 && _bodyTextController.text.length < 10) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Center(
+                child: Text(
+                  '\n \nТема события и описание не должно быть короче 10 символов',
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+      );
+    }
+    else if(_headerTextController.text.length < 10) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Center(
+                child: Text(
+                  '\n \nТема события не должна быть короче 10 символов',
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+      );
+    }
+    else if(_bodyTextController.text.length < 10) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Center(
+                child: Text(
+                  '\n \nОписание события не должно быть короче 10 символов',
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+      );
+    }
+    else{
+      _bloc.loadingPostEventBloc(
+          title: _textFromTitle,
+          description: _textFromDescription,
+          lng: lng,
+          lat: lat,
+          listImages: listImages
+      );
+    }
   }
 }
 
@@ -598,7 +661,6 @@ class ImagesWidgetState extends State<ImagesWidget> {
         child: StreamBuilder(
           stream: _bloc.streamPickImage,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            print(snapshot.data);
             if (snapshot.data is LoadedPickImage) {
               LoadedPickImage _data = snapshot.data as LoadedPickImage;
               final _images = _data.image;

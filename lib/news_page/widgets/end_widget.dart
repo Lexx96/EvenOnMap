@@ -1,10 +1,12 @@
+import 'package:event_on_map/news_page/models/news.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../custom_icons_icons.dart';
 
 class EndWidget extends StatelessWidget {
-  const EndWidget({Key? key}) : super(key: key);
+  final GetNewsFromServerModel _newsResponse;
+   EndWidget(this._newsResponse);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class EndWidget extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () => Share.share('text'),  //https://www.youtube.com/watch?v=-PmUFbbA-Fs
+              onPressed: () => Share.share(_newsResponse.id),  //https://www.youtube.com/watch?v=-PmUFbbA-Fs
               child: Icon(Icons.share, color: Theme.of(context).iconTheme.color,),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),

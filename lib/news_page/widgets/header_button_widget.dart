@@ -1,4 +1,4 @@
-import 'package:event_on_map/generated/l10n.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_on_map/main_screen/main_screen_widget.dart';
 import 'package:event_on_map/news_page/models/news.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +20,6 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
 
   _HeaderButtonWidgetState(this._newsResponse);
 
-
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -39,21 +37,36 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage('http://23.152.0.13:3000/files/user/' + _newsResponse.user['photo']['photo']), //_newsResponse.user.photo.firs
-                    radius: 27,
-                  ),
+                  child: (_newsResponse.user['photo'] != null &&
+                          _newsResponse.user['photo']['photo'] != null)
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            'http://23.152.0.13:3000/files/user/' +
+                                _newsResponse.user['photo']['photo'],
+                          ), //_newsResponse.user.photo.firs
+                          radius: 27,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: AssetImage('assets/images/user.png'),
+                          //_newsResponse.user.photo.firs
+                          radius: 27,
+                        ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _newsResponse.user['username'] != null ? _newsResponse.user['username']  : 'Инкогнито',
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                      _newsResponse.user['username'] != null &&
+                              _newsResponse.user['surname'] != null
+                          ? _newsResponse.user['username'] +
+                              ' ' +
+                              _newsResponse.user['surname']
+                          : 'Инкогнито',
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     Text(
                       _dataTime(),
                       style: TextStyle(
@@ -61,7 +74,8 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,)
+                      overflow: TextOverflow.ellipsis,
+                    )
                   ],
                 )
               ],
@@ -103,13 +117,16 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
     var _dataTimeNow = new DateTime.now().toString();
     var _dataTimeFromServer = _newsResponse.createdAt.toString();
 
-    if(_dataTimeFromServer.substring(8,10) == _dataTimeNow.substring(8,10)){
-      return 'Сегодня в ' + _dataTimeFromServer.substring(12,16);
-    }else{
-      return _dataTimeFromServer.substring(8,10)
-          + '.' + _dataTimeFromServer.substring(5,7)
-          + '.' + _dataTimeFromServer.substring(0,4)
-          + ' в ' + _dataTimeFromServer.substring(12,16);
+    if (_dataTimeFromServer.substring(8, 10) == _dataTimeNow.substring(8, 10)) {
+      return 'Сегодня в ' + _dataTimeFromServer.substring(12, 16);
+    } else {
+      return _dataTimeFromServer.substring(8, 10) + // чтсло
+          '.' +
+          _dataTimeFromServer.substring(5, 7) + // месяц
+          '.' +
+          _dataTimeFromServer.substring(0, 4) + // год
+          ' в ' +
+          _dataTimeFromServer.substring(11, 16); // часы и минуты
     }
   }
 }
