@@ -20,8 +20,8 @@ class UserLogInProvider {
 
     if (response.statusCode == 201) {
       try {
-        final jsonLogInList = jsonDecode(response.body) as Map<String, dynamic>;
-        final jsonLogInModel = UserLogInModel.fromJson(jsonLogInList);
+        final jsonLogInMap = jsonDecode(response.body) as Map<String, dynamic>;
+        final jsonLogInModel = UserLogInModel.fromJson(jsonLogInMap);
         return jsonLogInModel;
       } catch (e) {
         throw Exception('Ошибка получения данных от UserLogInModel.fromJson $e');

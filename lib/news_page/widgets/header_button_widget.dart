@@ -20,6 +20,8 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
 
   _HeaderButtonWidgetState(this._newsResponse);
 
+
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -30,7 +32,7 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              _newsResponse.user['id'];
+              // _newsResponse.user['id'];
             }, // открыть метод передать id
             borderRadius: BorderRadius.all(Radius.circular(25)),
             child: Row(
@@ -38,29 +40,22 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/mapOne.png'),
+                    backgroundImage: NetworkImage('http://23.152.0.13:3000/files/user/' + _newsResponse.user['photo']['photo']), //_newsResponse.user.photo.firs
                     radius: 27,
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _newsResponse.user['username'] != null
-                        ? Text(
-                            _newsResponse.user['username'],
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        : Text(
-                            S.of(context).userNickname, // избежать оверфлоу
+                    Text(
+                      _newsResponse.user['username'] != null ? _newsResponse.user['username']  : 'Инкогнито',
                             style: TextStyle(
                                 fontSize: 17, fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                    Text(_dataTime(),
+                    Text(
+                      _dataTime(),
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -106,16 +101,15 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
   /// Вывод времени размещения новости
   String _dataTime() {
     var _dataTimeNow = new DateTime.now().toString();
-    var _dataTimeFromServer = _newsResponse.user['createdAt'].toString();
+    var _dataTimeFromServer = _newsResponse.createdAt.toString();
 
     if(_dataTimeFromServer.substring(8,10) == _dataTimeNow.substring(8,10)){
       return 'Сегодня в ' + _dataTimeFromServer.substring(12,16);
-    } else if(_newsResponse.user['createdAt'] != null) {
+    }else{
       return _dataTimeFromServer.substring(8,10)
           + '.' + _dataTimeFromServer.substring(5,7)
           + '.' + _dataTimeFromServer.substring(0,4)
           + ' в ' + _dataTimeFromServer.substring(12,16);
     }
-    return'Время размещения неопределенно';
   }
 }

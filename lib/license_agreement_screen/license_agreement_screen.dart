@@ -173,7 +173,8 @@ class _LicenseAgreementState extends State<LicenseAgreement> {
                           ),
                           SizedBox(width: 20.0,),
                           TextButton(
-                            onPressed: () => Navigator.pop(context, false),
+                            onPressed: () => Navigator.of(context).pushNamed(
+                                MainNavigationRouteName.auth),
                             child: Text('Отмена'),
                           ),
                         ],

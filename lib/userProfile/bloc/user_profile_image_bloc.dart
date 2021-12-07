@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:event_on_map/map_widget/service/map_provider.dart';
 import 'package:event_on_map/userProfile/bloc/user_profile_image_bloc_state.dart';
 import 'package:event_on_map/userProfile/services/user_profile_provider.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfileImageBloc {
@@ -15,11 +18,13 @@ class UserProfileImageBloc {
     try {
       UserProfileProvider().getImageFileUserProfile(source).then(
         (image) async {
-          if(image != null) {
+          if (image != null) {
             await UserProfileProvider().writePhotoInMemory(image);
             readUserProfileImageBloc();
+            await UserProfileProvider.postUserImageProvider(image: image);
           } else {
-            _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
+            _streamController.sink
+                .add(UserProfileImageBlocState.emptyPickImage());
           }
         },
       );
@@ -38,7 +43,8 @@ class UserProfileImageBloc {
         _streamController.sink
             .add(UserProfileImageBlocState.loadedPickImage(imageFromMemory));
       },
-    ).catchError((e){
+    ).catchError(
+      (e) {
         _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
       },
     );
@@ -49,18 +55,23 @@ class UserProfileImageBloc {
     _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
 
     await UserProfileProvider().deletePhotoFromMemory().catchError(
-          (e) {
+      (e) {
         _streamController.sink.add(UserProfileImageBlocState.emptyPickImage());
       },
     );
   }
 
-  /// Получение данных о пользователе
-  void getUserDataFromSharedPreferencesBloc () async {
-    try{
-      final userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferences();
-      _streamController.sink.add(UserProfileImageBlocState.getUserDataInSharedPreferencesState(userDataFromSharedPreferences));
-    }catch(e){
+  /// Получение данных о пользователе из SharedPreferencesBloc
+  void getUserDataFromSharedPreferencesBloc() async {
+    try {
+      await UserProfileProvider()
+          .getDataFromServerAndSaveInSharedPreferencesProvider(); // долго грузит страницу
+      final userDataFromSharedPreferences =
+          await UserProfileProvider().getDataFromSharedPreferencesProvider();
+      _streamController.sink.add(
+          UserProfileImageBlocState.getUserDataInSharedPreferencesState(
+              userDataFromSharedPreferences));
+    } catch (e) {
       throw Exception(e);
     }
   }

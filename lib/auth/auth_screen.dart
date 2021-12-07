@@ -67,6 +67,7 @@ class _AuthWidgetState extends State<AuthWidget> {
           child: StreamBuilder(
             stream: _bloc.streamController,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
+
               if (snapshot.data is AuthLogInLoadedState) {
                 Future.delayed(
                   Duration.zero,
@@ -192,10 +193,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                       : SizedBox.shrink(),
                   _showException(snapshot),
                   (snapshot.data is RegistrationLoadedState)
-                      ? Padding(
-                          padding: const EdgeInsets.all(25.0),
-                          child: LicenseAgreement(isFirstEnter: true),
-                        )
+                      ? LicenseAgreement(isFirstEnter: true)
                       : SizedBox.shrink(),
                 ],
               );

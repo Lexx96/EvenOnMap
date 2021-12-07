@@ -66,8 +66,6 @@ class _NewsPageState extends State<NewsPage> {
           if (snapshot.data is NewsLoadedState) {
             final _data = snapshot.data as NewsLoadedState;
             _newsFromServer = _data.newsFromServer;
-
-            // a();
           }
 
           return snapshot.data is NewsLoadingState

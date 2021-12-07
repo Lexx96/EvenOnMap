@@ -10,25 +10,55 @@ class ChangePersonalDataBloc {
   Stream<ChangePersonalDataState> get streamChangePersonalData =>
       _streamController.stream;
 
-  /// Получение данных о пользователе из SharedPreferences
-  void loadUserDataBloc () async {
+  /// Пустое состояние
+  void emptyChangePersonalDataBloc () {
+    _streamController.sink.add(ChangePersonalDataState.emptyChangePersonalDataState());
+  }
+
+  /// Показать сообщение о недостаточном колличестве символов
+  void shoeMessageChangePersonalDataBloc () {
+    _streamController.sink.add(ChangePersonalDataState.shoeMessageChangePersonalDataState());
+  }
+
+  /// Сохранение данных о пользователе
+  void saveUserDataFromServerBloc ({
+    required String name,
+    required String surName,
+    String? aboutMe,
+    String? patronimyc,
+    String? city,
+    String? email,
+}) async{
+    _streamController.sink.add(ChangePersonalDataState.loadingChangePersonalDataState());
     try{
-      Map<String, String?> userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferences();
-      _streamController.sink.add(ChangePersonalDataState.loadUserDataState(userDataFromSharedPreferences));
+      await UserProfileProvider()
+          .postUserDataOnServerProvider(
+        name: name,
+        surName: surName,
+        patronimyc: patronimyc,
+        city: city,
+        email: email,
+      ).whenComplete(
+            () async {
+          await UserProfileProvider().saveUserDataInSharedPreferences(aboutMe: aboutMe);
+          await UserProfileProvider().getDataFromServerAndSaveInSharedPreferencesProvider();
+        },
+      );
+      _streamController.sink.add(ChangePersonalDataState.loadedChangePersonalDataState());
     }catch(e){
       throw Exception(e);
     }
   }
 
-  void emptyChangePersonalDataBloc () {
-    _streamController.sink.add(ChangePersonalDataState.emptyChangePersonalDataState());
+  /// Получение данных о пользователе из SharedPreferences
+  void loadUserDataFromSharedPreferencesBloc () async {
+    try{
+      Map<String, String?> userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferencesProvider();
+      _streamController.sink.add(ChangePersonalDataState.loadUserDataState(userDataFromSharedPreferences));
+    }catch(e){
+      throw Exception(e);
+    }
   }
-
-  void shoeMessageChangePersonalDataBloc () {
-    _streamController.sink.add(ChangePersonalDataState.shoeMessageChangePersonalDataState());
-  }
-
-
 
   dispose() {
     _streamController.close();

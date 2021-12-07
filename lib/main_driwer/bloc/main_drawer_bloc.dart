@@ -32,7 +32,7 @@ class MainDrawerBloc {
   /// Получение имени и фамилии(логина) пользователя
   void getUserDataFromSharedPreferencesMainDrawerBloc () async {
     try{
-      final userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferences();
+      final userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferencesProvider();
       _streamController.sink.add(MainDrawerBlocState.getUserDataFromSharedPreferencesMainDrawerState(userDataFromSharedPreferences));
     }catch(e){
       throw Exception(e);

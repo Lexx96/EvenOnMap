@@ -1,4 +1,6 @@
 
+import 'package:event_on_map/news_page/models/user.dart';
+
 import 'images.dart';
 
 class GetNewsFromServerModel {
@@ -11,7 +13,7 @@ class GetNewsFromServerModel {
   String createdAt;
   String updatedAt;
   List<Images> images;
-  Map<String,dynamic> user;
+  Map<String, dynamic> user;
 
   GetNewsFromServerModel({
     required this.id,
@@ -39,7 +41,7 @@ class GetNewsFromServerModel {
       images: (newsJson['images'] as List<dynamic>)
           .map((dynamic e) => Images.fromJson(e as Map<String, dynamic>))
           .toList(),
-      user: newsJson['user'] as Map<String,dynamic>
+      user: newsJson['user'] as Map<String, dynamic>
     );
   }
 }

@@ -385,20 +385,20 @@ class MapWidgetState extends State<MapWidget> {
     );
   }
 
+
   /// Вывод времени размещения новости
   String _dataTime() {
     var _dataTimeNow = new DateTime.now().toString();
-    var _dataTimeFromServer = _dataForCard.user['createdAt'].toString();
+    var _dataTimeFromServer = _dataForCard.createdAt.toString();
 
     if(_dataTimeFromServer.substring(8,10) == _dataTimeNow.substring(8,10)){
       return 'Сегодня в ' + _dataTimeFromServer.substring(12,16);
-    } else if(_dataForCard.user['createdAt'] != null) {
+    } else {
       return _dataTimeFromServer.substring(8,10)
-            + '.' + _dataTimeFromServer.substring(5,7)
-            + '.' + _dataTimeFromServer.substring(0,4)
-            + ' в ' + _dataTimeFromServer.substring(12,16);
+          + '.' + _dataTimeFromServer.substring(5,7)
+          + '.' + _dataTimeFromServer.substring(0,4)
+          + ' в ' + _dataTimeFromServer.substring(12,16);
     }
-    return'Время размещения неопределенно';
   }
 
   /// Открытие виджета показа изображений

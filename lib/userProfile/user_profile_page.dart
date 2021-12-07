@@ -59,6 +59,7 @@ class UserProfilePageState extends State<UserProfilePage> {
     if (snapshot.data is LoadedImageUserProfile) {
       final _data = snapshot.data as LoadedImageUserProfile;
       _image = _data.image as File;
+
     }
     if (snapshot.data is GetUserDataFromSharedPreferencesState) {
       final _data = snapshot.data as GetUserDataFromSharedPreferencesState;
