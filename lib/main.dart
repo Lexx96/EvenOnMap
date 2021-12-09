@@ -1,6 +1,8 @@
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:event_on_map/themes/my_dark_theme.dart';
 import 'package:event_on_map/themes/my_light_theme.dart';
+import 'package:event_on_map/userProfile/services/user_profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -76,7 +78,14 @@ Future<String?> isUserAuth() async {
   if (isUserLogIn == null || isUserPassword == null) {
     return MainNavigation().initialRouteAuth;
   } else {
-    await UserLogInProvider().postUserLogIn(isUserLogIn, isUserPassword);
-    return MainNavigation().initialRouteMain;
+    try{
+      await UserLogInProvider().postUserLogIn(isUserLogIn, isUserPassword);
+      // await UserProfileProvider().saveUserDataInSharedPreferences(phoneNumber: isUserLogIn);
+      // await WriteAndReadDataFromSecureStorage.writeUserLogIn(phoneNumber: isUserLogIn);
+      // await WriteAndReadDataFromSecureStorage.writeUserPassword(password: isUserPassword);
+      return MainNavigation().initialRouteMain;
+    }catch(e){
+      throw Exception(e);
+    }
   }
 }

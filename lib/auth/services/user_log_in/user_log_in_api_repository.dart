@@ -50,7 +50,6 @@ class SetAndReadDataFromSharedPreferences {
 
 class WriteAndReadDataFromSecureStorage {
 
-
   /// Проверка наличия номера в SecureStorage
   static Future<String?> readUserPhoneNumber () async {
     try{
@@ -62,7 +61,7 @@ class WriteAndReadDataFromSecureStorage {
         return null;
       }
     }catch(e){
-      throw Exception(e);
+      return null;
     }
   }
 
@@ -97,7 +96,7 @@ class WriteAndReadDataFromSecureStorage {
         return null;
       }
     }catch(e){
-      throw Exception(e);
+      return null;
     }
   }
 

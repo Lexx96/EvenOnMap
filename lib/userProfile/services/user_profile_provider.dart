@@ -18,12 +18,12 @@ class UserProfileProvider {
   }
 
   /// Загрузка аватарки на сервер
-  static Future<void> postUserImageProvider ({required File? image}) async{
-    try{
+  static Future<void> postUserImageProvider({required File? image}) async {
+    try {
       if (image != null) {
         PostUserDataOnServerRepository.postUserImageRepository(image: image);
       }
-    }catch(e){
+    } catch (e) {
       throw Exception(e);
     }
   }
@@ -49,7 +49,7 @@ class UserProfileProvider {
     final directory = await pathProvider.getTemporaryDirectory();
     final filePath = '${directory.path}/photo.jpeg';
     File file = File(filePath);
-    await deletePhoto(file);
+    await file.delete();
   }
 
   /// Проверка наличия записанного файла
@@ -95,7 +95,7 @@ class UserProfileProvider {
     String? email,
     String? city,
   }) async {
-    try{
+    try {
       await PostUserDataOnServerRepository.postUserDataOnServerRepository(
         name: name,
         surName: surName,
@@ -103,42 +103,52 @@ class UserProfileProvider {
         city: city,
         patronimyc: patronimyc,
       );
-    }catch(e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   /// Сохранение данных о пользователе в SharedPreferences
-  Future<void> saveUserDataInSharedPreferences({
-    String? name,
-    String? surName,
-    String? patronimyc,
-    String? email,
-    String? city,
-    String? aboutMe,
-    String? phoneNumber
-  }) async {
+  Future<void> saveUserDataInSharedPreferences(
+      {String? name,
+      String? surName,
+      String? patronimyc,
+      String? email,
+      String? city,
+      String? aboutMe,
+      String? phoneNumber,
+      String? userPhoto}) async {
     try {
       if (name != null) {
         await SaveAndReadDataFromSharedPreferences().saveNameData(name: name);
       }
+      if (userPhoto != null) {
+        await SaveAndReadDataFromSharedPreferences()
+            .savePhotoData(photo: userPhoto);
+      }
       if (surName != null) {
-        await SaveAndReadDataFromSharedPreferences().saveSurNameData(surName: surName);
+        await SaveAndReadDataFromSharedPreferences()
+            .saveSurNameData(surName: surName);
       }
       if (patronimyc != null) {
-        await SaveAndReadDataFromSharedPreferences().savePatronimycData(patronimyc: patronimyc);
+        await SaveAndReadDataFromSharedPreferences()
+            .savePatronimycData(patronimyc: patronimyc);
       }
       if (email != null) {
-        await SaveAndReadDataFromSharedPreferences().saveEmailData(email: email);
+        await SaveAndReadDataFromSharedPreferences()
+            .saveEmailData(email: email);
       }
       if (city != null) {
-        await SaveAndReadDataFromSharedPreferences().saveCityNameData(city: city);
+        await SaveAndReadDataFromSharedPreferences()
+            .saveCityNameData(city: city);
       }
       if (aboutMe != null) {
-        await SaveAndReadDataFromSharedPreferences().saveAboutMeData(aboutMe: aboutMe);
+        await SaveAndReadDataFromSharedPreferences()
+            .saveAboutMeData(aboutMe: aboutMe);
       }
       if (phoneNumber != null) {
-        await SaveAndReadDataFromSharedPreferences().savePhoneNumberData(phoneNumber: phoneNumber);
+        await SaveAndReadDataFromSharedPreferences()
+            .savePhoneNumberData(phoneNumber: phoneNumber);
       }
     } catch (e) {
       throw Exception(e);
@@ -146,20 +156,26 @@ class UserProfileProvider {
   }
 
   /// Получение всех данных о пользователе с серера и сохранение в SharedPreferences
-  Future<void> getDataFromServerAndSaveInSharedPreferencesProvider() async {
+  Future<String?> getDataFromServerAndSaveInSharedPreferencesProvider() async {
     try {
-      Response _response = await PostUserDataOnServerRepository.getDataFromServerRepository();
+      Response _response =
+          await PostUserDataOnServerRepository.getDataFromServerRepository();
 
-      if(_response.statusCode == 200) {
-        final jsonUserDataMap = jsonDecode(_response.body) as Map<String, dynamic>;
+      if (_response.statusCode == 200) {
+        final jsonUserDataMap =
+            jsonDecode(_response.body) as Map<String, dynamic>;
         await saveUserDataInSharedPreferences(
-          name: jsonUserDataMap['username'],
-          surName: jsonUserDataMap['surname'],
-          patronimyc: jsonUserDataMap['patronimyc'],
-          city: jsonUserDataMap['city'],
-          email: jsonUserDataMap['email'],
-        );
+            name: jsonUserDataMap['username'],
+            surName: jsonUserDataMap['surname'],
+            patronimyc: jsonUserDataMap['patronimyc'],
+            city: jsonUserDataMap['city'],
+            email: jsonUserDataMap['email'],
+            userPhoto: jsonUserDataMap['userPhoto']);
+
+        return jsonUserDataMap['photo']['photo'];
         // final jsonUserDataModel = UserDataModel.fromJson(jsonUserDataMap);
+      } else {
+        throw Exception();
       }
     } catch (e) {
       throw Exception(e);

@@ -37,18 +37,17 @@ class _MainDrawerState extends State<MainDrawer> {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
       stream: _bloc.streamController,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-
         if (snapshot.data is LoadedImageUserProfileForDrawerState) {
           final _data = snapshot.data as LoadedImageUserProfileForDrawerState;
           _image = _data.image as File;
         }
 
         if (snapshot.data is GetUserDataFromSharedPreferencesMainDrawerState) {
-          final _data = snapshot.data as GetUserDataFromSharedPreferencesMainDrawerState;
+          final _data =
+              snapshot.data as GetUserDataFromSharedPreferencesMainDrawerState;
           _userNameAndSurname = _data.userData;
           _bloc.readImageUserBloc();
         }
@@ -78,41 +77,52 @@ class _MainDrawerState extends State<MainDrawer> {
                                         color: Theme.of(context)
                                             .scaffoldBackgroundColor,
                                         border: Border.all(
-                                            color: Colors.black.withOpacity(0.2)),
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(90)),
+                                            color:
+                                                Colors.black.withOpacity(0.2)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(90)),
                                         boxShadow: [
                                           BoxShadow(
-                                              color: Colors.black,
-                                              blurRadius: 8,
-                                              offset: Offset(0, 2),
+                                            color: Colors.black,
+                                            blurRadius: 8,
+                                            offset: Offset(0, 2),
                                           ),
                                         ],
                                       ),
                                       clipBehavior: Clip.hardEdge,
                                       child: Stack(
                                         children: [
-                                          snapshot.data is EmptyMainDrawerState || snapshot.data is ShowMessageState
-                                              ? FlutterLogo(size: 160)
-                                              : SizedBox.shrink(),
-                                          (snapshot.data is LoadingImageMainDrawerState)
-                                              ? Stack(
-                                            children: [
-                                              FlutterLogo(size: 160),
-                                              Center(child: CircularProgressIndicator()),
-                                            ],
+                                          snapshot.data is EmptyMainDrawerState
+                                              ? CircleAvatar(
+                                            backgroundImage: AssetImage('assets/images/user.png'),
+                                            //_newsResponse.user.photo.firs
+                                            radius: 100,
                                           )
                                               : SizedBox.shrink(),
-                                              snapshot.data is EmptyMainDrawerState ||
-                                              snapshot.data is LoadingImageMainDrawerState
-                                              ? SizedBox.shrink() : ClipOval(
-                                                child: Image.file(
-                                                  _image,
-                                                  height: 160,
-                                                  width: 160,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              )
+                                          (snapshot.data
+                                                  is LoadingImageMainDrawerState)
+                                              ? Stack(
+                                                  children: [
+                                                    FlutterLogo(size: 160),
+                                                    Center(
+                                                        child:
+                                                            CircularProgressIndicator()),
+                                                  ],
+                                                )
+                                              : SizedBox.shrink(),
+                                          snapshot.data
+                                                      is EmptyMainDrawerState ||
+                                                  snapshot.data
+                                                      is LoadingImageMainDrawerState
+                                              ? SizedBox.shrink()
+                                              : ClipOval(
+                                                  child: Image.file(
+                                                    _image,
+                                                    height: 160,
+                                                    width: 160,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                )
                                         ],
                                       ),
                                     ),
@@ -121,18 +131,38 @@ class _MainDrawerState extends State<MainDrawer> {
                                     padding: const EdgeInsets.only(top: 20.0),
                                     child: Center(
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Text( _userNameAndSurname['userName'] == null || _userNameAndSurname['userName'] == '' ?
-                                          S.of(context).name : _userNameAndSurname['userName'] as String,
+                                          Text(
+                                            _userNameAndSurname['userName'] ==
+                                                        null ||
+                                                    _userNameAndSurname[
+                                                            'userName'] ==
+                                                        ''
+                                                ? S.of(context).name
+                                                : _userNameAndSurname[
+                                                    'userName'] as String,
                                             style: const TextStyle(
-                                                fontSize: 22, fontWeight: FontWeight.bold),
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          SizedBox(width: 5.0,),
-                                          Text( _userNameAndSurname['userSurname'] == null || _userNameAndSurname['userSurname'] == '' ?
-                                          S.of(context).surname : _userNameAndSurname['userSurname'] as String,
+                                          SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          Text(
+                                            _userNameAndSurname[
+                                                            'userSurname'] ==
+                                                        null ||
+                                                    _userNameAndSurname[
+                                                            'userSurname'] ==
+                                                        ''
+                                                ? S.of(context).surname
+                                                : _userNameAndSurname[
+                                                    'userSurname'] as String,
                                             style: const TextStyle(
-                                                fontSize: 22, fontWeight: FontWeight.bold),
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
@@ -142,22 +172,22 @@ class _MainDrawerState extends State<MainDrawer> {
                               ),
                             ),
                           ),
-                          ListTile(
-                            title: Row(
-                              children: [
-                                Icon(
-                                  CustomIcons.alarm,
-                                  size: 26,
-                                ),
-                                SizedBox(width: 7),
-                                Text('Уведомления'),
-                              ],
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/InPut');
-                            },
-                          ),
-                          Divider(),
+                          // ListTile(
+                          //   title: Row(
+                          //     children: [
+                          //       Icon(
+                          //         CustomIcons.alarm,
+                          //         size: 26,
+                          //       ),
+                          //       SizedBox(width: 7),
+                          //       Text('Уведомления'),
+                          //     ],
+                          //   ),
+                          //   onTap: () {
+                          //     Navigator.of(context).pushNamed('/InPut');
+                          //   },
+                          // ),
+                          // Divider(),
                           ListTile(
                             title: Row(
                               children: [
@@ -204,8 +234,8 @@ class _MainDrawerState extends State<MainDrawer> {
                               ],
                             ),
                             onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(MainNavigationRouteName.feedbackPage);
+                              Navigator.of(context).pushNamed(
+                                  MainNavigationRouteName.feedbackPage);
                             },
                           ),
                           Divider(),
@@ -214,33 +244,36 @@ class _MainDrawerState extends State<MainDrawer> {
                           ),
                         ],
                       ),
-                      ListTile(
-                        title: Row(
-                          children: [
-                            Icon(
-                              CustomIcons.off,
-                              color: Colors.red,
-                              size: 20,
+                      SizedBox(height: 150,),
+                      Column(
+                        children: [
+                          ListTile(
+                            title: Row(
+                              children: [
+                                Icon(
+                                  CustomIcons.off,
+                                  color: Colors.red,
+                                  size: 20,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Выйти',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Выйти',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ],
-                        ),
-                        onTap: _bloc.showMessage,
+                            onTap: _showMessage,
+                          ),
+                          SizedBox(height: 50.0,),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            snapshot.data is ShowMessageState
-                ? _showMessage()
-                : SizedBox.shrink()
           ],
         );
       },
@@ -248,34 +281,38 @@ class _MainDrawerState extends State<MainDrawer> {
   }
 
   /// Подтверждение выхода из учетной записи
-  Widget _showMessage() {
-    return AlertDialog(
-      title: Center(
-          child: Text(
-        '''Логин и пароль будут удалены. 
+   void _showMessage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(
+                child: Text(
+              '''Логин и пароль будут удалены. 
         
        Выйти из учетной записи ?''',
-      )),
-      actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            TextButton(
-              onPressed: () => _bloc.closeAlertDialog(),
-              child: Text('Отмена'),
-            ),
-            TextButton(
-                onPressed: () async {
-                  await WriteAndReadDataFromSecureStorage
-                      .deleteUserPasswordAndLogIn();
-                  await SaveAndReadDataFromSharedPreferences().deleteUserData();
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(MainNavigationRouteName.auth, (route) => false);
-                },
-                child: Text('Выйти')),
-          ],
-        ),
-      ],
+            )),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Отмена'),
+                  ),
+                  TextButton(
+                      onPressed: () async {
+                        await WriteAndReadDataFromSecureStorage.deleteUserPasswordAndLogIn();
+                        await SaveAndReadDataFromSharedPreferences().deleteUserData();
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            MainNavigationRouteName.auth, (route) => false);
+                      },
+                      child: Text('Выйти')),
+                ],
+              ),
+            ],
+          );
+        }
     );
   }
 }

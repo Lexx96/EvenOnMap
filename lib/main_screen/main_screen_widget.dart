@@ -34,6 +34,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return WillPopScope(
       onWillPop: () => exit(0),
       child: Scaffold(
@@ -72,7 +74,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-
 
   /// Выбор экрана при переходе на MainScreen
   void _indexPage () {

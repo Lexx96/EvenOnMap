@@ -67,18 +67,20 @@ class MapWidgetState extends State<MapWidget> {
 
   /// Тело страницы
   Scaffold _bodyMapWidget(BuildContext context, AsyncSnapshot snapshot) {
+
     MapProvider.choiceMapTheme(_controller);
 
     // происходит запрос к _myPositionLatLng быстрее чем ей присваевается значение, ошибка позней инициализации
     if (snapshot.data is ReadMyLastPositionState) {
       final _data = snapshot.data as ReadMyLastPositionState;
       _myLastPosition = _data.myLastPosition;
-      _myPositionLatLng = _myLastPosition ?? _myLastPosition as LatLng;
+      _myPositionLatLng = _myLastPosition != null ? _myLastPosition as LatLng : LatLng(53.7444831, 85.0315746);
     }
 
     if (snapshot.data is LoadedAddressFromUserPositionState) {
       final _data = snapshot.data as LoadedAddressFromUserPositionState;
       _setUserMarker.add(_data.setUserMarker.first);
+
     }
 
     if (snapshot.data is CardForMarkerState) {
@@ -108,7 +110,7 @@ class MapWidgetState extends State<MapWidget> {
             markers: _setNewsAddUserPosition,
             initialCameraPosition: CameraPosition(
               target: _myPositionLatLng,
-              zoom: 16,
+              zoom: 16.0,
             ),
             onTap: (LatLng latLng) => _bloc.emptyBloc(),
           ),
@@ -382,13 +384,13 @@ class MapWidgetState extends State<MapWidget> {
                                             ),
                                           ),
                                           Text(
-                                            ' 25  ',
+                                            ' 0  ',
                                           ),
                                         ],
                                       ),
                                       clipBehavior: Clip.hardEdge,
                                     ),
-                                    onTap: () {},
+                                    onTap: () => _showMessage(context),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(25)),
                                     splashColor: Theme.of(context).splashColor,
@@ -445,6 +447,33 @@ class MapWidgetState extends State<MapWidget> {
           ),
         ],
       ),
+    );
+  }
+
+  /// Показ уведобления
+  void _showMessage (BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(
+                child: Text(
+                  '''Лайки находятся в разработке. 
+        
+И в настоящее время не доступны. \n\nПриносим извинения за неудоства.''',
+                )),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('ОК')),
+                ],
+              ),
+            ],
+          );
+        }
     );
   }
 
@@ -522,7 +551,11 @@ class MapWidgetState extends State<MapWidget> {
         }
       }
       setState(() {
-        _setNewsAddUserPosition.add(_setUserMarker.first);
+        try{
+          _setNewsAddUserPosition.add(_setUserMarker.first);
+        }catch(e){
+          throw Exception(e);
+        }
       });
     } catch (e) {
       throw Exception(e);

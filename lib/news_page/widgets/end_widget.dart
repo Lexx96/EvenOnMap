@@ -10,6 +10,7 @@ class EndWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lengthDescription = _newsResponse.description.length/2;
     return Column(
       children: [
         Row(
@@ -36,20 +37,21 @@ class EndWidget extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          ' 25  ',
+                          ' 0   ',
                         ),
                       ],
                     ),
                     clipBehavior: Clip.hardEdge,
                   ),
-                  onTap: () {},
+                  onTap: () => _showMessage(context),
                   borderRadius: BorderRadius.all(Radius.circular(25)),
                   splashColor: Theme.of(context).splashColor,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () => Share.share(_newsResponse.id),  //https://www.youtube.com/watch?v=-PmUFbbA-Fs
+              onPressed: () => Share.share(''''${_newsResponse.title}...\n
+${_newsResponse.description.substring(0, lengthDescription.toInt())  }...\n\nПодробнее в приложении Event On Map'''),  //https://www.youtube.com/watch?v=-PmUFbbA-Fs
               child: Icon(Icons.share, color: Theme.of(context).iconTheme.color,),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),
@@ -68,6 +70,33 @@ class EndWidget extends StatelessWidget {
         ),
         Divider()
       ],
+    );
+  }
+
+
+  void _showMessage (BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(
+                child: Text(
+                  '''Лайки находятся в разработке. 
+        
+И в настоящее время не доступны. \n\nПриносим извинения за неудоства.''',
+                )),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('ОК')),
+                ],
+              ),
+            ],
+          );
+        }
     );
   }
 }

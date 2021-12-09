@@ -33,12 +33,15 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   ];
   List<File?> _listImages = [];
 
+  bool isIsRegistration = false;
+
 
   @override
   void initState() {
     super.initState();
     _bloc = CreateEventBloc();
     _bloc.getLatLngAndAddressUserPosition();
+    _bloc.isRegistrationFromSharedPreferencesBloc();
   }
 
   @override
@@ -80,6 +83,11 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
       GetListImagesFromImageWidgetState _data = snapshot
           .data as GetListImagesFromImageWidgetState;
       _listImages = _data.listImages;
+    }
+
+    if (snapshot.data is IsRegistrationUserState) {
+      IsRegistrationUserState _data = snapshot.data as IsRegistrationUserState;
+       isIsRegistration = _data.isIsRegistration;
     }
 
     return Stack(
@@ -371,6 +379,37 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
           },
       );
     }
+    else if(isIsRegistration == false) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                '\n \nДля размещения события необходмимо указать Имя и Фамилию',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Отмена'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainScreen(
+                      2,
+                    ),
+                  ),
+                ),
+                child: Text('Указать'),
+              ),
+            ],
+          );
+        },
+      );
+    }
     else{
       _bloc.loadingPostEventBloc(
           title: _textFromTitle,
@@ -403,7 +442,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
   late LatLng? _myLastPosition;
   late CreateEventMapBloc _createEventMapBloc;
   Completer<GoogleMapController> _controller = Completer();
-  late LatLng _myPosition = LatLng(0.0, 0.0);
+  late LatLng _myPosition = LatLng(53.7444831, 85.0315746);
   Set<Marker> _setUserMarkers = {};
   final ButtonStyle buttonStyle = ButtonStyle(
     padding: MaterialStateProperty.all(EdgeInsets.zero),
@@ -550,7 +589,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Область/Край'),
-                        Text('${_placemark.first.administrativeArea}'),
+                        Text(_placemark.first.administrativeArea == null ? '' : '${_placemark.first.administrativeArea}'),
                       ],
                     ),
                     Divider(),
@@ -558,7 +597,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Город'),
-                        Text('${_placemark.first.locality}'),
+                        Text( _placemark.first.locality == null ? '' : '${_placemark.first.locality}'),
                       ],
                     ),
                     Divider(),
@@ -566,7 +605,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Улица/Проспект'),
-                        Text('${_placemark.first.street}'),
+                        Text(_placemark.first.street == null ? '' : '${_placemark.first.street}'),
                       ],
                     ),
                     Divider(),
@@ -574,7 +613,7 @@ class _CreateEventMapWidgetState extends State<CreateEventMapWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Дом №'),
-                        Text('${_placemark.first.subThoroughfare}'),
+                        Text(_placemark.first.subThoroughfare == null ? '' : '${_placemark.first.subThoroughfare}'),
                       ],
                     ),
                   ],

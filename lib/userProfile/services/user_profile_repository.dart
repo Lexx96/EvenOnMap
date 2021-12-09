@@ -18,9 +18,11 @@ abstract class _SharedPreferencesKeys {
   static const _userCity = 'userCity';
   static const _aboutMe = 'aboutMe';
   static const _phoneNumber = 'phoneNumber';
+  static const _userPhoto = 'userPhoto';
 }
 
 class PostUserDataOnServerRepository {
+
   /// Получение токена из SharedPreferences и сохранение данных о пользователе на сервер
   static postUserDataOnServerRepository(
       {required String name,
@@ -84,6 +86,16 @@ class SaveAndReadDataFromSharedPreferences {
     try {
       final storage = await _storage;
       await storage.setString(_SharedPreferencesKeys._userName, name);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  /// Сохранение имени пользователя в SharedPreferences
+  Future<void> savePhotoData({required String photo}) async {
+    try {
+      final storage = await _storage;
+      await storage.setString(_SharedPreferencesKeys._userPhoto, photo);
     } catch (e) {
       throw Exception(e);
     }
@@ -161,6 +173,9 @@ class SaveAndReadDataFromSharedPreferences {
       getUserData[_SharedPreferencesKeys._userCity] = storage.getString(_SharedPreferencesKeys._userCity);
       getUserData[_SharedPreferencesKeys._aboutMe] = storage.getString(_SharedPreferencesKeys._aboutMe);
       getUserData[_SharedPreferencesKeys._phoneNumber] = storage.getString(_SharedPreferencesKeys._phoneNumber);
+      getUserData[_SharedPreferencesKeys._userPhoto] = storage.getString(_SharedPreferencesKeys._userPhoto);
+      print('21111111111111111111111222222222222222222222222');
+      print(getUserData['userPhoto']);
       return getUserData;
     } catch (e) {
       throw Exception(e);
@@ -199,8 +214,7 @@ Future<File> writePhoto(Uint8List file, File path) async {
 
 /// Удаление аватарки из памяти устройства
 Future<void> deletePhoto(File file) async {
-  await file.delete(
-      recursive: true); // Не полулилось разобраться с удалением(не удаляет)
+  await file.delete(); // Не полулилось разобраться с удалением(не удаляет)
 }
 
 /// Чтение аватарки из помяти устройства

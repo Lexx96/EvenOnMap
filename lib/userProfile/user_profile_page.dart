@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_on_map/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/navigation/main_navigation.dart';
@@ -22,6 +23,7 @@ class UserProfilePageState extends State<UserProfilePage> {
   late UserProfileImageBloc _bloc;
   Map<String, String?> _userData = {};
   File _image = File('');
+  String? _userPhotoFromServer = '';
 
   TextStyle textStyle = const TextStyle(
       fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold);
@@ -30,7 +32,7 @@ class UserProfilePageState extends State<UserProfilePage> {
   void initState() {
     super.initState();
     _bloc = UserProfileImageBloc();
-    _bloc.getUserDataFromSharedPreferencesBloc();
+    _bloc.getUserDataFromServerAndSharedPreferencesBloc();
   }
 
   @override
@@ -61,9 +63,11 @@ class UserProfilePageState extends State<UserProfilePage> {
       _image = _data.image as File;
 
     }
-    if (snapshot.data is GetUserDataFromSharedPreferencesState) {
-      final _data = snapshot.data as GetUserDataFromSharedPreferencesState;
-      _userData = _data.userData;
+    if (snapshot.data is GetUserDataFromServerAndSharedPreferencesBloc) {
+      final _data = snapshot.data as GetUserDataFromServerAndSharedPreferencesBloc;
+      _userData = _data.userDataFromSp;
+      _userPhotoFromServer = _data.userPhotoFromServer;
+      print(_userData['UserLogIn']);
       _bloc.readUserProfileImageBloc();
     }
 
@@ -98,17 +102,25 @@ class UserProfilePageState extends State<UserProfilePage> {
                           child: Stack(
                             children: [
                               (snapshot.data is EmptyImageUserProfile)
-                                  ? FlutterLogo(size: 160)
+                                  ?  CircleAvatar(
+                                backgroundImage: AssetImage('assets/images/user.png'),
+                                //_newsResponse.user.photo.firs
+                                radius: 100,
+                              )
                                   : SizedBox.shrink(),
                               (snapshot.data is LoadingImageUserProfile)
                                   ? Stack(
                                 children: [
-                                  FlutterLogo(size: 160),
+                                  CircleAvatar(
+                                    backgroundImage: AssetImage('assets/images/user.png'),
+                                    //_newsResponse.user.photo.firs
+                                    radius: 100,
+                                  ),
                                   Center(child: CircularProgressIndicator()),
                                 ],
                               )
                                   : SizedBox.shrink(),
-                              snapshot.data is LoadedImageUserProfile || snapshot.data is GetUserDataFromSharedPreferencesState
+                              snapshot.data is LoadedImageUserProfile || snapshot.data is GetUserDataFromServerAndSharedPreferencesBloc
                                   ? ClipOval(
                                 child: Image.file(
                                   _image,
@@ -339,6 +351,30 @@ class UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
+
+
+  // _choiceImageUserProfile (snapshot) {
+  //   if ( _userPhotoFromServer != null && _userPhotoFromServer != ''){
+  //     return CachedNetworkImage(
+  //       imageUrl: 'http://23.152.0.13:3000/files/user/' + _userPhotoFromServer!,
+  //       placeholder: (context, url) => Container(
+  //         color: Colors.grey,
+  //         width: 160.0,
+  //       ),
+  //       errorWidget: (context, url, error) => Icon(Icons.error),
+  //     );
+  //   } else if (_userPhotoFromServer == null && _userPhotoFromServer == ''
+  //       && snapshot.data is LoadedImageUserProfile || snapshot.data is GetUserDataFromServerAndSharedPreferencesBloc) {
+  //     return ClipOval(
+  //       child: Image.file(
+  //         _image,
+  //         height: 160,
+  //         width: 160,
+  //         fit: BoxFit.cover,
+  //       ),
+  //     );
+  //   }
+  // }
 
   /// Выбор аватарки: камера, галерея
   _showImagesSource(BuildContext context) async {

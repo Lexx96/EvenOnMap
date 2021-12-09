@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:event_on_map/create_event/services/create_event/create_event_provider.dart';
 import 'package:event_on_map/map_widget/service/map_provider.dart';
+import 'package:event_on_map/userProfile/services/user_profile_provider.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'create_event_bloc_state.dart';
@@ -78,6 +79,20 @@ class CreateEventBloc {
       );
     }catch(e){
       print(e);
+    }
+  }
+
+  /// Получение данных о пользователе из SharedPreferencesBloc
+  void isRegistrationFromSharedPreferencesBloc() async {
+    try {
+      final userDataFromSharedPreferences = await UserProfileProvider().getDataFromSharedPreferencesProvider();
+      if(userDataFromSharedPreferences['userName'] == null || userDataFromSharedPreferences['userSurname'] == null) {
+        _streamController.sink.add(NewEventBlocState.isRegistrationUserState(false));
+      }else {
+        _streamController.sink.add(NewEventBlocState.isRegistrationUserState(true));
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 

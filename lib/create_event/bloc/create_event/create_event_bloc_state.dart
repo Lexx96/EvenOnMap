@@ -9,6 +9,7 @@ class NewEventBlocState {
   factory NewEventBlocState.emptyCreateEventState() = EmptyCreateEventState;
   factory NewEventBlocState.loadingEventState() = EventLoadingBlocState;
   factory NewEventBlocState.openGoogleMapState() = OpenGoogleMapState;
+  factory NewEventBlocState.isRegistrationUserState(bool isIsRegistration) = IsRegistrationUserState;
   factory NewEventBlocState.getListImagesFromImageWidgetBloc(List<File?> listImages) = GetListImagesFromImageWidgetState;
   factory NewEventBlocState.loadedEventState(NewEventModel newEventModel) = EventLoadedBlocState;
   factory NewEventBlocState.postEvenErrorSendingServerState() = PostEvenErrorSendingServerState;
@@ -20,6 +21,11 @@ class EmptyCreateEventState extends NewEventBlocState {}
 class OpenGoogleMapState extends NewEventBlocState {}
 
 class EventLoadingBlocState extends NewEventBlocState {}
+
+class IsRegistrationUserState extends NewEventBlocState {
+  bool isIsRegistration;
+  IsRegistrationUserState(this.isIsRegistration);
+}
 
 class GetListImagesFromImageWidgetState extends NewEventBlocState {
   List<File?> listImages;

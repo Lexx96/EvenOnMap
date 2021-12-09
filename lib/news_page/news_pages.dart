@@ -117,8 +117,8 @@ class _NewsPageState extends State<NewsPage> {
                                             ? SizedBox.shrink()
                                             : SizedBox(height: 10),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16),
+                                          padding: const EdgeInsets.only(
+                                              left: 16, right: 16.0, bottom: 10.0),
                                           child: _descriptionText(
                                               _resultLines, index),
                                         ),
@@ -273,6 +273,7 @@ class _NewsPageState extends State<NewsPage> {
 
   /// Вывод кнопки "Подробнее ..."
   Widget _isButton(index) {
+
     if (_newsFromServer[index].description.length > 147 &&
         _maxLinesBool == true) {
       return TextButton(

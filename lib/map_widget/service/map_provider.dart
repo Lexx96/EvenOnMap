@@ -143,7 +143,7 @@ class MapProvider {
             CameraUpdate.newCameraPosition(
               CameraPosition(
                   target: _myPosition,
-                  zoom: 16,
+                  zoom: 14,
                 bearing: getPositionUserFromGPS.heading,
               ),
             ),

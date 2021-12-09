@@ -39,16 +39,6 @@ class MainDrawerBloc {
     }
   }
 
-  /// Закрыть AlertDialog
-  void closeAlertDialog() {
-    _streamController.sink.add(MainDrawerBlocState.closeAlertDialogState());
-  }
-
-  /// Подтверждение выходя из акаунта
-  void showMessage() {
-    _streamController.sink.add(MainDrawerBlocState.showMessageState());
-  }
-
   void dispose() {
     _streamController.close();
   }

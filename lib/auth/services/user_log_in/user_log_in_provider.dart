@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:event_on_map/auth/bloc/auth_bloc.dart';
 import 'package:event_on_map/auth/models/log_in/user_log_in.dart';
 import 'package:event_on_map/auth/services/user_log_in/user_log_in_api_repository.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 
 class UserLogInProvider {
@@ -18,6 +17,8 @@ class UserLogInProvider {
     final Response response =
         await UserLogInRepository.postUserLogInData(_jsonLogInPostModel);
 
+    print('2222222222222222222222222222222');
+    print(response.statusCode);
     if (response.statusCode == 201) {
       try {
         final jsonLogInMap = jsonDecode(response.body) as Map<String, dynamic>;
