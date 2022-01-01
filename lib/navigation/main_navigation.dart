@@ -1,23 +1,52 @@
-import 'package:event_on_map/auth/auth_screen_widget.dart';
-import 'package:event_on_map/auth_sign_in/auth_sign_up_widget.dart';
+
+import 'package:event_on_map/about_application/about_application_page.dart';
+import 'package:event_on_map/about_developer/abaut_developer.dart';
+import 'package:event_on_map/auth/auth_screen.dart';
+import 'package:event_on_map/change_personal_data_page/change_personal_data_page.dart';
+import 'package:event_on_map/create_event/create_event_screen.dart';
+import 'package:event_on_map/decoration_page/decoration_page.dart';
+import 'package:event_on_map/feedback_page/feedback_page.dart';
+import 'package:event_on_map/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/main_screen/main_screen_widget.dart';
+import 'package:event_on_map/map_widget/map_widget.dart';
+import 'package:event_on_map/news_page/news_pages.dart';
 import 'package:event_on_map/personal_data_page/personal_data_page.dart';
+import 'package:event_on_map/userProfile/user_profile_page.dart';
 import 'package:flutter/material.dart';
 
 
 abstract class MainNavigationRouteName {
   static const auth = 'auth';
   static const authSignUp = 'auth/authSignUp';
+  static const changePersonalDataPage = 'changePersonalDataPage';
+  static const createAnEventWidget = 'createAnEventWidget';
+  static const userProfile = 'userProfile';
+  static const newsWidget = 'newsWidget';
+  static const mapWidget = 'mapWidget';
   static const mainScreen = 'mainScreen';
-  static const personalDataPage = 'personalDataPage';
+  static const licenseAgreement = 'aboutTheApp';
+  static const aboutApplication = 'aboutApplication';
+  static const feedbackPage = 'feedbackPage';
+  static const aboutDeveloper = 'aboutDeveloper';
+  static const decorationPage = 'decorationPage';
+  static const createEventMapWidget = 'createEventMapWidget';
 }
 
 class MainNavigation {
-  final initialRoute = MainNavigationRouteName.auth;
+  final initialRouteAuth = MainNavigationRouteName.auth;
+  final initialRouteMain = MainNavigationRouteName.mainScreen;
   final routes = <String, Widget Function(BuildContext)>{
     MainNavigationRouteName.auth: (context) => const AuthWidget(),
-    MainNavigationRouteName.authSignUp: (context) => const AuthSignUpWidget(),
-    MainNavigationRouteName.mainScreen: (context) => const MainScreen(),
-    MainNavigationRouteName.personalDataPage: (context) => const PersonalDataPage(),
+    MainNavigationRouteName.changePersonalDataPage: (context) => ChangePersonalDataPage(),
+    MainNavigationRouteName.createAnEventWidget: (context) => const CreateEventWidget(),
+    MainNavigationRouteName.userProfile: (context) => const UserProfilePage(),
+    MainNavigationRouteName.newsWidget: (context) => NewsPage(),
+    MainNavigationRouteName.mapWidget: (context) => MapWidget(),
+    MainNavigationRouteName.mainScreen: (context) => MainScreen(0),
+    MainNavigationRouteName.licenseAgreement: (context) => LicenseAgreement(isFirstEnter: false,),
+    MainNavigationRouteName.aboutApplication: (context) => const AboutApplication(),
+    MainNavigationRouteName.feedbackPage: (context) => const FeedbackPage(),
+    MainNavigationRouteName.aboutDeveloper: (context) => const AboutDeveloper(),
+    MainNavigationRouteName.decorationPage: (context) => const DecorationPage(),
   };
 }
