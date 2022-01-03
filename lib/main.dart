@@ -1,15 +1,14 @@
-
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:event_on_map/themes/my_dark_theme.dart';
-import 'package:event_on_map/themes/my_light_theme.dart';
-import 'package:event_on_map/userProfile/services/user_profile_provider.dart';
+import 'package:event_on_map/utils/localozation/generated/l10n.dart';
+import 'package:event_on_map/utils/navigation/main_navigation.dart';
+import 'package:event_on_map/utils/themes/my_dark_theme.dart';
+import 'package:event_on_map/utils/themes/my_light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'auth/services/user_log_in/user_log_in_api_repository.dart';
-import 'auth/services/user_log_in/user_log_in_provider.dart';
-import 'generated/l10n.dart';
-import 'navigation/main_navigation.dart';
+
+import 'modules/auth/services/user_log_in/user_log_in_api_repository.dart';
+import 'modules/auth/services/user_log_in/user_log_in_servise.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // говорит о там что инициализацию приложения проводить тут
@@ -80,9 +79,6 @@ Future<String?> isUserAuth() async {
   } else {
     try{
       await UserLogInProvider().postUserLogIn(isUserLogIn, isUserPassword);
-      // await UserProfileProvider().saveUserDataInSharedPreferences(phoneNumber: isUserLogIn);
-      // await WriteAndReadDataFromSecureStorage.writeUserLogIn(phoneNumber: isUserLogIn);
-      // await WriteAndReadDataFromSecureStorage.writeUserPassword(password: isUserPassword);
       return MainNavigation().initialRouteMain;
     }catch(e){
       throw Exception(e);
