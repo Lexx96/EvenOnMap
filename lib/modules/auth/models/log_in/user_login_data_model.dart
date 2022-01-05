@@ -1,4 +1,5 @@
 
+/// Модель данных пользователя для авторизации
 class UserDataLogIn {
   String status;
   String phone;

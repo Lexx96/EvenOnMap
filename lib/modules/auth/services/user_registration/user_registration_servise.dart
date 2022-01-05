@@ -4,9 +4,11 @@ import 'package:event_on_map/modules/auth/models/registration/user_registration.
 import 'package:event_on_map/modules/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:http/http.dart';
 
+/// Сервис обработки запросов модуля auth
 class UserRegistrationProvider {
 
-  /// Регистрация нового пользователя
+  /// Регистрация нового пользователя, принимает номер телефона
+  /// пользователя String [phone], пароль пользователя String [password]
   Future<UserRegistrationModel> postUserRegistration(
     String phone,
     String password,

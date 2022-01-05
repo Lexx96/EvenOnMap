@@ -1,34 +1,21 @@
 import 'dart:async';
-import 'package:event_on_map/modules/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/modules/auth/services/user_log_in/user_log_in_servise.dart';
-import 'package:event_on_map/modules/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:event_on_map/modules/auth/services/user_registration/user_registration_servise.dart';
-
 import 'auth_bloc_state.dart';
 
+/// Класс управления состоянием AuthScreen
 class ServiceAuthBloc {
-  final UserRegistrationRepository _authRegistrationRepository;
-  final UserLogInRepository _authLogInRepository;
-
-  ServiceAuthBloc(
-    this._authRegistrationRepository,
-    this._authLogInRepository,
-  );
-
   final _streamController = StreamController<AuthBlocState>();
-
   Stream<AuthBlocState> get streamController => _streamController.stream;
 
-  void emptyState() {
-    _streamController.sink.add(AuthBlocState.emptyBlocState());
-  }
-
-  /// Регистрация и получения данных
+  /// Регистрация нового пользователя, получение AccessToken
+  /// и запись AccessToken в SharedPreferences. Принимает номер теелфона
+  /// пользователя String [phone], пароль пользователя String [phone]
   Future<void> loadingRegistration(
     String phone,
     String password,
   ) async {
-    _streamController.sink.add(AuthBlocState.loadingRegistration());
+    _streamController.sink.add(AuthBlocState.loading());
     UserRegistrationProvider().postUserRegistration(phone, password).then(
       (responseJsonRegistration) {
         _streamController.sink
@@ -44,18 +31,19 @@ class ServiceAuthBloc {
           _streamController.sink.add(AuthBlocState.accessTokenNotSet());
         } else {
           print('Ошибка выполнения запроса регистрации');
-          _streamController.sink.add(AuthBlocState.emptyBlocState());
         }
       },
     );
   }
 
-  /// Авторизация и получения данных
+  /// Авторизация пользователя, получение AccessToken
+  /// и запись AccessToken в SharedPreferences. Принимает номер телефона
+  /// пользователя String [phone], пароль пользователя String [password]
   Future<void> loadingLogIn(
     String phone,
     String password,
   ) async {
-    _streamController.sink.add(AuthBlocState.loadingLogIn());
+    _streamController.sink.add(AuthBlocState.loading());
     UserLogInProvider().postUserLogIn(phone, password).then(
       (responseJsonLogIn) {
         _streamController.sink
@@ -73,29 +61,17 @@ class ServiceAuthBloc {
           _streamController.sink.add(AuthBlocState.accessTokenNotSet());
         } else {
           print('Ошибка выполнения запроса авторизации');
-          _streamController.sink.add(AuthBlocState.emptyBlocState());
         }
       },
     );
   }
 
-  void errorLengthNumber() {
-    _streamController.sink.add(AuthBlocState.errorLengthNumber());
-  }
-
-  void errorLengthPassword() {
-    _streamController.sink.add(AuthBlocState.errorLengthPassword());
-  }
-
-  void errorLengthLoginAndPassword() {
-    _streamController.sink.add(AuthBlocState.errorLengthLoginAndPassword());
-  }
-
-  void showPasswordBloc () {
+  /// Пробрасывает состояние для показа вводимого пароль
+  void showPasswordBloc() {
     _streamController.sink.add(AuthBlocState.showPassword());
   }
-
-  void closePasswordBloc () {
+  /// Пробрасывает состояние для сокрытия вводимого пароль
+  void closePasswordBloc() {
     _streamController.sink.add(AuthBlocState.closePassword());
   }
 
@@ -104,11 +80,8 @@ class ServiceAuthBloc {
   }
 }
 
-class UserAlreadyRegisteredException implements Exception {
-  String getErrorMessage() {
-    return 'Пользователь уже зарегистрирован';
-  }
-}
+/// Класс с исключениями
+class UserAlreadyRegisteredException implements Exception {}
 
 class ErrorPasswordException implements Exception {}
 

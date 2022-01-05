@@ -49,5 +49,14 @@
   "friends" : "Друзья",
   "mail" : "Почта",
   "aboutTheApp" : "О приложении",
-  "licenseAgreement" : "Лицензионное соглашение"
+  "licenseAgreement" : "Лицензионное соглашение",
+  "nameApp" : "EventOnMap",
+  "passwordLength" : "Пароль должен содержать 8 знаков и более",
+  "numberLength" : "Номер должен содержать 11 знаков",
+  "errorPassword" : "Неверный пароль",
+  "ok" : "OK",
+  "userNotRegistered" : "Пользователь не зарегистрирован",
+  "userAlreadyRegistered" : "Пользователь уже зарегистрирован",
+  "errorWritingAccessToken" : "Ошибка записи AccessToken",
+  "registrationRequestExecutionError" : "Ошибка выполнения запроса регистрации"
 }

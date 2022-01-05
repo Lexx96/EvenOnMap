@@ -1,4 +1,4 @@
-import 'package:event_on_map/utils/localozation/generated/l10n.dart';
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class HeaderPagesWidget extends StatelessWidget {

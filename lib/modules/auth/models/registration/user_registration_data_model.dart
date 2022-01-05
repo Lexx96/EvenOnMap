@@ -1,4 +1,5 @@
 
+/// Модель данных пользователя для регистрации
 class UserDataRegistration {
   String status;
   String phone;

@@ -1,17 +1,12 @@
-
 import 'package:event_on_map/modules/auth/models/log_in/user_log_in.dart';
 import 'package:event_on_map/modules/auth/models/registration/user_registration.dart';
 
+/// Состояния модуля auth
 class AuthBlocState{
   AuthBlocState();
-  factory AuthBlocState.emptyBlocState() = EmptyBlocState;
-  factory AuthBlocState.loadingRegistration() = RegistrationLoadingState;
+  factory AuthBlocState.loading() = LoadingState;
   factory AuthBlocState.loadedRegistration(UserRegistrationModel userRegistrationModel) = RegistrationLoadedState;
-  factory AuthBlocState.loadingLogIn() = AuthLogInLoadingState;
-  factory AuthBlocState.loadedLogIn(UserLogInModel userLogInModel) = AuthLogInLoadedState;
-  factory AuthBlocState.errorLengthNumber() = ErrorLengthNumber;
-  factory AuthBlocState.errorLengthPassword() = ErrorLengthPassword;
-  factory AuthBlocState.errorLengthLoginAndPassword() = ErrorLengthLoginAndPassword;
+  factory AuthBlocState.loadedLogIn(UserLogInModel userLogInModel) = LogInLoadedState;
   factory AuthBlocState.userAlreadyRegistered() = UserAlreadyRegistered;
   factory AuthBlocState.errorPassword() = ErrorPassword;
   factory AuthBlocState.notRegistered() = NotRegistered;
@@ -20,38 +15,39 @@ class AuthBlocState{
   factory AuthBlocState.closePassword() = ClosePassword;
 }
 
-class EmptyBlocState extends AuthBlocState{}
+/// Состояние загрузки
+class LoadingState extends AuthBlocState {}
 
-class RegistrationLoadingState extends AuthBlocState {}
-
+/// Состояние окончания регистрации нового пользователя, принимает экземпляр
+/// модели UserRegistrationModel [userRegistrationModel]
 class RegistrationLoadedState extends AuthBlocState {
   UserRegistrationModel userRegistrationModel;
   RegistrationLoadedState(this.userRegistrationModel);
 }
 
-class AuthLogInLoadingState extends AuthBlocState {}
-
-class AuthLogInLoadedState extends AuthBlocState {
+/// Состояние окончания авторизации пользователя, принимает экземпляр
+/// модели UserLogInModel [userLogInModel]
+class LogInLoadedState extends AuthBlocState {
   UserLogInModel userLogInModel;
-  AuthLogInLoadedState(this.userLogInModel);
+  LogInLoadedState(this.userLogInModel);
 }
 
-class ErrorLengthNumber extends AuthBlocState {}
-
-class ErrorLengthPassword extends AuthBlocState {}
-
-class ErrorLengthLoginAndPassword extends AuthBlocState {}
-
+/// Состояние при попытке регистрации ранее зарегистрированного пользователя
 class UserAlreadyRegistered extends AuthBlocState {}
 
+/// Состояние при неверном пароль при авторизации ранее зарегистрированного пользователя
 class ErrorPassword extends AuthBlocState {}
 
+/// Состояние при авторизации ранее не зарегистрированного пользователя
 class NotRegistered extends AuthBlocState {}
 
+/// Состояние при ошибке записи  AccessToken в SharedPreferences
 class AccessTokenNotSet extends AuthBlocState {}
 
+/// Состояние для показа вводимого пароль
 class ShowPassword extends AuthBlocState {}
 
+/// Состояние для сокрытия вводимого пароль
 class ClosePassword extends AuthBlocState {}
 
 

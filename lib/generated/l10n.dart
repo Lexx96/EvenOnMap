@@ -230,16 +230,6 @@ class S {
     );
   }
 
-  /// `City`
-  String get city {
-    return Intl.message(
-      'City',
-      name: 'city',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `About me`
   String get aboutMe {
     return Intl.message(
@@ -500,6 +490,16 @@ class S {
     );
   }
 
+  /// `City`
+  String get city {
+    return Intl.message(
+      'City',
+      name: 'city',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Place of study`
   String get placeOfStudy {
     return Intl.message(
@@ -555,6 +555,96 @@ class S {
     return Intl.message(
       'License Agreement',
       name: 'licenseAgreement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `EventOnMap`
+  String get nameApp {
+    return Intl.message(
+      'EventOnMap',
+      name: 'nameApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The password must contain 8 characters or more`
+  String get passwordLength {
+    return Intl.message(
+      'The password must contain 8 characters or more',
+      name: 'passwordLength',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The number must contain 11 characters`
+  String get numberLength {
+    return Intl.message(
+      'The number must contain 11 characters',
+      name: 'numberLength',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid password`
+  String get errorPassword {
+    return Intl.message(
+      'Invalid password',
+      name: 'errorPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The user is not registered`
+  String get userNotRegistered {
+    return Intl.message(
+      'The user is not registered',
+      name: 'userNotRegistered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The user is already registered`
+  String get userAlreadyRegistered {
+    return Intl.message(
+      'The user is already registered',
+      name: 'userAlreadyRegistered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error writing accessToken`
+  String get errorWritingAccessToken {
+    return Intl.message(
+      'Error writing accessToken',
+      name: 'errorWritingAccessToken',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registration request execution error`
+  String get registrationRequestExecutionError {
+    return Intl.message(
+      'Registration request execution error',
+      name: 'registrationRequestExecutionError',
       desc: '',
       args: [],
     );

@@ -1,9 +1,9 @@
 import 'dart:io';
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/modules/map_widget/map_screen.dart';
 import 'package:event_on_map/modules/news_page/news_screen.dart';
 import 'package:event_on_map/modules/userProfile/user_profile_screen.dart';
 import 'package:event_on_map/utils/custom_icons/custom_icons.dart';
-import 'package:event_on_map/utils/localozation/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

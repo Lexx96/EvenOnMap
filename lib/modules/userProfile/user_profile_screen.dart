@@ -1,6 +1,6 @@
 import 'dart:io';
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/modules/main_driwer/main_drawer_screen.dart';
-import 'package:event_on_map/utils/localozation/generated/l10n.dart';
 import 'package:event_on_map/utils/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

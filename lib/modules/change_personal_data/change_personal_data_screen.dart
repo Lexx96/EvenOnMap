@@ -1,5 +1,5 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/modules/main_screen/main_screen.dart';
-import 'package:event_on_map/utils/localozation/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'bloc/change_personal_data_page_bloc.dart';

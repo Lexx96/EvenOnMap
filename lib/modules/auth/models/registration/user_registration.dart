@@ -1,7 +1,6 @@
-
-
 import 'package:event_on_map/modules/auth/models/registration/user_registration_data_model.dart';
 
+/// Модель пользователя для регистрации
 class UserRegistrationModel {
   String? phone;
   String? password;

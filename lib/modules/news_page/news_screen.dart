@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/modules/main_driwer/main_drawer_screen.dart';
 import 'package:event_on_map/modules/news_page/services/news_api_repository.dart';
 import 'package:event_on_map/modules/news_page/widgets/end_widget.dart';
 import 'package:event_on_map/modules/news_page/widgets/header_button_widget.dart';
 import 'package:event_on_map/modules/news_page/widgets/image_gallery.dart';
 import 'package:event_on_map/modules/news_page/widgets/sceleton.dart';
-import 'package:event_on_map/utils/localozation/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'bloc/news_bloc.dart';

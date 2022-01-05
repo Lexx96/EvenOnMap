@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/modules/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'package:event_on_map/modules/userProfile/service/user_profile_repository.dart';
 import 'package:event_on_map/utils/custom_icons/custom_icons.dart';
-import 'package:event_on_map/utils/localozation/generated/l10n.dart';
 import 'package:event_on_map/utils/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
 import 'bloc/main_drawer_bloc.dart';

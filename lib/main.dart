@@ -1,12 +1,11 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:event_on_map/utils/localozation/generated/l10n.dart';
 import 'package:event_on_map/utils/navigation/main_navigation.dart';
 import 'package:event_on_map/utils/themes/my_dark_theme.dart';
 import 'package:event_on_map/utils/themes/my_light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import 'generated/l10n.dart';
 import 'modules/auth/services/user_log_in/user_log_in_api_repository.dart';
 import 'modules/auth/services/user_log_in/user_log_in_servise.dart';
 

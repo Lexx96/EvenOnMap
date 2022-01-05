@@ -7,24 +7,28 @@ abstract class _SecureStorageKeys {
   static const _phoneNumber = 'PhoneNumber';
 }
 
-class UserLogInRepository {
-
-  /// Отправка запроса на вход уже зарегистрированного пользователя
-  static postUserLogInData<Response>(Map<String, dynamic> jsonLogIn) async {
-    return await http.post(Uri.parse('http://23.152.0.13:3000/auth/login'),
-        body: jsonLogIn);
-  }
-}
-
 abstract class _SharedPreferencesKeys {
   static const _accessToken = 'accessToken';
 }
 
-class SetAndReadDataFromSharedPreferences {
+/// Класс управления запросами модуля auth
+class UserLogInRepository {
 
+  /// Основной URL модуля
+  static const _url = 'http://23.152.0.13:3000/auth/login';
+
+  /// Запрос на вход уже зарегистрированного пользователя
+  static postUserLogInData<Response>(Map<String, dynamic> jsonLogIn) async {
+    return await http.post(Uri.parse(_url),
+        body: jsonLogIn);
+  }
+}
+
+/// Класс управления сохранением и чтением accessToken
+class SetAndReadDataFromSharedPreferences {
   final _storage = SharedPreferences.getInstance();
 
-  /// Сохранение accessToken в SharedPreferences
+  /// Сохранение accessToken в SharedPreferences, принимает accessToken String [accessToken]
   Future<void> saveAccessToken({required String accessToken}) async {
     try{
       final storage = await _storage;
@@ -34,7 +38,7 @@ class SetAndReadDataFromSharedPreferences {
     }
   }
 
-  /// Получение accessToken из SharedPreferences
+  /// Чтение accessToken из SharedPreferences
   Future<String> readAccessToken() async {
     final storage = await _storage;
     try{
@@ -48,25 +52,11 @@ class SetAndReadDataFromSharedPreferences {
   }
 }
 
+/// Класс управления сохранением и чтением номера пользователя и паролем
 class WriteAndReadDataFromSecureStorage {
 
-  /// Проверка наличия номера в SecureStorage
-  static Future<String?> readUserPhoneNumber () async {
-    try{
-      final _secureStorage = FlutterSecureStorage();
-      final _logInFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._phoneNumber);
-      if(_logInFromSecureStorage != null) {
-        return _logInFromSecureStorage;
-      } else {
-        return null;
-      }
-    }catch(e){
-      return null;
-    }
-  }
-
-  /// Сохранение номера в SecureStorage
-  static Future<void> writeUserLogIn ({ required String phoneNumber}) async {
+  /// Сохранение номера в SecureStorage, принмает номер пользователя String [phoneNumber]
+  static Future<void> writePhoneNumber ({ required String phoneNumber}) async {
     try{
       final _secureStorage = FlutterSecureStorage();
         await _secureStorage.write(key: _SecureStorageKeys._phoneNumber, value: phoneNumber);
@@ -75,7 +65,7 @@ class WriteAndReadDataFromSecureStorage {
     }
   }
 
-  /// Сохранение пароля в SecureStorage
+  /// Сохранение пароля в SecureStorage, принмает пароль String [password]
   static Future<String?> writeUserPassword ({required String password}) async {
     try{
       final _secureStorage = FlutterSecureStorage();
@@ -85,17 +75,24 @@ class WriteAndReadDataFromSecureStorage {
     }
   }
 
+  /// Проверка наличия номера пользователя в SecureStorage
+  static Future<String?> readUserPhoneNumber () async {
+    try{
+      final _secureStorage = FlutterSecureStorage();
+      final _logInFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._phoneNumber);
+        return _logInFromSecureStorage;
+    }catch(_){
+      return null;
+    }
+  }
+
   /// Проверка наличия пароля в SecureStorage
   static Future<String?> readUserPassword () async {
     try{
       final _secureStorage = FlutterSecureStorage();
       final _passwordFromSecureStorage = await _secureStorage.read(key: _SecureStorageKeys._password);
-      if(_passwordFromSecureStorage != null) {
         return _passwordFromSecureStorage;
-      } else {
-        return null;
-      }
-    }catch(e){
+    }catch(_){
       return null;
     }
   }

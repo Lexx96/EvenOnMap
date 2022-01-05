@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -47,6 +48,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter the password"),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage("Enter your phone number"),
+        "errorPassword":
+            MessageLookupByLibrary.simpleMessage("Invalid password"),
+        "errorWritingAccessToken":
+            MessageLookupByLibrary.simpleMessage("Error writing accessToken"),
         "friends": MessageLookupByLibrary.simpleMessage("Friends"),
         "history": MessageLookupByLibrary.simpleMessage("History"),
         "inMoreDetail":
@@ -66,11 +71,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "myAnswers": MessageLookupByLibrary.simpleMessage("My answers"),
         "myLikes": MessageLookupByLibrary.simpleMessage("My likes"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
+        "nameApp": MessageLookupByLibrary.simpleMessage("EventOnMap"),
         "nameOfTheEducationalInstitution": MessageLookupByLibrary.simpleMessage(
             "Name of the educational institution"),
         "news": MessageLookupByLibrary.simpleMessage("News"),
         "novokuznetsk": MessageLookupByLibrary.simpleMessage("Novokuznetsk"),
+        "numberLength": MessageLookupByLibrary.simpleMessage(
+            "The number must contain 11 characters"),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "passwordLength": MessageLookupByLibrary.simpleMessage(
+            "The password must contain 8 characters or more"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone number"),
         "photo": MessageLookupByLibrary.simpleMessage("Photo"),
         "placeOfStudy": MessageLookupByLibrary.simpleMessage("Place of study"),
@@ -80,13 +91,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "record": MessageLookupByLibrary.simpleMessage("Record"),
         "register": MessageLookupByLibrary.simpleMessage("register"),
         "registration": MessageLookupByLibrary.simpleMessage("Registration"),
+        "registrationRequestExecutionError":
+            MessageLookupByLibrary.simpleMessage(
+                "Registration request execution error"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "sendVerificationCode":
             MessageLookupByLibrary.simpleMessage("Send verification code"),
         "status": MessageLookupByLibrary.simpleMessage("Status"),
         "surname": MessageLookupByLibrary.simpleMessage("Surname"),
+        "userAlreadyRegistered": MessageLookupByLibrary.simpleMessage(
+            "The user is already registered"),
         "userNickname":
             MessageLookupByLibrary.simpleMessage("User\'s nickname"),
+        "userNotRegistered":
+            MessageLookupByLibrary.simpleMessage("The user is not registered"),
         "wasOnline": MessageLookupByLibrary.simpleMessage("was online")
       };
 }

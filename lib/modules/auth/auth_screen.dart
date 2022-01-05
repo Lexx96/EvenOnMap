@@ -1,9 +1,8 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/modules/auth/services/user_log_in/user_log_in_api_repository.dart';
-import 'package:event_on_map/modules/auth/services/user_registration/user_registration_api_repository.dart';
 import 'package:event_on_map/modules/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/modules/userProfile/service/user_profile_service.dart';
 import 'package:event_on_map/utils/custom_icons/custom_icons.dart';
-import 'package:event_on_map/utils/localozation/generated/l10n.dart';
 import 'package:event_on_map/utils/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,33 +10,24 @@ import 'package:flutter/services.dart';
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_bloc_state.dart';
 
-class AuthWidget extends StatefulWidget {
-  const AuthWidget({Key? key}) : super(key: key);
+/// Экран авторизации и регстрации
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({Key? key}) : super(key: key);
 
   @override
-  _AuthWidgetState createState() =>
-      _AuthWidgetState(UserRegistrationRepository(), UserLogInRepository());
+  _AuthScreenState createState() => _AuthScreenState();
 }
 
-class _AuthWidgetState extends State<AuthWidget> {
-  _AuthWidgetState(this._repository, this._authLogInRepository);
-
+class _AuthScreenState extends State<AuthScreen> {
   late ServiceAuthBloc _bloc;
-  late final UserRegistrationRepository _repository;
-  late final UserLogInRepository _authLogInRepository;
-  final _textStyle = TextStyle(fontSize: 16);
-
   final _numberController = TextEditingController();
   final _passwordController = TextEditingController();
+  static const Color _whiteColor = Color(0xffffffff);
 
   @override
   void initState() {
     super.initState();
-    _bloc = ServiceAuthBloc(
-      _repository,
-      _authLogInRepository,
-    );
-    _bloc.emptyState();
+    _bloc = ServiceAuthBloc();
   }
 
   @override
@@ -49,6 +39,7 @@ class _AuthWidgetState extends State<AuthWidget> {
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -56,7 +47,7 @@ class _AuthWidgetState extends State<AuthWidget> {
             begin: Alignment.bottomCenter,
             end: Alignment.topRight,
             colors: [
-              Color(0xffffffff),
+              _whiteColor,
               Theme.of(context).primaryColor,
             ],
           ),
@@ -65,54 +56,29 @@ class _AuthWidgetState extends State<AuthWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: StreamBuilder(
             stream: _bloc.streamController,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
+            builder: (BuildContext _context, AsyncSnapshot _snapshot) {
+              print(_snapshot.data);
 
-              if (snapshot.data is AuthLogInLoadedState) {
+              if (_snapshot.data is LogInLoadedState) {
                 Future.delayed(
                   Duration.zero,
-                  () => Navigator.of(context)
+                  () => Navigator.of(_context)
                       .pushNamed(MainNavigationRouteName.mainScreen),
                 );
               }
-
-              InputDecoration _inputDecorationPhoneNumber = InputDecoration(
-                prefix: const Text('+7'),
-                prefixStyle: const TextStyle(fontSize: 16),
-                prefixIcon: const Icon(
-                  Icons.phone,
-                ),
-                labelText: S.of(context).phoneNumber,
-              );
-
-              InputDecoration _inputDecorationPassword = InputDecoration(
-                prefixStyle: const TextStyle(fontSize: 16),
-                prefixIcon: const Icon(
-                  Icons.lock,
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () => (snapshot.data is ShowPassword)
-                      ? _bloc.closePasswordBloc()
-                      : _bloc.showPasswordBloc(),
-                  icon: (snapshot.data is ShowPassword)
-                      ? Icon(CustomIcons.eye)
-                      : Icon(CustomIcons.eye_off),
-                ),
-                contentPadding: const EdgeInsets.all(15),
-                labelText: S.of(context).password,
-              );
 
               return Stack(
                 children: [
                   ListView(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 50.0),
-                              child: const Text(
-                                'EventOnMap',
+                              child: Text(
+                                S.of(_context).appName,
                                 style: TextStyle(fontSize: 45),
                               ),
                             ),
@@ -120,34 +86,42 @@ class _AuthWidgetState extends State<AuthWidget> {
                         ),
                       ),
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: const Image(
-                          image: NetworkImage(
-                              'https://static.tildacdn.com/tild3830-6230-4265-a638-393035353836/itinerairepngcartede.png'),
-                        ),
+                        height: MediaQuery.of(_context).size.height * 0.4,
+                        width: MediaQuery.of(_context).size.width * 0.8,
+                        child: Image.asset('assets/images/mapOne.png'),
                       ),
                       Column(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: _height * 0.01, bottom: _height * 0.01),
-                            child: _showNumberText(snapshot),
-                          ),
                           TextField(
-                            decoration: _inputDecorationPhoneNumber,
+                            decoration: _inputDecoration(
+                              context: _context,
+                              prefix: const Text('+7'),
+                              snapshot: _snapshot,
+                              labelText: S.of(context).phoneNumber,
+                              onPressed: () {},
+                            ),
                             controller: _numberController,
                             keyboardType: TextInputType.number,
                           ),
-                          SizedBox(height: _height * 0.02),
-                          _showPasswordText(snapshot),
-                          SizedBox(height: _height * 0.01),
+                          SizedBox(height: _height * 0.03),
                           TextField(
-                            decoration: _inputDecorationPassword,
-                            obscureText: (snapshot.data is ShowPassword) ? false : true,
+                            decoration: _inputDecoration(
+                              context: _context,
+                              snapshot: _snapshot,
+                              labelText: S.of(context).password,
+                              onPressed: () {
+                                _snapshot.data is ShowPassword
+                                    ? _bloc.closePasswordBloc()
+                                    : _bloc.showPasswordBloc();
+                              },
+                              prefixIcon: Icon(Icons.lock),
+                              suffixIconOne: Icon(CustomIcons.eye),
+                              suffixIconTwo: Icon(CustomIcons.eye_off),
+                            ),
+                            obscureText:
+                                (_snapshot.data is ShowPassword) ? false : true,
                             obscuringCharacter: '*',
                             controller: _passwordController,
-                            onEditingComplete: () => TextInput.finishAutofillContext(),
                           ),
                         ],
                       ),
@@ -155,43 +129,42 @@ class _AuthWidgetState extends State<AuthWidget> {
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: Center(
                           child: Text(
-                              S.of(context).logInToYourAccountOrRegister,
+                              S.of(_context).logInToYourAccountOrRegister,
                               style: const TextStyle(
                                   fontSize: 13, color: Colors.grey)),
                         ),
                       ),
                       TextButton(
                         child: Text(
-                          S.of(context).enter,
+                          S.of(_context).enter,
                           style: TextStyle(fontSize: 18),
                         ),
                         onPressed: () =>
-                            (snapshot.data is RegistrationLoadingState ||
-                                    snapshot.data is AuthLogInLoadingState)
+                            (_snapshot.data is LoadingState ||
+                                    _snapshot.data is LoadingState)
                                 ? null
-                                : _goLogIn(),
+                                : _goLogIn(_snapshot),
                       ),
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01),
+                          height: MediaQuery.of(_context).size.height * 0.01),
                       TextButton(
                         child: Text(
-                          S.of(context).registration,
+                          S.of(_context).registration,
                           style: TextStyle(fontSize: 18),
                         ),
                         onPressed: () =>
-                            (snapshot.data is RegistrationLoadingState ||
-                                    snapshot.data is AuthLogInLoadingState)
+                            (_snapshot.data is LoadingState ||
+                                    _snapshot.data is LoadingState)
                                 ? null
-                                : _goRegistration(),
+                                : _goRegistration(_snapshot),
                       ),
                     ],
                   ),
-                  (snapshot.data is RegistrationLoadingState ||
-                          snapshot.data is AuthLogInLoadingState)
+                  _snapshot.data is LoadingState ||
+                          _snapshot.data is LoadingState
                       ? Center(child: CircularProgressIndicator())
                       : SizedBox.shrink(),
-                  _showException(snapshot),
-                  (snapshot.data is RegistrationLoadedState)
+                  _snapshot.data is RegistrationLoadedState
                       ? LicenseAgreement(isFirstEnter: true)
                       : SizedBox.shrink(),
                 ],
@@ -203,126 +176,124 @@ class _AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  // при обновлении страницы , после выхода из уч зап само по себе приходит состояние и если в техтфилде есть логин и пароль он входит
-  /// Авторизация ранее зарегистрированного пользователя
-  void _goLogIn() async {
+  /// Проверка коректности логина и пароля при авторизации,
+  /// авторизация ранее зарегистрированного пользователя,
+  /// принимает AsyncSnapshot [_snapshot]
+  void _goLogIn(AsyncSnapshot _snapshot) async {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;
 
     if (_numberText.length <= 9 && _passwordText.length <= 7) {
-      _bloc.errorLengthLoginAndPassword();
+      _showMessage(
+          '${S.of(context).numberLength}\n${S.of(context).passwordLength}');
     } else if (_numberText.length <= 9) {
-      _bloc.errorLengthNumber();
+      _showMessage('${S.of(context).numberLength}');
     } else if (_passwordText.length <= 7) {
-      _bloc.errorLengthPassword();
+      _showMessage('${S.of(context).passwordLength}');
     } else {
       _bloc.loadingLogIn(_numberText, _passwordText);
-      await UserProfileProvider().saveUserDataInSharedPreferences(phoneNumber: _numberText);
-      await WriteAndReadDataFromSecureStorage.writeUserLogIn(phoneNumber: _numberText);
-      await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
+      _showException(_snapshot);
+      await UserProfileProvider()
+          .saveUserDataInSharedPreferences(phoneNumber: _numberText);
+      await WriteAndReadDataFromSecureStorage.writePhoneNumber(
+          phoneNumber: _numberText);
+      await WriteAndReadDataFromSecureStorage.writeUserPassword(
+          password: _passwordText);
     }
   }
 
-  /// Регистрация нового пользователя
-  void _goRegistration() async {
+  /// Проверка коректности логина и пароля при регистрации,
+  /// регистрация нового пользователя, принимает AsyncSnapshot [_snapshot]
+  void _goRegistration(AsyncSnapshot _snapshot) async {
     final _numberText = _numberController.text;
     final _passwordText = _passwordController.text;
 
     if (_numberText.length <= 9 && _passwordText.length <= 7) {
-      _bloc.errorLengthLoginAndPassword();
+      _showMessage(
+          '${S.of(context).numberLength}\n${S.of(context).passwordLength}');
     } else if (_numberText.length <= 9) {
-      _bloc.errorLengthNumber();
+      _showMessage('${S.of(context).numberLength}');
     } else if (_passwordText.length <= 7) {
-      _bloc.errorLengthPassword();
+      _showMessage('${S.of(context).passwordLength}');
     } else {
-      _bloc.loadingRegistration(_numberText, _passwordText).whenComplete(() async{
-        await UserProfileProvider().saveUserDataInSharedPreferences(phoneNumber: _numberText);
-        await WriteAndReadDataFromSecureStorage.writeUserLogIn(phoneNumber: _numberText);
-        await WriteAndReadDataFromSecureStorage.writeUserPassword(password: _passwordText);
-      },
+      _bloc.loadingRegistration(_numberText, _passwordText).whenComplete(
+        () async {
+          _showException(_snapshot);
+          await UserProfileProvider()
+              .saveUserDataInSharedPreferences(phoneNumber: _numberText);
+          await WriteAndReadDataFromSecureStorage.writePhoneNumber(
+              phoneNumber: _numberText);
+          await WriteAndReadDataFromSecureStorage.writeUserPassword(
+              password: _passwordText);
+        },
       );
     }
-  }
-
-  /// Оповещение при недостаточном колличестве знаков в номере
-  Text _showNumberText(AsyncSnapshot snapshot) {
-    return (snapshot.data is ErrorLengthNumber) ||
-            (snapshot.data is ErrorLengthLoginAndPassword)
-        ? Text(
-            'Номер должен содержать 11 знаков',
-            style: TextStyle(color: Colors.red, fontSize: 16),
-          )
-        : Text(S.of(context).enterYourPhoneNumber, style: _textStyle);
-  }
-
-  /// Оповещение при недостаточном колличестве знаков в пароле
-  Text _showPasswordText(AsyncSnapshot snapshot) {
-    return (snapshot.data is ErrorLengthPassword) ||
-            (snapshot.data is ErrorLengthLoginAndPassword)
-        ? Text(
-            'Пароль должен содержать 8 знаков и более',
-            style: TextStyle(color: Colors.red, fontSize: 16),
-          )
-        : Text(S.of(context).enterThePassword, style: _textStyle);
   }
 
   /// Оповещение при исключении
-  Widget _showException(AsyncSnapshot snapshot) {
-    if (snapshot.data is ErrorPassword) {
-      return AlertDialog(
-        title: Center(
-            child: Text(
-          'Неверный пароль',
-        )),
-        actions: [
-          TextButton(
-            onPressed: () => _bloc.emptyState(),
-            child: Text('OK'),
-          )
-        ],
-      );
-    } else if (snapshot.data is NotRegistered) {
-      return AlertDialog(
-        title: Center(
-          child: Text(
-            'Пользователь не зарегистрирован',
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => _bloc.emptyState(),
-            child: Text('OK'),
-          )
-        ],
-      );
-    } else if (snapshot.data is UserAlreadyRegistered) {
-      return AlertDialog(
-        title: Center(
-            child: Text(
-          'Пользователь уже зарегистрирован',
-        )),
-        actions: [
-          TextButton(
-            onPressed: () => _bloc.emptyState(),
-            child: Text('OK'),
-          )
-        ],
-      );
-    } else if (snapshot.data is AccessTokenNotSet) {
-      return AlertDialog(
-        title: Center(
-            child: Text(
-          'Ошибка записи AccessToken',
-        )),
-        actions: [
-          TextButton(
-            onPressed: () => _bloc.emptyState(),
-            child: Text('OK'),
-          )
-        ],
-      );
-    } else {
-      return SizedBox.shrink();
+  /// принимает AsyncSnapshot [_snapshot]
+  void _showException(AsyncSnapshot _snapshot) {
+    if (_snapshot.data is ErrorPassword) {
+      return _showMessage(S.of(context).errorPassword);
+    } else if (_snapshot.data is NotRegistered) {
+      return _showMessage(S.of(context).userNotRegistered);
+    } else if (_snapshot.data is UserAlreadyRegistered) {
+      return _showMessage(S.of(context).userAlreadyRegistered);
+    } else if (_snapshot.data is AccessTokenNotSet) {
+      return _showMessage(S.of(context).errorWritingAccessToken);
     }
+  }
+
+  /// Показ уведомления пользователю, принимает сообщения  String [_message]
+  void _showMessage(String _message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              '\n\n$_message',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).ok),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Декорация TextField принимает BuildContext [context], AsyncSnapshot [snapshot],
+  /// Function? [onPressed], Widget? [prefix], Icon? [prefixIcon],
+  /// Icon? [suffixIconOne], Icon? [suffixIconTwo]
+  InputDecoration _inputDecoration({
+    required BuildContext context,
+    required AsyncSnapshot snapshot,
+    required Function? onPressed,
+    required String labelText,
+    Widget? prefix,
+    Icon? prefixIcon,
+    Icon? suffixIconOne,
+    Icon? suffixIconTwo,
+  }) {
+    return InputDecoration(
+      prefixStyle: const TextStyle(fontSize: 16),
+      prefixIcon: prefixIcon ?? null,
+      prefix: prefix,
+      suffixIcon: suffixIconOne != null && suffixIconTwo != null
+          ? IconButton(
+        onPressed: () => snapshot.data is ShowPassword
+            ? _bloc.closePasswordBloc()
+            : _bloc.showPasswordBloc(),
+        icon:
+        snapshot.data is ShowPassword ? suffixIconOne : suffixIconTwo,
+      )
+          : null,
+      contentPadding: const EdgeInsets.all(15),
+      labelText: labelText,
+    );
   }
 }

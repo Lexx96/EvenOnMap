@@ -49,5 +49,14 @@
   "friends" : "Friends",
   "mail" : "Mail",
   "aboutTheApp" : "About the app",
-  "licenseAgreement" : "License Agreement"
+  "licenseAgreement" : "License Agreement",
+  "nameApp" : "EventOnMap",
+  "passwordLength" : "The password must contain 8 characters or more",
+  "numberLength" : "The number must contain 11 characters",
+  "errorPassword" : "Invalid password",
+  "ok" : "OK",
+  "userNotRegistered" : "The user is not registered",
+  "userAlreadyRegistered" : "The user is already registered",
+  "errorWritingAccessToken" : "Error writing accessToken",
+  "registrationRequestExecutionError" : "Registration request execution error"
 }

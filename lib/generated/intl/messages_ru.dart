@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -47,6 +48,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Введите пароль"),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage("Введите номер телефона"),
+        "errorPassword":
+            MessageLookupByLibrary.simpleMessage("Неверный пароль"),
+        "errorWritingAccessToken":
+            MessageLookupByLibrary.simpleMessage("Ошибка записи AccessToken"),
         "friends": MessageLookupByLibrary.simpleMessage("Друзья"),
         "history": MessageLookupByLibrary.simpleMessage("История"),
         "inMoreDetail": MessageLookupByLibrary.simpleMessage("Подробнее ..."),
@@ -65,11 +70,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "myAnswers": MessageLookupByLibrary.simpleMessage("Мои ответы"),
         "myLikes": MessageLookupByLibrary.simpleMessage("Мои лайки"),
         "name": MessageLookupByLibrary.simpleMessage("Имя"),
+        "nameApp": MessageLookupByLibrary.simpleMessage("EventOnMap"),
         "nameOfTheEducationalInstitution":
             MessageLookupByLibrary.simpleMessage("Название учебного заведения"),
         "news": MessageLookupByLibrary.simpleMessage("Новости"),
         "novokuznetsk": MessageLookupByLibrary.simpleMessage("Новокузнецк"),
+        "numberLength": MessageLookupByLibrary.simpleMessage(
+            "Номер должен содержать 11 знаков"),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "password": MessageLookupByLibrary.simpleMessage("Пароль"),
+        "passwordLength": MessageLookupByLibrary.simpleMessage(
+            "Пароль должен содержать 8 знаков и более"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Номер телефона"),
         "photo": MessageLookupByLibrary.simpleMessage("Фото"),
         "placeOfStudy": MessageLookupByLibrary.simpleMessage("Место учебы"),
@@ -79,13 +90,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "record": MessageLookupByLibrary.simpleMessage("Запись"),
         "register": MessageLookupByLibrary.simpleMessage("зарегистрируйтесь"),
         "registration": MessageLookupByLibrary.simpleMessage("Регистрация"),
+        "registrationRequestExecutionError":
+            MessageLookupByLibrary.simpleMessage(
+                "Ошибка выполнения запроса регистрации"),
         "save": MessageLookupByLibrary.simpleMessage("Сохранить"),
         "sendVerificationCode":
             MessageLookupByLibrary.simpleMessage("Отправить проверочный код"),
         "status": MessageLookupByLibrary.simpleMessage("Статус"),
         "surname": MessageLookupByLibrary.simpleMessage("Фамилия"),
+        "userAlreadyRegistered": MessageLookupByLibrary.simpleMessage(
+            "Пользователь уже зарегистрирован"),
         "userNickname":
             MessageLookupByLibrary.simpleMessage("Ник пользователя"),
+        "userNotRegistered": MessageLookupByLibrary.simpleMessage(
+            "Пользователь не зарегистрирован"),
         "wasOnline": MessageLookupByLibrary.simpleMessage("был в сети")
       };
 }

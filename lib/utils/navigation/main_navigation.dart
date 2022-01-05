@@ -34,7 +34,7 @@ class MainNavigation {
   final initialRouteAuth = MainNavigationRouteName.auth;
   final initialRouteMain = MainNavigationRouteName.mainScreen;
   final routes = <String, Widget Function(BuildContext)>{
-    MainNavigationRouteName.auth: (context) => const AuthWidget(),
+    MainNavigationRouteName.auth: (context) => const AuthScreen(),
     MainNavigationRouteName.changePersonalDataPage: (context) => ChangePersonalDataPage(),
     MainNavigationRouteName.createAnEventWidget: (context) => const CreateEventWidget(),
     MainNavigationRouteName.userProfile: (context) => const UserProfilePage(),
