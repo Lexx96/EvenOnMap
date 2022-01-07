@@ -58,5 +58,7 @@
   "userNotRegistered" : "The user is not registered",
   "userAlreadyRegistered" : "The user is already registered",
   "errorWritingAccessToken" : "Error writing accessToken",
-  "registrationRequestExecutionError" : "Registration request execution error"
+  "registrationRequestExecutionError" : "Registration request execution error",
+  "incognito" : "Incognito",
+  "moreInformationEventOnMap" : "For more information, see the Event On Map app"
 }

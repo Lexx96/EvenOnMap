@@ -80,7 +80,7 @@ class ServiceAuthBloc {
   }
 }
 
-/// Класс с исключениями
+/// Классы исключений
 class UserAlreadyRegisteredException implements Exception {}
 
 class ErrorPasswordException implements Exception {}

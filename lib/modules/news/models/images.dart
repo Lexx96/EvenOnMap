@@ -1,3 +1,4 @@
+/// Модель загрузки изображений для новости
 class Images {
   final String id;
   final String newsId;

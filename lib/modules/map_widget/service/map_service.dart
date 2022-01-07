@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:event_on_map/modules/news_page/models/news.dart';
-import 'package:event_on_map/modules/news_page/services/news_service.dart';
+import 'package:event_on_map/modules/news/models/news.dart';
+import 'package:event_on_map/modules/news/services/news_service.dart';
 import 'package:flutter_geocoder/model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';

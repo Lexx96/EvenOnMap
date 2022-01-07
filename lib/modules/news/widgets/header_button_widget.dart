@@ -1,26 +1,28 @@
+import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/modules/main_screen/main_screen.dart';
-import 'package:event_on_map/modules/news_page/models/news.dart';
+import 'package:event_on_map/modules/news/models/news.dart';
 import 'package:event_on_map/utils/custom_icons/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+/// Виджет вывода в карточку события фото пользователя,
+/// его имени и времени размещения события
 class HeaderButtonWidget extends StatefulWidget {
   final GetNewsFromServerModel _newsResponse;
-
   HeaderButtonWidget(this._newsResponse, {Key? key}) : super(key: key);
 
   @override
-  State<HeaderButtonWidget> createState() =>
-      _HeaderButtonWidgetState(_newsResponse);
+  State<HeaderButtonWidget> createState() => _HeaderButtonWidgetState();
 }
 
 class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
-  late GetNewsFromServerModel _newsResponse;
-
-  _HeaderButtonWidgetState(this._newsResponse);
+  final _url = 'http://23.152.0.13:3000/files/user/';
 
   @override
   Widget build(BuildContext context) {
+
+    final _userData = widget._newsResponse.user;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,26 +30,22 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
         Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {
-              // _newsResponse.user['id'];
-            }, // открыть метод передать id
+            onTap: () {},
             borderRadius: BorderRadius.all(Radius.circular(25)),
             child: Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: (_newsResponse.user['photo'] != null &&
-                          _newsResponse.user['photo']['photo'] != null)
+                  child: (_userData['photo'] != null &&
+                      _userData['photo']['photo'] != null)
                       ? CircleAvatar(
                           backgroundImage: NetworkImage(
-                            'http://23.152.0.13:3000/files/user/' +
-                                _newsResponse.user['photo']['photo'],
-                          ), //_newsResponse.user.photo.firs
+                            _url + _userData['photo']['photo'],
+                          ),
                           radius: 27,
                         )
                       : CircleAvatar(
                           backgroundImage: AssetImage('assets/images/user.png'),
-                          //_newsResponse.user.photo.firs
                           radius: 27,
                         ),
                 ),
@@ -55,19 +53,16 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _newsResponse.user['username'] != null &&
-                              _newsResponse.user['surname'] != null
-                          ? _newsResponse.user['username'] +
-                              ' ' +
-                              _newsResponse.user['surname']
-                          : 'Инкогнито',
+                      _userData['username'] != null && _userData['surname'] != null
+                          ? _userData['username'] + ' ' + _userData['surname']
+                          : S.of(context).incognito,
                       style:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      _dataTime(),
+                      _dataTimeWidget(),
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -88,7 +83,7 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => MainScreen(
-                      1, LatLng(_newsResponse.lat, _newsResponse.lng)),
+                      1, LatLng(widget._newsResponse.lat, widget._newsResponse.lng)),
                 ),
               );
             },
@@ -112,20 +107,21 @@ class _HeaderButtonWidgetState extends State<HeaderButtonWidget> {
   }
 
   /// Вывод времени размещения новости
-  String _dataTime() {
+  String _dataTimeWidget() {
     var _dataTimeNow = new DateTime.now().toString();
-    var _dataTimeFromServer = _newsResponse.createdAt.toString();
+    var _dataTimeFromServer = widget._newsResponse.createdAt.toString();
 
     if (_dataTimeFromServer.substring(8, 10) == _dataTimeNow.substring(8, 10)) {
       return 'Сегодня в ' + _dataTimeFromServer.substring(12, 16);
     } else {
-      return _dataTimeFromServer.substring(8, 10) + // чтсло
+      return _dataTimeFromServer.substring(8, 10) +
           '.' +
-          _dataTimeFromServer.substring(5, 7) + // месяц
+          _dataTimeFromServer.substring(5, 7) +
           '.' +
-          _dataTimeFromServer.substring(0, 4) + // год
+          _dataTimeFromServer.substring(0, 4) +
           ' в ' +
-          _dataTimeFromServer.substring(11, 16); // часы и минуты
+          _dataTimeFromServer.substring(11, 16);
     }
   }
 }
+

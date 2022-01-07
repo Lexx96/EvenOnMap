@@ -1,6 +1,6 @@
 import 'package:event_on_map/modules/auth/models/log_in/user_login_data_model.dart';
 
-/// Модель пользователя для авторизации
+/// Модель пользователя, для авторизации
 class UserLogInModel {
   String? phone;
   String? password;

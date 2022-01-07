@@ -1,3 +1,4 @@
+/// Модель загрузки профиля пользователя
 class User {
   final String id;
   final String phone;

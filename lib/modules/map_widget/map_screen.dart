@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_on_map/modules/main_screen/main_screen.dart';
 import 'package:event_on_map/modules/map_widget/service/map_service.dart';
-import 'package:event_on_map/modules/news_page/models/news.dart';
-import 'package:event_on_map/modules/news_page/services/news_service.dart';
-import 'package:event_on_map/modules/news_page/widgets/image_gallery.dart';
+import 'package:event_on_map/modules/news/models/news.dart';
+import 'package:event_on_map/modules/news/services/news_service.dart';
+import 'package:event_on_map/modules/news/widgets/image_gallery.dart';
 import 'package:event_on_map/utils/custom_icons/custom_icons.dart';
 import 'package:event_on_map/utils/navigation/main_navigation.dart';
 import 'package:flutter/cupertino.dart';
@@ -399,7 +399,6 @@ class MapWidgetState extends State<MapWidget> {
                               ),
                               TextButton(
                                 onPressed: () => Share.share(_dataForCard.id),
-                                //https://www.youtube.com/watch?v=-PmUFbbA-Fs
                                 child: Icon(
                                   Icons.share,
                                   color: Theme.of(context).iconTheme.color,

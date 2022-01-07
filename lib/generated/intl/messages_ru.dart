@@ -55,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "friends": MessageLookupByLibrary.simpleMessage("Друзья"),
         "history": MessageLookupByLibrary.simpleMessage("История"),
         "inMoreDetail": MessageLookupByLibrary.simpleMessage("Подробнее ..."),
+        "incognito": MessageLookupByLibrary.simpleMessage("Инкогнито"),
         "informationAboutYourselfInAFreeForm":
             MessageLookupByLibrary.simpleMessage(
                 "Информация о себе в свободной форме"),
@@ -67,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mail": MessageLookupByLibrary.simpleMessage("Почта"),
         "map": MessageLookupByLibrary.simpleMessage("Карта"),
         "minutesAgo": MessageLookupByLibrary.simpleMessage("минут назад"),
+        "moreInformationEventOnMap": MessageLookupByLibrary.simpleMessage(
+            "Подробнее в приложении Event On Map"),
         "myAnswers": MessageLookupByLibrary.simpleMessage("Мои ответы"),
         "myLikes": MessageLookupByLibrary.simpleMessage("Мои лайки"),
         "name": MessageLookupByLibrary.simpleMessage("Имя"),

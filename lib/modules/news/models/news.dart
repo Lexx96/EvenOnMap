@@ -1,5 +1,6 @@
-import 'images.dart';
+import 'package:event_on_map/modules/news/models/images.dart';
 
+/// Модель загрузки новостей
 class GetNewsFromServerModel {
   String id;
   String title;

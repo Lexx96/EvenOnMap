@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:event_on_map/generated/l10n.dart';
 import 'package:event_on_map/modules/map_widget/map_screen.dart';
-import 'package:event_on_map/modules/news_page/news_screen.dart';
+import 'package:event_on_map/modules/news/news_screen.dart';
 import 'package:event_on_map/modules/userProfile/user_profile_screen.dart';
 import 'package:event_on_map/utils/custom_icons/custom_icons.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
         body: IndexedStack(
           index: _selectedTab,
           children: [
-            NewsPage(indexEvent),
+            NewsScreen(indexEvent),
             MapWidget(latLngNews),
             UserProfilePage(),
           ],

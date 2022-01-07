@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+/// Виджет показа изображения, принимает контроллер pageController [PageController],
+/// массив изображений (строк) List<String> [images], index [index]
 class ImageGalleryWidget extends StatefulWidget {
-  PageController pageController = PageController();
+  late PageController pageController = PageController();
   final List<String> images;
   final int index;
-  ImageGalleryWidget({Key? key, required this.images, this.index = 0}) : pageController = PageController(initialPage: index);
+
+  ImageGalleryWidget({Key? key, required this.images, this.index = 0})
+      : pageController = PageController(initialPage: index);
 
   @override
   _ImageGalleryWidgetState createState() => _ImageGalleryWidgetState();
@@ -22,7 +26,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
       builder: (context, index) {
         final images = widget.images[index];
         return PhotoViewGalleryPageOptions(
-            imageProvider: NetworkImage(images),
+          imageProvider: NetworkImage(images),
           minScale: PhotoViewComputedScale.contained,
           maxScale: PhotoViewComputedScale.contained * 4,
         );
@@ -34,7 +38,8 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           child: CircularProgressIndicator(
             value: event == null
                 ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes!.toInt(),
+                : event.cumulativeBytesLoaded /
+                    event.expectedTotalBytes!.toInt(),
           ),
         ),
       ),

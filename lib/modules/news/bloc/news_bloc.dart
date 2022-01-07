@@ -1,22 +1,12 @@
 import 'dart:async';
-import 'package:event_on_map/modules/news_page/services/news_api_repository.dart';
-import 'package:event_on_map/modules/news_page/services/news_service.dart';
-
+import 'package:event_on_map/modules/news/services/news_service.dart';
 import 'news_state.dart';
 
+/// Класс управления состоянием модуля news
 class ServiceNewsBloc {
-  final NewsRepository _newsRepository;
-
-  ServiceNewsBloc(this._newsRepository);
-
   final _newsStreamController = StreamController<NewsBlocState>();
-
   Stream<NewsBlocState> get newsStreamController =>
       _newsStreamController.stream;
-
-  void emptyState() {
-    _newsStreamController.sink.add(NewsBlocState.newsEmptyState());
-  }
 
   /// Получение новостей с сервера
   void loadingNewsFromServer() {
@@ -41,13 +31,12 @@ class ServiceNewsBloc {
     );
   }
 
-  /// Обновление новостной ленты in Top
+  /// Обновление новостной ленты свайпом in top
   Future<void> onRefresh() async {
     NewsProvider().getAllNewsFromServer().then(
       (jsonNewsModel) {
         _newsStreamController.sink
             .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-        // loadingNewsFromServer();
       },
     ).catchError(
       (exception) {
@@ -64,13 +53,12 @@ class ServiceNewsBloc {
     );
   }
 
-  /// Обновление новостной ленты in Bottom
+  /// Обновление новостной ленты свайпом in bottom
   Future<void> onLoading() async {
     NewsProvider().getAllNewsFromServer().then(
       (jsonNewsModel) {
         _newsStreamController.sink
             .add(NewsBlocState.newsLoadedState(jsonNewsModel));
-        // loadingNewsFromServer();
       },
     ).catchError(
       (exception) {
@@ -91,7 +79,7 @@ class ServiceNewsBloc {
     _newsStreamController.close();
   }
 }
-
+/// Классы исключений
 class DataErrorSendingServerException implements Exception {}
 
 class NotRegisteredSendingServerException implements Exception {}

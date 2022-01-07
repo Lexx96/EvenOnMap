@@ -1,4 +1,4 @@
-import 'package:event_on_map/modules/news_page/models/news.dart';
+import 'package:event_on_map/modules/news/models/news.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapBlocState {

@@ -649,6 +649,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Incognito`
+  String get incognito {
+    return Intl.message(
+      'Incognito',
+      name: 'incognito',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `For more information, see the Event On Map app`
+  String get moreInformationEventOnMap {
+    return Intl.message(
+      'For more information, see the Event On Map app',
+      name: 'moreInformationEventOnMap',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

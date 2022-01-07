@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:event_on_map/modules/map_widget/service/map_service.dart';
-import 'package:event_on_map/modules/news_page/models/news.dart';
-import 'package:event_on_map/modules/news_page/services/news_service.dart';
+import 'package:event_on_map/modules/news/models/news.dart';
+import 'package:event_on_map/modules/news/services/news_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'map_bloc_state.dart';
 

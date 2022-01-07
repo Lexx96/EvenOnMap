@@ -1,15 +1,19 @@
-import 'package:event_on_map/modules/news_page/models/news.dart';
+import 'package:event_on_map/generated/l10n.dart';
+import 'package:event_on_map/modules/news/models/news.dart';
 import 'package:event_on_map/utils/custom_icons/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
+/// Виджет вывода в карточку события нижней панели и кнопки 'Like', 'Share'
 class EndWidget extends StatelessWidget {
   final GetNewsFromServerModel _newsResponse;
-   EndWidget(this._newsResponse);
+
+  EndWidget(this._newsResponse);
 
   @override
   Widget build(BuildContext context) {
-    final lengthDescription = _newsResponse.description.length/2;
+    final _lengthDescription = _newsResponse.description.length / 2;
+
     return Column(
       children: [
         Row(
@@ -21,7 +25,7 @@ class EndWidget extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   child: Container(
-                    height: 30,
+                    height: 30.0,
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.all(Radius.circular(25)),
@@ -31,13 +35,11 @@ class EndWidget extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child: Icon(
+                          child: const Icon(
                             CustomIcons.heart_1,
                           ),
                         ),
-                        Text(
-                          ' 0   ',
-                        ),
+                        const Text(' 0   '),
                       ],
                     ),
                     clipBehavior: Clip.hardEdge,
@@ -50,8 +52,11 @@ class EndWidget extends StatelessWidget {
             ),
             TextButton(
               onPressed: () => Share.share(''''${_newsResponse.title}...\n
-${_newsResponse.description.substring(0, lengthDescription.toInt())  }...\n\nПодробнее в приложении Event On Map'''),  //https://www.youtube.com/watch?v=-PmUFbbA-Fs
-              child: Icon(Icons.share, color: Theme.of(context).iconTheme.color,),
+${_newsResponse.description.substring(0, _lengthDescription.toInt())}...\n\n${S.of(context).moreInformationEventOnMap}'''),
+              child: Icon(
+                Icons.share,
+                color: Theme.of(context).iconTheme.color,
+              ),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),
                 elevation: MaterialStateProperty.all(0),
@@ -60,8 +65,7 @@ ${_newsResponse.description.substring(0, lengthDescription.toInt())  }...\n\nП�
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
-                      side: BorderSide(color: Colors.transparent)
-                  ),
+                      side: BorderSide(color: Colors.transparent)),
                 ),
               ),
             ),
@@ -72,30 +76,29 @@ ${_newsResponse.description.substring(0, lengthDescription.toInt())  }...\n\nП�
     );
   }
 
-
-  void _showMessage (BuildContext context) {
+  void _showMessage(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Center(
-                child: Text(
-                  '''Лайки находятся в разработке. 
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(
+              child: Text(
+            '''Функция оценки событий находится в разработке. 
         
-И в настоящее время не доступны. \n\nПриносим извинения за неудоства.''',
-                )),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text('ОК')),
-                ],
-              ),
-            ],
-          );
-        }
+И в настоящее время не доступна. \n\nПриносим извинения за неудоства.''',
+          )),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(S.of(context).ok)),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -8,7 +8,7 @@ import 'package:event_on_map/modules/feedback/feedback_screen.dart';
 import 'package:event_on_map/modules/license_agreement_screen/license_agreement_screen.dart';
 import 'package:event_on_map/modules/main_screen/main_screen.dart';
 import 'package:event_on_map/modules/map_widget/map_screen.dart';
-import 'package:event_on_map/modules/news_page/news_screen.dart';
+import 'package:event_on_map/modules/news/news_screen.dart';
 import 'package:event_on_map/modules/userProfile/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +38,7 @@ class MainNavigation {
     MainNavigationRouteName.changePersonalDataPage: (context) => ChangePersonalDataPage(),
     MainNavigationRouteName.createAnEventWidget: (context) => const CreateEventWidget(),
     MainNavigationRouteName.userProfile: (context) => const UserProfilePage(),
-    MainNavigationRouteName.newsWidget: (context) => NewsPage(),
+    MainNavigationRouteName.newsWidget: (context) => NewsScreen(),
     MainNavigationRouteName.mapWidget: (context) => MapWidget(),
     MainNavigationRouteName.mainScreen: (context) => MainScreen(0),
     MainNavigationRouteName.licenseAgreement: (context) => LicenseAgreement(isFirstEnter: false,),

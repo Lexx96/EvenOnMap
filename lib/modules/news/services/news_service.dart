@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:event_on_map/modules/news_page/bloc/news_bloc.dart';
-import 'package:event_on_map/modules/news_page/models/news.dart';
+import 'package:event_on_map/modules/news/bloc/news_bloc.dart';
+import 'package:event_on_map/modules/news/models/news.dart';
 import 'package:http/http.dart';
-
 import 'news_api_repository.dart';
 
+/// Сервис обработки запросов модуля news
 class NewsProvider {
 
   /// Получение новостей с сервера

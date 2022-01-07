@@ -56,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "history": MessageLookupByLibrary.simpleMessage("History"),
         "inMoreDetail":
             MessageLookupByLibrary.simpleMessage("More detailed ..."),
+        "incognito": MessageLookupByLibrary.simpleMessage("Incognito"),
         "informationAboutYourselfInAFreeForm":
             MessageLookupByLibrary.simpleMessage(
                 "Information about yourself in a free form"),
@@ -68,6 +69,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mail": MessageLookupByLibrary.simpleMessage("Mail"),
         "map": MessageLookupByLibrary.simpleMessage("Map"),
         "minutesAgo": MessageLookupByLibrary.simpleMessage("minutes ago"),
+        "moreInformationEventOnMap": MessageLookupByLibrary.simpleMessage(
+            "For more information, see the Event On Map app"),
         "myAnswers": MessageLookupByLibrary.simpleMessage("My answers"),
         "myLikes": MessageLookupByLibrary.simpleMessage("My likes"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),

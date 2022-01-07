@@ -58,5 +58,7 @@
   "userNotRegistered" : "Пользователь не зарегистрирован",
   "userAlreadyRegistered" : "Пользователь уже зарегистрирован",
   "errorWritingAccessToken" : "Ошибка записи AccessToken",
-  "registrationRequestExecutionError" : "Ошибка выполнения запроса регистрации"
+  "registrationRequestExecutionError" : "Ошибка выполнения запроса регистрации",
+  "incognito" : "Инкогнито",
+  "moreInformationEventOnMap" : "Подробнее в приложении Event On Map"
 }
